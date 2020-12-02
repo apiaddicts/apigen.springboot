@@ -1,0 +1,1159 @@
+openapi: '3.0.0'
+info:
+  version: 1.0.0
+  title: ApigenDemoAPI
+
+paths:
+  /medicos:
+    x-apigen-binding:
+      model: Medico
+    post:
+      operationId: postMedico
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/request_body_medico"
+      responses:
+        '201':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_medico"
+    get:
+      operationId: getMedicos
+      parameters:
+        - $ref: "#/components/parameters/init_param"
+        - $ref: "#/components/parameters/limit_param"
+        - $ref: "#/components/parameters/total_param"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+        - $ref: "#/components/parameters/order_by_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_medicos"
+
+  /medicos/{id}:
+    x-apigen-binding:
+      model: Medico
+    get:
+      operationId: getMedico
+      parameters:
+        - $ref: "#/components/parameters/integerIdParam"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_medico"
+    put:
+      operationId: putMedico
+      parameters:
+        - $ref: "#/components/parameters/integerIdParam"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/request_body_medico"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_medico"
+    delete:
+      operationId: deleteMedico
+      parameters:
+        - $ref: "#/components/parameters/integerIdParam"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_medico"
+
+  /pacientes:
+    x-apigen-binding:
+      model: Paciente
+    post:
+      operationId: postPaciente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/request_body_post_paciente"
+      responses:
+        '201':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_paciente"
+    get:
+      operationId: getPacientes
+      parameters:
+        - $ref: "#/components/parameters/init_param"
+        - $ref: "#/components/parameters/limit_param"
+        - $ref: "#/components/parameters/total_param"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+        - $ref: "#/components/parameters/order_by_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_pacientes"
+
+  /pacientes/{id}:
+    x-apigen-binding:
+      model: Paciente
+    get:
+      operationId: getPaciente
+      parameters:
+        - $ref: "#/components/parameters/integerIdParam"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_paciente"
+    put:
+      operationId: putPaciente
+      parameters:
+        - $ref: "#/components/parameters/integerIdParam"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/request_body_put_paciente"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_paciente"
+    delete:
+      operationId: deletePaciente
+      parameters:
+        - $ref: "#/components/parameters/integerIdParam"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_paciente"
+
+  /direcciones:
+    x-apigen-binding:
+      model: Direccion
+    post:
+      operationId: postDireccion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/request_body_direccion"
+      responses:
+        '201':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_direccion"
+    get:
+      operationId: getDirecciones
+      parameters:
+        - $ref: "#/components/parameters/init_param"
+        - $ref: "#/components/parameters/limit_param"
+        - $ref: "#/components/parameters/total_param"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+        - $ref: "#/components/parameters/order_by_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_direcciones"
+
+  /direcciones/{id}:
+    x-apigen-binding:
+      model: Direccion
+    get:
+      operationId: getDireccion
+      parameters:
+        - $ref: "#/components/parameters/integerIdParam"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_direccion"
+    put:
+      operationId: putDireccion
+      parameters:
+        - $ref: "#/components/parameters/integerIdParam"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/request_body_direccion"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_direccion"
+    delete:
+      operationId: deleteDireccion
+      parameters:
+        - $ref: "#/components/parameters/integerIdParam"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_direccion"
+
+  /facturas:
+    x-apigen-binding:
+      model: Factura
+    post:
+      operationId: postFactura
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/request_body_factura"
+      responses:
+        '201':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_factura"
+    get:
+      operationId: getFacturas
+      parameters:
+        - $ref: "#/components/parameters/init_param"
+        - $ref: "#/components/parameters/limit_param"
+        - $ref: "#/components/parameters/total_param"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+        - $ref: "#/components/parameters/order_by_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_facturas"
+
+  /facturas/{id}:
+    x-apigen-binding:
+      model: Factura
+    get:
+      operationId: getFactura
+      parameters:
+        - $ref: "#/components/parameters/integerIdParam"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_factura"
+    put:
+      operationId: putFactura
+      parameters:
+        - $ref: "#/components/parameters/integerIdParam"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/request_body_factura"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_factura"
+    delete:
+      operationId: deleteFactura
+      parameters:
+        - $ref: "#/components/parameters/integerIdParam"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_factura"
+
+  /camas:
+    x-apigen-binding:
+      model: Cama
+    post:
+      operationId: postCama
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/request_body_cama"
+      responses:
+        '201':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_cama"
+    get:
+      operationId: getCamas
+      parameters:
+        - $ref: "#/components/parameters/init_param"
+        - $ref: "#/components/parameters/limit_param"
+        - $ref: "#/components/parameters/total_param"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+        - $ref: "#/components/parameters/order_by_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_camas"
+
+  /camas/{id}:
+    x-apigen-binding:
+      model: Cama
+    get:
+      operationId: getCama
+      parameters:
+        - $ref: "#/components/parameters/stringIdParam"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_cama"
+    put:
+      operationId: putCama
+      parameters:
+        - $ref: "#/components/parameters/stringIdParam"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/request_body_cama"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_cama"
+    delete:
+      operationId: deleteCama
+      parameters:
+        - $ref: "#/components/parameters/stringIdParam"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_habitacion"
+
+  /habitaciones:
+    x-apigen-binding:
+      model: Habitacion
+    post:
+      operationId: postHabitacion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/request_body_habitacion"
+      responses:
+        '201':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_habitacion"
+    get:
+      operationId: getHabitaciones
+      parameters:
+        - $ref: "#/components/parameters/init_param"
+        - $ref: "#/components/parameters/limit_param"
+        - $ref: "#/components/parameters/total_param"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+        - $ref: "#/components/parameters/order_by_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_habitaciones"
+
+  /habitaciones/{id}:
+    x-apigen-binding:
+      model: Habitacion
+    get:
+      operationId: getHabitacion
+      parameters:
+        - $ref: "#/components/parameters/stringIdParam"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_habitacion"
+    put:
+      operationId: putHabitacion
+      parameters:
+        - $ref: "#/components/parameters/stringIdParam"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/request_body_habitacion"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_habitacion"
+    delete:
+      operationId: deleteHabitacion
+      parameters:
+        - $ref: "#/components/parameters/stringIdParam"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_habitacion"
+
+components:
+  parameters:
+    integerIdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+    stringIdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    init_param:
+      in: query
+      name: $init
+      schema:
+        type: integer
+        format: int32
+    limit_param:
+      in: query
+      name: $limit
+      schema:
+        type: integer
+        format: int32
+    total_param:
+      in: query
+      name: $total
+      schema:
+        type: boolean
+    select_param:
+      in: query
+      name: $select
+      schema:
+        type: array
+        items:
+          type: string
+    exclude_param:
+      in: query
+      name: $exclude
+      schema:
+        type: array
+        items:
+          type: string
+    expand_param:
+      in: query
+      name: $expand
+      schema:
+        type: array
+        items:
+          type: string
+    order_by_param:
+      in: query
+      name: $orderby
+      schema:
+        type: array
+        items:
+          type: string
+
+  schemas:
+    standard_response_result:
+      properties:
+        result:
+          type: object
+          properties:
+            status:
+              type: boolean
+            http_code:
+              type: integer
+            errors:
+              type: array
+              items:
+                $ref: '#/components/schemas/standard_error'
+            info:
+              type: string
+            trace_id:
+              type: string
+            num_elements:
+              type: integer
+          required:
+            - status
+            - http_code
+            - trace_id
+    standard_error:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+
+    standard_response_medicos:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                medicos:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/medico"
+
+    standard_response_medico:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/medico"
+
+    standard_response_pacientes:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                pacientes:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/paciente"
+
+    standard_response_paciente:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/paciente"
+
+    standard_response_direcciones:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                direcciones:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/direccion"
+
+    standard_response_direccion:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/direccion"
+
+    standard_response_facturas:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                facturas:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/factura"
+
+    standard_response_factura:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/factura"
+
+    standard_response_camas:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                camas:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/cama"
+
+    standard_response_cama:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/cama"
+
+    standard_response_habitaciones:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                habitaciones:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/habitacion"
+
+    standard_response_habitacion:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/habitacion"
+
+    medico:
+      x-apigen-mapping:
+        model: Medico
+        type: READ
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        dni:
+          type: string
+        nombre:
+          type: string
+        salario:
+          type: number
+          format: double
+        pacientes:
+          type: array
+          items:
+            $ref: "#/components/schemas/paciente"
+
+    paciente:
+      x-apigen-mapping:
+        model: Paciente
+        type: READ
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        dni:
+          type: string
+        nombre:
+          type: string
+        telefono:
+          type: string
+        email:
+          type: string
+        direccion:
+          $ref: "#/components/schemas/direccion"
+        cama:
+          $ref: "#/components/schemas/cama"
+        facturas:
+          type: array
+          items:
+            $ref: "#/components/schemas/factura"
+        medicos:
+          type: array
+          items:
+            $ref: "#/components/schemas/medico"
+
+    direccion:
+      x-apigen-mapping:
+        model: Direccion
+        type: READ
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        calle:
+          type: string
+        numero:
+          type: integer
+          format: int32
+        cp:
+          type: string
+        localidad:
+          type: string
+        paciente:
+          $ref: "#/components/schemas/paciente"
+
+    factura:
+      x-apigen-mapping:
+        model: Factura
+        type: READ
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        paciente:
+          $ref: "#/components/schemas/paciente"
+        importe:
+          type: number
+          format: double
+        fecha:
+          type: string
+          format: date
+        fechayhora:
+          type: string
+          format: date-time
+
+    cama:
+      x-apigen-mapping:
+        model: Cama
+        type: READ
+      type: object
+      properties:
+        id:
+          type: string
+        habitacion:
+          $ref: "#/components/schemas/habitacion"
+        paciente:
+          $ref: "#/components/schemas/paciente"
+
+    habitacion:
+      x-apigen-mapping:
+        model: Habitacion
+        type: READ
+      type: object
+      properties:
+        id:
+          type: string
+        planta:
+          type: integer
+          format: int32
+        numero:
+          type: integer
+          format: int32
+        camas:
+          type: array
+          items:
+            $ref: "#/components/schemas/cama"
+
+    request_body_medico:
+      type: object
+      properties:
+        dni:
+          type: string
+        nombre:
+          type: string
+        salario:
+          type: number
+          format: double
+        pacientes:
+          type: array
+          items:
+            type: integer
+            format: int64
+    request_body_paciente:
+      type: object
+      properties:
+        dni:
+          type: string
+        nombre:
+          type: string
+        telefono:
+          type: string
+        email:
+          type: string
+        cama:
+          type: string
+        facturas:
+          type: array
+          items:
+            type: integer
+            format: int64
+        medicos:
+          type: array
+          items:
+            type: integer
+            format: int64
+    request_body_post_paciente:
+      allOf:
+        - $ref: "#/components/schemas/request_body_paciente"
+        - type: object
+          properties:
+            direccion:
+              $ref: "#/components/schemas/request_body_direccion"
+    request_body_put_paciente:
+      allOf:
+        - $ref: "#/components/schemas/request_body_paciente"
+        - type: object
+          properties:
+            direccion:
+              type: integer
+              format: int64
+    request_body_direccion:
+      type: object
+      properties:
+        calle:
+          type: string
+        numero:
+          type: integer
+          format: int32
+        cp:
+          type: string
+        localidad:
+          type: string
+        paciente:
+          type: integer
+          format: int64
+    request_body_factura:
+      type: object
+      properties:
+        paciente:
+          type: integer
+          format: int64
+        importe:
+          type: number
+          format: double
+        fecha:
+          type: string
+          format: date
+        fechayhora:
+          type: string
+          format: date-time
+    request_body_cama:
+      type: object
+      properties:
+        habitacion:
+          type: string
+        paciente:
+          type: integer
+          format: int64
+    request_body_habitacion:
+      type: object
+      properties:
+        planta:
+          type: integer
+          format: int32
+        numero:
+          type: integer
+          format: int32
+        camas:
+          type: array
+          items:
+            type: string
+  # -------------------------------------------------
+  x-apigen-models:
+    Medico:
+      relational-persistence:
+        table: medicos
+      attributes:
+        - name: id
+          type: Long
+          relational-persistence:
+            column: medico_id
+            primary-key: true
+          validations:
+            - type: NotNull
+        - name: dni
+          type: String
+          relational-persistence:
+            column: medico_dni
+            primary-key: true
+          validations:
+            - type: NotEmpty
+        - name: nombre
+          type: String
+          relational-persistence:
+            column: nombre
+        - name: salario
+          type: Double
+          relational-persistence:
+            column: salario
+          validations:
+            - type: Positive
+        - name: pacientes #@ManyToMany-Owner
+          type: Array
+          items-type: Paciente
+          relational-persistence:
+            column: medico_id
+            foreign-column: paciente_id
+            intermediate-table: consultas
+            owner: true
+
+    Paciente:
+      relational-persistence:
+        table: pacientes
+      attributes:
+        - name: id
+          type: Long
+          relational-persistence:
+            column: paciente_id
+            primary-key: true
+          validations:
+            - type: NotNull
+        - name: dni
+          type: String
+          relational-persistence:
+            column: paciente_id
+            primary-key: true
+          validations:
+            - type: NotEmpty
+        - name: nombre
+          type: String
+          relational-persistence:
+            column: nombre
+        - name: telefono
+          type: String
+          relational-persistence:
+            column: telefono
+          validations:
+            - type: Pattern
+              regex: '\\d{9}'
+        - name: email
+          type: String
+          relational-persistence:
+            column: email
+          validations:
+            - type: Email
+        - name: direccion #@OneToOne-Owner
+          type: Direccion
+          relational-persistence:
+            column: direccion_id
+        - name: cama #@OneToOne-Owner
+          type: Cama
+          relational-persistence:
+            column: cama_id
+        - name: facturas #@OneToMany
+          type: Array
+          items-type: Factura
+          relational-persistence:
+            foreign-column: paciente_id
+        - name: medicos #@ManyToMany
+          type: Array
+          items-type: Medico
+          relational-persistence:
+            column: paciente_id
+            foreign-column: medico_id
+            intermediate-table: consultas
+            owner: false
+          validations:
+            - type: Size
+              min: 1
+
+    Direccion:
+      relational-persistence:
+        table: direcciones
+      attributes:
+        - name: id
+          type: Long
+          relational-persistence:
+            column: habitacion_id
+            primary-key: true
+          validations:
+            - type: NotNull
+        - name: calle
+          type: String
+          relational-persistence:
+            column: calle
+        - name: numero
+          type: Integer
+          relational-persistence:
+            column: numero
+        - name: cp
+          type: String
+          relational-persistence:
+            column: cp
+        - name: localidad
+          type: String
+          relational-persistence:
+            column: localidad
+        - name: paciente #@OneToOne
+          type: Paciente
+          relational-persistence:
+            foreign-column: direccion_id
+
+    Factura:
+      relational-persistence:
+        table: facturas
+      attributes:
+        - name: id
+          type: Long
+          relational-persistence:
+            column: factura_id
+            primary-key: true
+          validations:
+            - type: NotNull
+        - name: paciente #@ManyToOne
+          type: Paciente
+          relational-persistence:
+            column: paciente_id
+        - name: importe
+          type: Double
+          relational-persistence:
+            column: importe
+          validations:
+            - type: DecimalMin
+              value: 100.0
+        - name: fecha
+          type: LocalDate
+          relational-persistence:
+            column: fecha
+          validations:
+            - type: PastOrPresent
+        - name: fechaYHora
+          type: OffsetDateTime
+          relational-persistence:
+            column: fecha_y_hora
+          validations:
+            - type: PastOrPresent
+
+    Cama:
+      relational-persistence:
+        table: camas
+      attributes:
+        - name: id
+          type: String
+          relational-persistence:
+            column: cama_id
+            primary-key: true
+          validations:
+            - type: NotNull
+        - name: habitacion #@ManyToOne
+          type: Habitacion
+          relational-persistence:
+            column: habitacion_id
+        - name: paciente #@OneToOne
+          type: Paciente
+          relational-persistence:
+            foreign-column: cama_id
+
+    Habitacion:
+      relational-persistence:
+        table: habitaciones
+      attributes:
+        - name: id
+          type: String
+          relational-persistence:
+            column: habitacion_id
+            primary-key: true
+          validations:
+            - type: NotNull
+        - name: planta
+          type: Integer
+          relational-persistence:
+            column: planta
+        - name: numero
+          type: Integer
+          relational-persistence:
+            column: numero
+          validations:
+            - type: Min
+              value: 1
+            - type: Max
+              value: 2
+        - name: camas #@OneToMany
+          type: Array
+          items-type: Cama
+          relational-persistence:
+            foreign-column: habitacion_id
+
+# ----------------------------
+
+x-apigen-project:
+  name: ApigenDemoAPI
+  description: Apigen Demo API
+  version: 1.0.0
+  java-properties:
+    group-id: the.group
+    artifact-id: app

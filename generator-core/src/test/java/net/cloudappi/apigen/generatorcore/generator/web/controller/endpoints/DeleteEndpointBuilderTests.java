@@ -1,0 +1,82 @@
+package net.cloudappi.apigen.generatorcore.generator.web.controller.endpoints;
+
+import com.squareup.javapoet.AnnotationSpec;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeSpec;
+import net.cloudappi.apigen.generatorcore.config.controller.Endpoint;
+import net.cloudappi.apigen.generatorcore.utils.Mapping;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+class DeleteEndpointBuilderTests {
+
+    static TypeSpec typeSpec;
+
+    @BeforeAll
+    static void init() {
+        Endpoint endPoint = EndpointObjectMother.standardDelete("delete", "EntityName");
+        DeleteEndpointBuilder builderEndpoint = new DeleteEndpointBuilder(new Mapping("/entities"), endPoint, null, "the.base.package");
+        TypeSpec.Builder builder = TypeSpec.classBuilder("DeleteEndpoint");
+        builderEndpoint.apply(builder);
+        typeSpec = builder.build();
+    }
+
+    @Test
+    void givenDeleteEndpointBuilder_whenBuild_thenNameCorrect() {
+        assertEquals("DeleteEndpoint", typeSpec.name);
+    }
+
+    @Test
+    void givenDeleteEndpointBuilder_whenBuild_thenModifierIsPublic() {
+        assertEquals(0, typeSpec.modifiers.size());
+    }
+
+    @Test
+    void givenDeleteEndpointBuilder_whenBuild_thenKindIsClass() {
+        assertEquals("CLASS", typeSpec.kind.toString());
+    }
+
+    @Test
+    void givenDeleteEndpointBuilder_whenBuild_thenNoHaveAnnotation() {
+        assertEquals(0, typeSpec.annotations.size());
+    }
+
+    @Test
+    void givenDeleteEndpointBuilder_whenBuild_thenNoHaveModifier() {
+        assertEquals(0, typeSpec.modifiers.size());
+    }
+
+    @Test
+    void givenDeleteEndpointBuilder_whenBuild_thenNoHaveFieldsSpecs() {
+        assertEquals(0, typeSpec.fieldSpecs.size());
+    }
+
+    @Test
+    void givenDeleteEndpointBuilder_whenBuild_thenHaveSuperClassAndIsCorrect() {
+        assertEquals("java.lang.Object", typeSpec.superclass.toString());
+    }
+
+    @Test
+    void givenDeleteEndpointBuilder_whenBuild_thenHaveMethodSpecIsCorrect() {
+        MethodSpec methodSpec = typeSpec.methodSpecs.get(0);
+        assertFalse(methodSpec.isConstructor());
+        assertEquals("delete", methodSpec.name);
+
+        assertEquals(2, methodSpec.annotations.size());
+        AnnotationSpec annotationSpec = methodSpec.annotations.get(0);
+        assertEquals("@org.springframework.web.bind.annotation.DeleteMapping(\"/{id}\")", annotationSpec.toString());
+        annotationSpec = methodSpec.annotations.get(1);
+        assertEquals("@org.springframework.web.bind.annotation.ResponseStatus(code = org.springframework.http.HttpStatus.OK)", annotationSpec.toString());
+        assertEquals(1, methodSpec.modifiers.size());
+        assertEquals("[public]", methodSpec.modifiers.toString());
+
+        assertEquals("@org.springframework.web.bind.annotation.PathVariable(\"id\") java.lang.Long id", methodSpec.parameters.get(0).toString());
+        assertEquals("java.lang.Long", methodSpec.parameters.get(0).type.toString());
+        assertEquals("id", methodSpec.parameters.get(0).name);
+
+        assertEquals("service.delete(id);\n", methodSpec.code.toString());
+    }
+}

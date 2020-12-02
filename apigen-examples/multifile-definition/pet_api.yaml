@@ -1,0 +1,206 @@
+paths:
+  all:
+    x-apigen-binding:
+      model: Pet
+    get:
+      operationId: getPets
+      parameters:
+        - $ref: "standard_schemas.yaml#/components/parameters/init_param"
+        - $ref: "standard_schemas.yaml#/components/parameters/limit_param"
+        - $ref: "standard_schemas.yaml#/components/parameters/total_param"
+        - $ref: "standard_schemas.yaml#/components/parameters/select_param"
+        - $ref: "standard_schemas.yaml#/components/parameters/exclude_param"
+        - $ref: "standard_schemas.yaml#/components/parameters/expand_param"
+        - $ref: "standard_schemas.yaml#/components/parameters/order_by_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_pets"
+    post:
+      operationId: postPet
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/newPet"
+      responses:
+        '201':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_pets"
+
+  byId:
+    x-apigen-binding:
+      model: Pet
+    get:
+      operationId: getPet
+      parameters:
+        - $ref: "./standard_schemas.yaml#/components/parameters/integer_id_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/select_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/exclude_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/expand_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_pet"
+
+    put:
+      operationId: putPet
+      parameters:
+        - $ref: "./standard_schemas.yaml#/components/parameters/integer_id_param"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updatePet"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_pet"
+    delete:
+      operationId: deletePet
+      parameters:
+        - $ref: "./standard_schemas.yaml#/components/parameters/integer_id_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_pet"
+
+  search:
+    x-apigen-binding:
+      model: Pet
+    post:
+      operationId: searchPet
+      parameters:
+        - $ref: "./standard_schemas.yaml#/components/parameters/init_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/limit_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/total_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/select_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/exclude_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/expand_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/order_by_param"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "./standard_schemas.yaml#/components/schemas/standard_search"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_pet"
+
+components:
+  schemas:
+    standard_response_pets:
+      allOf:
+        - $ref: "./standard_schemas.yaml#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                pets:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/pet"
+
+    standard_response_pet:
+      allOf:
+        - $ref: "./standard_schemas.yaml#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/pet"
+
+    pet:
+      x-apigen-mapping:
+        model: Pet
+      type: object
+      properties:
+        json_id:
+          type: integer
+          x-apigen-mapping:
+            field: id
+        name:
+          type: string
+        tags:
+          type: array
+          items:
+            $ref: "./tag_api.yaml#/components/schemas/tag"
+        parent:
+          $ref: "#/components/schemas/pet"
+        children:
+          type: array
+          items:
+            $ref: "#/components/schemas/pet"
+        main_tag:
+          $ref: "./tag_api.yaml#/components/schemas/tag"
+        owner:
+          $ref: "./owner_api.yaml#/components/schemas/owner"
+
+    newPet:
+      x-apigen-mapping:
+        model: Pet
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 4
+        owner:
+          type: string
+          x-apigen-mapping: # Required
+            model: Owner
+            field: owner.id
+        parent:
+          x-apigen-mapping:
+            model: Pet
+          type: object
+          properties:
+            id:
+              type: integer
+        tags:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+          maxItems: 10
+        main_tag:
+          x-apigen-mapping:
+            field: mainTag
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+      required:
+        - name
+
+    updatePet:
+      x-apigen-mapping:
+        model: Pet
+      type: object
+      properties:
+        name:
+          type: string
