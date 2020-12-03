@@ -11,10 +11,6 @@
 ## CloudAPPi
 CloudAppi is one leader in APIs in global word. See the [CloudAPPi Services](https://cloudappi.net) 
 
-## Madrid Digital
-Madrid Digital is a public administration in Spain. See the [Comunidad de Madrid website](https://www.comunidad.madrid/)
-
-
 ## Proyecto
 
 ### Esquema
