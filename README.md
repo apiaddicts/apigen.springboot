@@ -2,7 +2,7 @@
 
 <p align="center">
 	<a href="https://apiaddicts.org/">
-	  <img src="https://www.apiaddicts.org/logo.png">
+	  <img src="https://apiaddicts.org/logo.png">
 	</a>
 </p>
 # OpenAPI Apigen Extension

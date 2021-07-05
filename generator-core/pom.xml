@@ -6,8 +6,8 @@
 
     <parent>
         <artifactId>apigen</artifactId>
-        <groupId>net.cloudappi.apigen</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <groupId>org.apiaddicts.apitools.apigen</groupId>
+        <version>0.0.3-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -15,6 +15,36 @@
     <artifactId>generator-core</artifactId>
     <name>generator-core</name>
     <version>${revision}</version>
+    <url>https://github.com/apiaddicts/apigen</url>
+
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License (LGPLV3+)</name>
+            <url>http://www.gnu.org/licenses/lgpl-3.0.html</url>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>Apiaddicts</name>
+        <url>https://apiaddicts.org</url>
+    </organization>
+
+    <scm>
+        <connection>scm:git:git://github.com/apiaddicts/apigen.git</connection>
+        <developerConnection>scm:git:ssh://github.com:apiaddicts/apigen.git</developerConnection>
+        <url>https://github.com/apiaddicts/apigen/tree/master</url>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
 
@@ -40,16 +70,12 @@
         </dependency>
 
         <dependency>
-            <groupId>net.cloudappi.apigen</groupId>
+            <groupId>org.apiaddicts.apitools.apigen</groupId>
             <artifactId>archetype-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-test</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

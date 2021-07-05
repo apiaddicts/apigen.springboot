@@ -5,15 +5,45 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>net.cloudappi.apigen</groupId>
+        <groupId>org.apiaddicts.apitools.apigen</groupId>
         <artifactId>apigen</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.3-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>archetype-core</artifactId>
     <name>archetype-core</name>
     <version>${revision}</version>
+    <url>https://github.com/apiaddicts/apigen</url>
+
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License (LGPLV3+)</name>
+            <url>http://www.gnu.org/licenses/lgpl-3.0.html</url>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>Apiaddicts</name>
+        <url>https://apiaddicts.org</url>
+    </organization>
+
+    <scm>
+        <connection>scm:git:git://github.com/apiaddicts/apigen.git</connection>
+        <developerConnection>scm:git:ssh://github.com:apiaddicts/apigen.git</developerConnection>
+        <url>https://github.com/apiaddicts/apigen/tree/master</url>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
 
