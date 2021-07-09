@@ -7,9 +7,23 @@
 </p>
 # OpenAPI Apigen Extension
 
-# contributors
+# Contributors
+
 ## CloudAPPi
 CloudAppi is one leader in APIs in global word. See the [CloudAPPi Services](https://cloudappi.net) 
+
+# Usage 
+
+## Docker compose
+
+```yaml
+version: "3.3"
+services:
+  apigen:
+    image: "apiaddicts/apitools-apigen:0.0.3"
+    ports:
+      - "8080:8080"
+```
 
 ## Proyecto
 

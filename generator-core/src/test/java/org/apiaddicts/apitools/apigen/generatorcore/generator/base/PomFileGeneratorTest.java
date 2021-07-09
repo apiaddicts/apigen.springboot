@@ -29,7 +29,7 @@ class PomFileGeneratorTest {
                 configuration,
                 "org.apiaddicts.apitools.apigen",
                 "archetype-parent-spring-boot",
-                "0.0.3-SNAPSHOT",
+                "0.0.3",
                 projectFolder
         );
         assertPomExists(projectFolder);

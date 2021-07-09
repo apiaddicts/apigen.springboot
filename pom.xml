@@ -12,7 +12,7 @@
 
     <groupId>org.apiaddicts.apitools.apigen</groupId>
     <artifactId>apigen</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.3</version>
     <packaging>pom</packaging>
 
     <name>apigen</name>
@@ -40,17 +40,17 @@
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
             <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 
     <properties>
 
-        <revision>0.0.3-SNAPSHOT</revision>
+        <revision>0.0.3</revision>
 
         <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
