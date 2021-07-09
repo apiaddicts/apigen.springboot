@@ -1,0 +1,195 @@
+openapi: '3.0.0'
+info:
+  version: 1.0.0
+  title: Date Time API
+
+paths:
+  /date:
+    x-apigen-binding:
+      model: EDate
+    post:
+      operationId: postDate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/newDate"
+      responses:
+        '201':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_date"
+  /date/{id}:
+    x-apigen-binding:
+      model: EDate
+    get:
+      operationId: getDate
+      parameters:
+        - $ref: "#/components/parameters/integer_id_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_date"
+  /date-time:
+    x-apigen-binding:
+      model: EDateTime
+    post:
+      operationId: postDateTime
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/newDateTime"
+      responses:
+        '201':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_datetime"
+  /date-time/{id}:
+    x-apigen-binding:
+      model: EDateTime
+    get:
+      operationId: getDateTime
+      parameters:
+        - $ref: "#/components/parameters/integer_id_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_datetime"
+
+components:
+  parameters:
+    integer_id_param:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+  schemas:
+    standard_response_result:
+      properties:
+        result:
+          type: object
+          properties:
+            status:
+              type: boolean
+            http_code:
+              type: integer
+            errors:
+              type: array
+              items:
+                $ref: '#/components/schemas/standard_error'
+            info:
+              type: string
+            trace_id:
+              type: string
+            num_elements:
+              type: integer
+          required:
+            - status
+            - http_code
+            - trace_id
+    standard_error:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+    standard_response_date:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/date"
+    standard_response_datetime:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/datetime"
+    date:
+      x-apigen-mapping:
+        model: EDate
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date
+    datetime:
+      x-apigen-mapping:
+        model: EDateTime
+      type: object
+      properties:
+        id:
+          type: integer
+        datetime:
+          type: string
+          format: date-time
+    newDate:
+      x-apigen-mapping:
+        model: EDate
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+    newDateTime:
+      x-apigen-mapping:
+        model: EDateTime
+      type: object
+      properties:
+        datetime:
+          type: string
+          format: date-time
+
+  x-apigen-models:
+    EDate:
+      relational-persistence:
+        table: edates
+      attributes:
+        - name: id
+          type: Long
+          relational-persistence:
+            column: id
+            primary-key: true
+        - name: date
+          type: LocalDate
+          relational-persistence:
+            column: date
+
+    EDateTime:
+      relational-persistence:
+        table: edatetimes
+      attributes:
+        - name: id
+          type: Long
+          relational-persistence:
+            column: id
+            primary-key: true
+        - name: datetime
+          type: OffsetDateTime
+
+x-apigen-project:
+  name: dates
+  description: description
+  version: 1.0.0
+  java-properties:
+    group-id: the.group
+    artifact-id: app

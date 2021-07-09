@@ -1,0 +1,92 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: standard_request
+
+x-apigen-project:
+  name: test
+  description: test
+  version: 1.0.0
+  java-properties:
+    group-id: the.test
+    artifact-id: test
+
+paths:
+  /sample_resource:
+    x-apigen-binding:
+      model: ResOne
+    post:
+      operationId: createResOne
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/create_res_one"
+      responses:
+        '201':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_res_one"
+
+components:
+  schemas:
+    standard_response_result:
+      properties:
+        result:
+          type: object
+          properties:
+            status:
+              type: boolean
+            http_code:
+              type: integer
+            errors:
+              type: array
+              items:
+                $ref: '#/components/schemas/standard_error'
+            info:
+              type: string
+            trace_id:
+              type: string
+            num_elements:
+              type: integer
+          required:
+            - status
+            - http_code
+            - trace_id
+
+    standard_error:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+
+    standard_response_res_one:
+      x-apigen-mapping:
+        model: ResOne
+      type: object
+      properties:
+        name:
+          type: string
+
+    create_res_one:
+      x-apigen-mapping:
+        model: ResOne
+      type: object
+      properties:
+        name:
+          type: string
+
+  x-apigen-models:
+    ResOne:
+      relational-persistence:
+        table: res_one
+      attributes:
+        - name: name
+          type: String
+          relational-persistence:
+            column: id
+            primary-key: true

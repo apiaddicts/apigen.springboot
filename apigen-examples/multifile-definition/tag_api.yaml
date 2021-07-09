@@ -1,0 +1,58 @@
+paths:
+  all:
+    x-apigen-binding:
+      model: Tag
+    get:
+      operationId: getTags
+      parameters:
+        - $ref: "./standard_schemas.yaml#/components/parameters/init_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/limit_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/total_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/select_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/exclude_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/expand_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/order_by_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_tags"
+
+components:
+  schemas:
+    standard_response_tags:
+      allOf:
+        - $ref: "./standard_schemas.yaml#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                tags:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/tag"
+
+    standard_response_tag:
+      allOf:
+        - $ref: "./standard_schemas.yaml#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/tag"
+
+    tag:
+      x-apigen-mapping:
+        model: Tag
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        pets:
+          type: array
+          items:
+            $ref: "./pet_api.yaml#/components/schemas/pet"

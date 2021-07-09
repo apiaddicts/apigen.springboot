@@ -1,0 +1,118 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Apigen Pets
+
+paths:
+  /owners:
+    $ref: "./owner_api.yaml#/paths/all"
+  /owners/{id}:
+    $ref: "./owner_api.yaml#/paths/byId"
+
+  /tags:
+    $ref: "./tag_api.yaml#/paths/all"
+
+  /pets:
+    $ref: "./pet_api.yaml#/paths/all"
+  /pets/{id}:
+    $ref: "./pet_api.yaml#/paths/byId"
+  /pets/search:
+    $ref: "./pet_api.yaml#/paths/search"
+
+components:
+  x-apigen-models:
+    Owner:
+      relational-persistence:
+        table: owners
+      attributes:
+        - name: id
+          type: String
+          relational-persistence:
+            column: id
+            primary-key: true
+          validations:
+            - type: NotNull
+        - name: name
+          type: String
+          relational-persistence:
+            column: name
+        - name: pets
+          type: Array
+          items-type: Pet
+          relational-persistence:
+            foreign-column: owner_id
+
+    Pet:
+      relational-persistence:
+        table: pets
+      attributes:
+        - name: id
+          type: Long
+          relational-persistence:
+            column: id
+            primary-key: true
+          validations:
+            - type: NotNull
+        - name: name
+          type: String
+          relational-persistence:
+            column: name
+        - name: owner
+          type: Owner
+          relational-persistence:
+            column: owner_id
+        - name: tags
+          type: Array
+          items-type: Tag
+          relational-persistence:
+            column: pet_id
+            foreign-column: tag_id
+            intermediate-table: pet_tags
+            owner: true
+        - name: parent
+          type: Pet
+          relational-persistence:
+            column: parent_id
+        - name: children
+          type: Array
+          items-type: Pet
+          relational-persistence:
+            foreign-column: parent_id
+        - name: mainTag
+          type: Tag
+          relational-persistence:
+            column: tag_id
+
+    Tag:
+      relational-persistence:
+        table: tags
+      attributes:
+        - name: id
+          type: Long
+          relational-persistence:
+            column: id
+            primary-key: true
+          validations:
+            - type: NotNull
+        - name: name
+          type: String
+          relational-persistence:
+            column: name
+          validations:
+            - type: Size
+              min: 2
+              max: 10
+        - name: pets
+          type: Array
+          items-type: Pet
+          relational-persistence:
+            foreign-column: tag_id
+
+
+x-apigen-project:
+  name: name
+  description: description
+  version: 1.0.0
+  java-properties:
+    group-id: the.group
+    artifact-id: app

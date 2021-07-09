@@ -1,0 +1,267 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Swagger Petstore
+  license:
+    name: MIT
+
+paths:
+  /owners:
+    x-apigen-binding:
+      model: Owner
+    post:
+      operationId: createOwner
+      responses:
+        '201':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_owner"
+
+  /owners/{id}:
+    x-apigen-binding:
+      model: Owner
+    get:
+      parameters:
+        - $ref: "#/components/parameters/stringIdParam"
+        - $ref: "#/components/parameters/integer_param"
+        - $ref: "#/components/parameters/double_param"
+        - $ref: "#/components/parameters/string_param"
+        - $ref: "#/components/parameters/list_param"
+        - $ref: "#/components/parameters/boolean_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_owner"
+
+    put:
+      parameters:
+        - $ref: "#/components/parameters/stringIdParam"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_owner"
+
+    delete:
+      parameters:
+        - $ref: "#/components/parameters/stringIdParam"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_owner"
+
+
+components:
+  parameters:
+    integerIdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+    stringIdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    integer_param:
+      in: query
+      name: integer
+      schema:
+        type: integer
+        format: int32
+        default: 10
+        minimum: 10
+        maximum: 20
+    double_param:
+      in: query
+      name: double
+      schema:
+        type: number
+        format: double
+        default: 10.5
+        minimum: 10.2
+        maximum: 20.3
+        exclusiveMinimum: true
+        exclusiveMaximum: false
+    string_param:
+      in: query
+      name: string
+      schema:
+        type: string
+        default: test
+        minLength: 3
+        maxLength: 7
+        pattern: '\\d{9}'
+        nullable: true
+    list_param:
+      in: query
+      name: list
+      schema:
+        type: array
+        items:
+          type: string
+        minItems: 2
+        maxItems: 5
+    boolean_param:
+      in: query
+      name: boolean
+      schema:
+        type: boolean
+        nullable: true
+
+  schemas:
+    standard_response_result:
+      properties:
+        result:
+          type: object
+          properties:
+            status:
+              type: boolean
+            http_code:
+              type: integer
+            errors:
+              type: array
+              items:
+                $ref: '#/components/schemas/standard_error'
+            info:
+              type: string
+            trace_id:
+              type: string
+            num_elements:
+              type: integer
+          required:
+            - status
+            - http_code
+            - trace_id
+    standard_error:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+
+    standard_response_owner:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                medicos:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/owner"
+
+    owner:
+      x-apigen-mapping:
+        model: Owner
+        type: READ
+      type: object
+      properties:
+        id:
+          type: string
+        pets:
+          type: array
+          items:
+            $ref: "#/components/schemas/pet"
+
+    pet:
+      x-apigen-mapping:
+        model: Pet
+        type: READ
+      type: object
+      properties:
+        owner:
+          $ref: "#/components/schemas/owner"
+        tags:
+          type: array
+          items:
+            type: string
+# -------------------------------------------------
+  x-apigen-models:
+    Owner:
+      relational-persistence:
+        table: owners
+      attributes:
+        - name: id
+          type: String
+          relational-persistence:
+            column: id
+            primary-key: true
+          validations:
+            - type: NotNull
+            - type: Size
+              min: 1
+              max: 2
+            - type: Min
+              value: 1
+            - type: Max
+              value: 2
+            - type: Email
+            - type: NotEmpty
+            - type: NotBlank
+            - type: Positive
+            - type: PositiveOrZero
+            - type: Negative
+            - type: NegativeOrZero
+            - type: Past
+            - type: PastOrPresent
+            - type: Future
+            - type: FutureOrPresent
+            - type: Pattern
+              regex: '[^i*&2@]'
+            - type: Digits
+              integer: 4
+              fraction: 2
+            - type: DecimalMin
+              value: 0.1
+            - type: DecimalMax
+              value: 0.2
+        - name: pets
+          type: Array
+          items-type: Pet
+          relational-persistence:
+            foreign-column: owner_id
+
+    Pet:
+      relational-persistence:
+        table: pets
+      attributes:
+        - name: owner
+          type: Owner
+          relational-persistence:
+            column: owner_id
+        - name: tags
+          type: Array
+          items-type: Tag
+          relational-persistence:
+            column: pet_id
+            foreign-column: tag_id
+            intermediate-table: pet_tags
+            owner: true
+
+
+# -------------------------------------------------
+
+x-apigen-project:
+  name: test
+  description: test
+  version: 1.0.0
+  java-properties:
+    group-id: the.test
+    artifact-id: test

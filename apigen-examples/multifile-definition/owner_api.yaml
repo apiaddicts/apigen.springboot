@@ -1,0 +1,138 @@
+paths:
+  all:
+    x-apigen-binding:
+      model: Owner
+
+    get:
+      operationId: getOwners
+      parameters:
+        - $ref: "./standard_schemas.yaml#/components/parameters/init_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/limit_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/total_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/select_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/exclude_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/expand_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/order_by_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_owners"
+
+    post:
+      operationId: postOwner
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/newOwner"
+      responses:
+        '201':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_owner"
+
+  byId:
+    x-apigen-binding:
+      model: Owner
+    get:
+      operationId: getOwner
+      parameters:
+        - $ref: "./standard_schemas.yaml#/components/parameters/string_id_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/select_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/exclude_param"
+        - $ref: "./standard_schemas.yaml#/components/parameters/expand_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_owner"
+    put:
+      operationId: putOwner
+      parameters:
+        - $ref: "./standard_schemas.yaml#/components/parameters/string_id_param"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updateOwner"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_owner"
+    delete:
+      operationId: deleteOwner
+      parameters:
+        - $ref: "./standard_schemas.yaml#/components/parameters/string_id_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_owner"
+
+components:
+  schemas:
+    standard_response_owners:
+      allOf:
+        - $ref: "./standard_schemas.yaml#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                owners:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/owner"
+
+    standard_response_owner:
+      allOf:
+        - $ref: "./standard_schemas.yaml#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/owner"
+    owner:
+      x-apigen-mapping:
+        model: Owner
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        pets:
+          type: array
+          items:
+            $ref: "./pet_api.yaml#/components/schemas/pet"
+    newOwner:
+      x-apigen-mapping:
+        model: Owner
+      type: object
+      properties:
+        id:
+          type: string
+          x-apigen-mapping: # Optional
+            name: id
+        name:
+          type: string
+          x-apigen-mapping: # Optional
+            name: name
+    updateOwner:
+      x-apigen-mapping:
+        model: Owner
+      type: object
+      properties:
+        name:
+          type: string
