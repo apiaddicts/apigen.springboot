@@ -12,7 +12,7 @@
 
     <groupId>org.apiaddicts.apitools.apigen</groupId>
     <artifactId>apigen</artifactId>
-    <version>0.0.3</version>
+    <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>apigen</name>
@@ -50,7 +50,7 @@
 
     <properties>
 
-        <revision>0.0.3</revision>
+        <revision>0.1.0-SNAPSHOT</revision>
 
         <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>

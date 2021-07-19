@@ -7,7 +7,7 @@
     <parent>
         <artifactId>apigen</artifactId>
         <groupId>org.apiaddicts.apitools.apigen</groupId>
-        <version>0.0.3</version>
+        <version>0.1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
