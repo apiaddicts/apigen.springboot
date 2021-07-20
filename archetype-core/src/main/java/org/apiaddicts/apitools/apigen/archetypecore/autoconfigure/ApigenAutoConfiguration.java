@@ -9,14 +9,11 @@ import org.apiaddicts.apitools.apigen.archetypecore.core.resource.ResourceNaming
 import org.apiaddicts.apitools.apigen.archetypecore.interceptors.response.ApiResponseBodyAdvice;
 import org.apiaddicts.apitools.apigen.archetypecore.interceptors.update.CachingRequestBodyFilter;
 import org.apiaddicts.apitools.apigen.archetypecore.interceptors.update.UpdateRequestBodyAdvice;
-import org.apiaddicts.apitools.apigen.archetypecore.interceptors.WebConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 
-@Import({ApigenDocumentationConfiguration.class, WebConfig.class})
-public class ApigenConfiguration {
+public class ApigenAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean(ResourceNamingTranslator.class)
@@ -32,7 +29,7 @@ public class ApigenConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean(ApigenControllerAdvice.class)
-	public ApigenControllerAdvice apigenControllerAdvice(DefaultApigenErrorManager errorManager) {
+	public ApigenControllerAdvice apigenControllerAdvice(ApigenErrorManager errorManager) {
 		return new ApigenControllerAdvice(errorManager);
 	}
 

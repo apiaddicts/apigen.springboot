@@ -37,7 +37,7 @@ public class PropertiesGenerator {
         add("spring.jackson.serialization.fail_on_empty_beans", "false", p);
         add("spring.jackson.default-property-inclusion", "NON_NULL", p);
         add("spring.mvc.throw-exception-if-no-handler-found", "true", p);
-        add("spring.resources.add-mappings", "false", p);
+        add("spring.web.resources.add-mappings", "false", p);
         add("management.endpoints.enabled-by-default", "false", p);
         add("management.endpoint.health.enabled", "true", p);
         return p.toString();
@@ -48,6 +48,7 @@ public class PropertiesGenerator {
         add("logging.level." + configuration.getBasePackage(), "debug", p);
         add("apigen.documentation.enabled", "true", p);
         add("spring.jpa.show-sql", "true", p);
+        add("spring.jpa.defer-datasource-initialization", "true", p);
         return p.toString();
     }
 

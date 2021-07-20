@@ -16,7 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
 @ConditionalOnProperty(prefix = "apigen.documentation", name = "enabled", havingValue = "true")
-public class ApigenDocumentationConfiguration {
+public class ApigenDocumentationAutoConfiguration {
 
 	@Value("${spring.application.name:}")
 	private String name;

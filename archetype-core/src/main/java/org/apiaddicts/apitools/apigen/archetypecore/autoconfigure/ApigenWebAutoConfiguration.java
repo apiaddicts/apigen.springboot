@@ -1,4 +1,4 @@
-package org.apiaddicts.apitools.apigen.archetypecore.interceptors;
+package org.apiaddicts.apitools.apigen.archetypecore.autoconfigure;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apiaddicts.apitools.apigen.archetypecore.autoconfigure.ApigenProperties;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class WebConfig implements WebMvcConfigurer {
+public class ApigenWebAutoConfiguration implements WebMvcConfigurer {
 
 	@Autowired
 	ApigenProperties properties;

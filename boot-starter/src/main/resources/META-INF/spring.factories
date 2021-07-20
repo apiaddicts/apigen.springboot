@@ -1,0 +1,5 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.apiaddicts.apitools.apigen.archetypecore.autoconfigure.ApigenDocumentationAutoConfiguration,\
+org.apiaddicts.apitools.apigen.archetypecore.autoconfigure.ApigenAutoConfiguration,\
+org.apiaddicts.apitools.apigen.archetypecore.autoconfigure.ApigenWebAutoConfiguration
