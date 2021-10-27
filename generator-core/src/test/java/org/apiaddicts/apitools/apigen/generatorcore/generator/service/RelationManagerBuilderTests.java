@@ -65,7 +65,7 @@ class RelationManagerBuilderTests {
 
     @Test
     void givenValidRelationManagerBuilder_whenBuild_thenHasAllMethods() {
-        assertEquals(2, spec.methodSpecs.size());
+        assertEquals(8, spec.methodSpecs.size());
     }
 
     @Test
@@ -79,15 +79,9 @@ class RelationManagerBuilderTests {
         assertEquals("void", methodSpec.returnType.toString());
         assertEquals("" +
                         "org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrors errors = new org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrors();\n" +
-                        "if (entityFirst.getList() != null) {\n" +
-                        "  entityFirst.setList(entityFirst.getList().stream().map(e -> createOrRetrieve(e, listItemService, errors)).collect(java.util.stream.Collectors.toSet()));\n" +
-                        "}\n" +
-                        "if (entityFirst.getSimple() != null) {\n" +
-                        "  entityFirst.setSimple(createOrRetrieve(entityFirst.getSimple(), simpleService, errors));\n" +
-                        "}\n" +
-                        "if (entityFirst.getSimpleTwo() != null) {\n" +
-                        "  entityFirst.setSimpleTwo(createOrRetrieve(entityFirst.getSimpleTwo(), simpleService, errors));\n" +
-                        "}\n" +
+                        "createOrRetrieveRelationsList(entityFirst, errors);\n" +
+                        "createOrRetrieveRelationsSimple(entityFirst, errors);\n" +
+                        "createOrRetrieveRelationsSimpleTwo(entityFirst, errors);\n" +
                         "if (!errors.isEmpty()) {\n" +
                         "  throw new org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrorsException(errors);\n" +
                         "}\n"
@@ -95,8 +89,34 @@ class RelationManagerBuilderTests {
     }
 
     @Test
-    void givenValidRelationManagerBuilder_whenBuild_thenMainUpdateMethodCorrect() {
+    void givenValidRelationManagerBuilder_whenBuild_thenCreateMethodListCorrect() {
         MethodSpec methodSpec = spec.methodSpecs.get(1);
+
+        assertEquals("createOrRetrieveRelationsList", methodSpec.name);
+        assertEquals("[]", methodSpec.annotations.toString());
+        assertEquals("[the.pkg.entityfirst.EntityFirst entityFirst, org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrors errors]", methodSpec.parameters.toString());
+        assertEquals("void", methodSpec.returnType.toString());
+        assertEquals("" +
+                        "entityFirst.setList(createOrRetrieve(entityFirst.getList(), listItemService, errors));\n"
+                , methodSpec.code.toString());
+    }
+
+    @Test
+    void givenValidRelationManagerBuilder_whenBuild_thenCreateMethodSingleCorrect() {
+        MethodSpec methodSpec = spec.methodSpecs.get(3);
+
+        assertEquals("createOrRetrieveRelationsSimpleTwo", methodSpec.name);
+        assertEquals("[]", methodSpec.annotations.toString());
+        assertEquals("[the.pkg.entityfirst.EntityFirst entityFirst, org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrors errors]", methodSpec.parameters.toString());
+        assertEquals("void", methodSpec.returnType.toString());
+        assertEquals("" +
+                        "entityFirst.setSimpleTwo(createOrRetrieve(entityFirst.getSimpleTwo(), simpleService, errors));\n"
+                , methodSpec.code.toString());
+    }
+
+    @Test
+    void givenValidRelationManagerBuilder_whenBuild_thenMainUpdateMethodCorrect() {
+        MethodSpec methodSpec = spec.methodSpecs.get(4);
 
         assertEquals("updateRelations", methodSpec.name);
         assertEquals("[@java.lang.Override, @org.springframework.transaction.annotation.Transactional(propagation = org.springframework.transaction.annotation.Propagation.MANDATORY)]",
@@ -107,30 +127,44 @@ class RelationManagerBuilderTests {
                         "org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrors errors = new org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrors();\n" +
                         "boolean updateAll = (fields == null);\n" +
                         "if (updateAll || fields.contains(\"list\")) {\n" +
-                        "  if (entityFirst.getList() != null) {\n" +
-                        "    persistedEntityFirst.getList().clear();\n" +
-                        "    persistedEntityFirst.getList().addAll(entityFirst.getList().stream().map(e -> retrieve(e, listItemService, errors)).collect(java.util.stream.Collectors.toSet()));\n" +
-                        "  } else {\n" +
-                        "    persistedEntityFirst.setList(null);\n" +
-                        "  }\n" +
+                          "  updateRelationsList(persistedEntityFirst, entityFirst, fields, errors);\n" +
                         "}\n" +
                         "if (updateAll || fields.contains(\"simple\")) {\n" +
-                        "  if (entityFirst.getSimple() != null) {\n" +
-                        "    persistedEntityFirst.setSimple(retrieve(entityFirst.getSimple(), simpleService, errors));\n" +
-                        "  } else {\n" +
-                        "    persistedEntityFirst.setSimple(null);\n" +
-                        "  }\n" +
+                        "  updateRelationsSimple(persistedEntityFirst, entityFirst, fields, errors);\n" +
                         "}\n" +
                         "if (updateAll || fields.contains(\"simpleTwo\")) {\n" +
-                        "  if (entityFirst.getSimpleTwo() != null) {\n" +
-                        "    persistedEntityFirst.setSimpleTwo(retrieve(entityFirst.getSimpleTwo(), simpleService, errors));\n" +
-                        "  } else {\n" +
-                        "    persistedEntityFirst.setSimpleTwo(null);\n" +
-                        "  }\n" +
+                        "  updateRelationsSimpleTwo(persistedEntityFirst, entityFirst, fields, errors);\n" +
                         "}\n" +
                         "if (!errors.isEmpty()) {\n" +
                         "  throw new org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrorsException(errors);\n" +
                         "}\n"
+                , methodSpec.code.toString());
+    }
+
+    @Test
+    void givenValidRelationManagerBuilder_whenBuild_thenUpdateMethodListCorrect() {
+        MethodSpec methodSpec = spec.methodSpecs.get(5);
+
+        assertEquals("updateRelationsList", methodSpec.name);
+        assertEquals("[]", methodSpec.annotations.toString());
+        assertEquals("[the.pkg.entityfirst.EntityFirst persistedEntityFirst, the.pkg.entityfirst.EntityFirst entityFirst, java.util.Set<java.lang.String> fields, org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrors errors]", methodSpec.parameters.toString());
+        assertEquals("void", methodSpec.returnType.toString());
+        assertEquals("" +
+                        "persistedEntityFirst.getList().clear();\n" +
+                        "persistedEntityFirst.getList().addAll(retrieve(entityFirst.getList(), listItemService, errors));\n"
+                , methodSpec.code.toString());
+    }
+
+    @Test
+    void givenValidRelationManagerBuilder_whenBuild_thenUpdateMethodSingleCorrect() {
+        MethodSpec methodSpec = spec.methodSpecs.get(7);
+
+        assertEquals("updateRelationsSimpleTwo", methodSpec.name);
+        assertEquals("[]", methodSpec.annotations.toString());
+        assertEquals("[the.pkg.entityfirst.EntityFirst persistedEntityFirst, the.pkg.entityfirst.EntityFirst entityFirst, java.util.Set<java.lang.String> fields, org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrors errors]", methodSpec.parameters.toString());
+        assertEquals("void", methodSpec.returnType.toString());
+        assertEquals("" +
+                        "persistedEntityFirst.setSimpleTwo(retrieve(entityFirst.getSimpleTwo(), simpleService, errors));\n"
                 , methodSpec.code.toString());
     }
 

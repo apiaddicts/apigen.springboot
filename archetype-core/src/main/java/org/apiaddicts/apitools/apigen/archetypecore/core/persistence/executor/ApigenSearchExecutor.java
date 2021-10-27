@@ -32,7 +32,7 @@ public class ApigenSearchExecutor {
 		this.entityData = entityData;
 	}
 
-	public <E, K extends Serializable> Optional<E> searchById(K id, List<String> select, List<String> exclude, List<String> orderBy, List<String> expand, Class<E> clazz) {
+	public <E, K extends Serializable> Optional<E> searchById(K id, List<String> select, List<String> exclude, List<String> orderBy, List<String> expand, Filter filter, Class<E> clazz) {
 
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 
@@ -50,8 +50,12 @@ public class ApigenSearchExecutor {
 		String idAttribute = entityData.getIdAttribute(clazz);
 		Expression expression = getPath(idAttribute, root, joins);
 		Predicate predicate = builder.equal(expression, id);
+		Predicate conditionalPredicate = filter(filter, builder, root, joins);
 
-		if (predicate != null) query.where(predicate);
+		if (conditionalPredicate != null) {
+			predicate = builder.and(predicate, conditionalPredicate);
+		}
+		query.where(predicate);
 		TypedQuery<Tuple> createQuery = em.createQuery(query);
 		List<Tuple> result = createQuery.getResultList();
 		List<E> found = new TupleMapper(enhancedFields, entityData, clazz).map(result);
@@ -89,6 +93,11 @@ public class ApigenSearchExecutor {
 		addOrder(query, orderBy, root, joins, builder);
 		List<Tuple> result = em.createQuery(query).getResultList();
 		return new ApigenSearchResult<>(new TupleMapper(enhancedFields, entityData, clazz).map(result), count);
+	}
+
+	public long count(List<String> expand, Filter filter, Class clazz) {
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		return count(clazz, expand, filter, builder);
 	}
 
 	private void addPaginationPredicate(CriteriaQuery<Tuple> query, Root<?> root, List<String> orderBy, List<String> expand, Filter filter, Pagination pagination, Class<?> clazz, CriteriaBuilder builder) { // NOSONAR

@@ -51,7 +51,7 @@ public class EntityControllerBuilder extends ControllerBuilder {
 
     private void autowireService() {
         TypeName serviceType = ServiceBuilder.getTypeName(entityName, basePackage);
-        FieldSpec field = FieldSpec.builder(serviceType, "service", Modifier.PRIVATE)
+        FieldSpec field = FieldSpec.builder(serviceType, "service", Modifier.PROTECTED)
                 .addAnnotation(Autowired.class)
                 .build();
         builder.addField(field);
@@ -59,7 +59,7 @@ public class EntityControllerBuilder extends ControllerBuilder {
 
     private void autowireMapper() {
         TypeName mapperType = MapperBuilder.getTypeName(entityName, basePackage);
-        FieldSpec field = FieldSpec.builder(mapperType, "mapper", Modifier.PRIVATE)
+        FieldSpec field = FieldSpec.builder(mapperType, "mapper", Modifier.PROTECTED)
                 .addAnnotation(Autowired.class)
                 .build();
         builder.addField(field);
@@ -67,7 +67,7 @@ public class EntityControllerBuilder extends ControllerBuilder {
 
     private void autowireNamingTranslator() {
         TypeName translatorType = ClassName.get(ResourceNamingTranslator.class);
-        FieldSpec field = FieldSpec.builder(translatorType, "namingTranslator", Modifier.PRIVATE)
+        FieldSpec field = FieldSpec.builder(translatorType, "namingTranslator", Modifier.PROTECTED)
                 .addAnnotation(Autowired.class)
                 .build();
         builder.addField(field);

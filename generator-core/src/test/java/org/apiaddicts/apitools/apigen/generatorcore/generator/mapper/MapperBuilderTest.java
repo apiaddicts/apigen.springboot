@@ -35,7 +35,7 @@ class MapperBuilderTest {
     @Test
     void givenValidAttributes_whenBuildMapper_thenFileStructureIsCorrect() {
         assertEquals(Modifier.PUBLIC, generatedMapper.modifiers.toArray()[0], "Public modifier is wrong");
-        assertEquals(TypeSpec.Kind.INTERFACE, generatedMapper.kind, "Interface declaration is wrong");
+        assertEquals(TypeSpec.Kind.CLASS, generatedMapper.kind, "Class declaration is wrong");
         assertEquals("EntityNameMapper", generatedMapper.name, "The name is wrong");
         assertEquals(1, generatedMapper.annotations.size(), "Number of annotations is wrong");
         assertEquals(5, generatedMapper.methodSpecs.size(), "Number of methods is wrong");
@@ -44,17 +44,17 @@ class MapperBuilderTest {
     @Test
     void givenValidAttributesWithComposedID_whenBuildMapper_thenMapMethodsAreCorrect() {
     	assertEquals(7, generatedMapperWithComposedId.methodSpecs.size(), "Number of methods is wrong");
-    	assertEquals("public default java.lang.String map(\n" + 
+    	assertEquals("public java.lang.String map(\n" +
     			"    the.base.package.entitynamewithcomposedid.EntityNameWithComposedIDID id) {\n" +
     			"  return id.toString();\n" + 
     			"}\n" + 
     			"",generatedMapperWithComposedId.methodSpecs.get(4).toString(),"The map method is wrong");
-    	assertEquals("public default the.base.package.entitynamewithcomposedid.EntityNameWithComposedIDID map(\n" +
+    	assertEquals("public the.base.package.entitynamewithcomposedid.EntityNameWithComposedIDID map(\n" +
     			"    java.lang.String id) {\n" + 
     			"  return the.base.package.entitynamewithcomposedid.EntityNameWithComposedIDID.from(id);\n" +
     			"}\n" + 
     			"",generatedMapperWithComposedId.methodSpecs.get(5).toString(),"The map method is wrong");
-    	assertEquals("public default the.base.package.entitynamewithcomposedid.EntityNameWithComposedID mapToEntity(\n" +
+    	assertEquals("public the.base.package.entitynamewithcomposedid.EntityNameWithComposedID mapToEntity(\n" +
     			"    java.lang.String id) {\n" + 
     			"  return new the.base.package.entitynamewithcomposedid.EntityNameWithComposedID(map(id));\n" + 
     			"}\n" + 
@@ -74,8 +74,8 @@ class MapperBuilderTest {
     }
 
     @Test
-    void givenValidAttributes_whenBuildMapper_thenSuperinterfaceIsCorrect() {
-        assertEquals("[org.apiaddicts.apitools.apigen.archetypecore.core.ApigenMapper<the.base.package.entityname.EntityName>]", generatedMapper.superinterfaces.toString());
+    void givenValidAttributes_whenBuildMapper_thenSuperclassIsCorrect() {
+        assertEquals("org.apiaddicts.apitools.apigen.archetypecore.core.ApigenMapper<the.base.package.entityname.EntityName>", generatedMapper.superclass.toString());
     }
 
     @Test
@@ -100,7 +100,10 @@ class MapperBuilderTest {
 
     @Test
     void givenValidAttributes_whenBuildMapper_thenGeneratedSetToResourceMethodIsCorrect() {
-        assertEquals("public abstract java.util.Set<the.base.package.entityname.web.EntityNameOutResource> toResource(\n"
+        assertEquals("@org.mapstruct.BeanMapping(\n" +
+                        "    qualifiedByName = \"toResource\"\n" +
+                        ")\n" +
+                        "public abstract java.util.Set<the.base.package.entityname.web.EntityNameOutResource> toResource(\n"
                         + "    java.util.Set<the.base.package.entityname.EntityName> entities);\n",
                 generatedMapper.methodSpecs.get(2).toString(), "Set toResource is wrong");
     }
@@ -111,7 +114,7 @@ class MapperBuilderTest {
         assertEquals("" +
                         "[" +
                         "@java.lang.Override, " +
-                        "@org.mapstruct.BeanMapping(ignoreByDefault = true), " +
+                        "@org.mapstruct.BeanMapping(ignoreByDefault = true, qualifiedByName = \"updateBasicData\"), " +
                         "@org.mapstruct.Mapping(source = \"simpleAttribute\", target = \"simpleAttribute\")" +
                         "]",
                 methodSpec.annotations.toString());
@@ -127,7 +130,7 @@ class MapperBuilderTest {
         assertEquals("" +
                         "[" +
                         "@java.lang.Override, " +
-                        "@org.mapstruct.BeanMapping(ignoreByDefault = true), " +
+                        "@org.mapstruct.BeanMapping(ignoreByDefault = true, qualifiedByName = \"updateBasicData\"), " +
                         "@org.mapstruct.Mapping(source = \"one\", target = \"one\"), " +
                         "@org.mapstruct.Mapping(source = \"two\", target = \"two\")" +
                         "]",
@@ -140,7 +143,7 @@ class MapperBuilderTest {
 
     @Test
     void givenValidAttributes_whenBuildMapper_thenGeneratedIdToEntityIsCorrect() {
-    	assertEquals("public default the.base.package.entityname.EntityName toEntity(java.lang.Long id) {\n"
+    	assertEquals("public the.base.package.entityname.EntityName toEntity(java.lang.Long id) {\n"
     			+ "  if (id == null) return null;\n"
     			+ "  return new the.base.package.entityname.EntityName(id);\n"
     			+ "}\n",

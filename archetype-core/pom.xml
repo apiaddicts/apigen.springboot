@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.apiaddicts.apitools.apigen</groupId>
         <artifactId>apigen</artifactId>
-        <version>0.0.3</version>
+        <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 

@@ -76,8 +76,9 @@ public class MapperBuilder extends AbstractClassBuilder {
     }
 
     private void initializeBuilder() {
-        builder = getInterface(getName(entityName))
-                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(ApigenMapper.class), entityType));
+        builder = getClass(getName(entityName))
+                .addModifiers(Modifier.ABSTRACT)
+                .superclass(ParameterizedTypeName.get(ClassName.get(ApigenMapper.class), entityType));
     }
 
     private void addMapperAnnotation() {
@@ -120,6 +121,9 @@ public class MapperBuilder extends AbstractClassBuilder {
         if (!entityToResources.contains(resourceType)) return;
         MethodSpec methodSpec = MethodSpec.methodBuilder(TO_RESOURCE)
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+                .addAnnotation(getAnnotation(BeanMapping.class)
+                        .addMember(QUALIFIED_BY_NAME, STRING, TO_RESOURCE)
+                        .build())
                 .addParameter(ParameterizedTypeName.get(ClassName.get(Set.class), entityType), "entities")
                 .returns(ParameterizedTypeName.get(ClassName.get(Set.class), resourceType))
                 .build();
@@ -131,6 +135,9 @@ public class MapperBuilder extends AbstractClassBuilder {
         for (TypeName type : resourcesToEntity) {
             MethodSpec methodSpec = MethodSpec.methodBuilder(TO_ENTITY)
                     .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+                    .addAnnotation(getAnnotation(BeanMapping.class)
+                            .addMember(QUALIFIED_BY_NAME, STRING, TO_ENTITY)
+                            .build())
                     .addParameter(type, "resource")
                     .returns(entityType)
                     .build();
@@ -142,7 +149,10 @@ public class MapperBuilder extends AbstractClassBuilder {
         MethodSpec methodSpecBuilder = MethodSpec.methodBuilder(UPDATE_BASIC_DATA)
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                 .addAnnotation(Override.class)
-                .addAnnotation(getAnnotation(BeanMapping.class).addMember(IGNORE_BY_DEFAULT, LITERAL, true).build())
+                .addAnnotation(getAnnotation(BeanMapping.class)
+                        .addMember(IGNORE_BY_DEFAULT, LITERAL, true)
+                        .addMember(QUALIFIED_BY_NAME, STRING, UPDATE_BASIC_DATA)
+                        .build())
                 .addAnnotations(getMappingsAnnotations())
                 .addParameter(entityType, "source")
                 .addParameter(ParameterSpec.builder(entityType, "target").addAnnotation(MappingTarget.class).build())
@@ -159,21 +169,21 @@ public class MapperBuilder extends AbstractClassBuilder {
     private void addComposedIDMapping() {
         if (!isComposed(idType)) return;
         MethodSpec mapIDToString = MethodSpec.methodBuilder("map")
-                .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
+                .addModifiers(Modifier.PUBLIC)
                 .addParameter(idType, "id")
                 .returns(String.class)
                 .addStatement("return id.toString()")
                 .build();
         builder.addMethod(mapIDToString);
         MethodSpec mapStringToID = MethodSpec.methodBuilder("map")
-                .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
+                .addModifiers(Modifier.PUBLIC)
                 .addParameter(String.class, "id")
                 .returns(idType)
                 .addStatement("return $T.from(id)", idType)
                 .build();
         builder.addMethod(mapStringToID);
         MethodSpec mapStringIDToEntity = MethodSpec.methodBuilder("mapToEntity")
-        		.addModifiers(Modifier.PUBLIC,Modifier.DEFAULT)
+        		.addModifiers(Modifier.PUBLIC)
         		.addParameter(String.class,"id")
         		.returns(entityType)
         		.addStatement("return new $T(map(id))",entityType)
@@ -184,7 +194,7 @@ public class MapperBuilder extends AbstractClassBuilder {
     private void addIdToEntityMapping() {
         if (isComposed(idType)) return;
     	MethodSpec methodSpec = MethodSpec.methodBuilder(TO_ENTITY)
-                .addModifiers(Modifier.PUBLIC, Modifier.DEFAULT)
+                .addModifiers(Modifier.PUBLIC)
                 .addParameter(idType, "id")
                 .returns(entityType)
                 .addStatement("if (id == null) return null")

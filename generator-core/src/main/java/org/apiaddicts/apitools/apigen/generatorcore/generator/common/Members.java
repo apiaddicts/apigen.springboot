@@ -20,6 +20,7 @@ public class Members {
     public static final String USES = "uses";
     public static final String MODE = "mode";
     public static final String IGNORE_BY_DEFAULT = "ignoreByDefault";
+    public static final String QUALIFIED_BY_NAME = "qualifiedByName";
     public static final String SOURCE = "source";
     public static final String TARGET = "target";
     public static final String PROPAGATION = "propagation";

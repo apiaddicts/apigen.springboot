@@ -29,7 +29,11 @@ public class ApigenRepositoryImpl<E, K extends Serializable> extends SimpleJpaRe
 
 	@Override
 	public Optional<E> searchById(K id, ApigenSearch search) {
-		return searchExecutor.searchById(id, search.getSelect(), search.getExclude(), search.getOrderBy(), search.getExpand(), clazz);
+		return searchExecutor.searchById(id, search.getSelect(), search.getExclude(), search.getOrderBy(), search.getExpand(), search.getFilter(), clazz);
 	}
 
+	@Override
+	public long count(ApigenSearch search) {
+		return searchExecutor.count(search.getExpand(), search.getFilter(), clazz);
+	}
 }

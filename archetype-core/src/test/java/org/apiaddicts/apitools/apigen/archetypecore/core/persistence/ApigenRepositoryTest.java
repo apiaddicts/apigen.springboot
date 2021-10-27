@@ -4,15 +4,14 @@ import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filt
 import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.FilterOperation;
 import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Value;
 import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.pagination.Pagination;
-import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.stubs.FakeEntityDates;
-import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.stubs.FakeEntityDatesRepository;
-import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.stubs.FakeEntityNode;
-import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.stubs.FakeEntityNodeRepository;
+import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.stubs.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +34,14 @@ class ApigenRepositoryTest {
 
 	@Autowired FakeEntityDatesRepository datesRepository;
 	@Autowired FakeEntityNodeRepository nodeRepository;
+	@Autowired FakeEntityBigEntityRepository bigEntityRepository;
+
+	@Test
+	void givenPersistedRecords_whenCount_thenCount() {
+		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, null, EMPTY, null, false);
+		long result = datesRepository.count(search);
+		assertEquals(TOTAL_DATES_ENTITIES, result);
+	}
 
 	@Test
 	void givenPersistedRecords_whenSearchedPaginated_thenSearchAll() {
@@ -133,5 +140,30 @@ class ApigenRepositoryTest {
 		assertNotNull(north);
 		assertNotNull(north.getChildren());
 		assertEquals(1, north.getChildren().size());
+	}
+
+	@Test
+	void givenBigAttributes_whenPersist_thenSuccess() {
+		FakeEntityBigEntity e = new FakeEntityBigEntity();
+		e.setBDec(BigDecimal.valueOf(.333333));
+		e.setBInt(BigInteger.valueOf(1000));
+		bigEntityRepository.save(e);
+
+		assertNotNull(e.getId());
+
+		bigEntityRepository.delete(e);
+	}
+
+	@Test
+	void givenBigAttributes_whenSearch_thenSuccess() {
+		Filter filter = new Filter();
+		filter.setOperation(FilterOperation.LT);
+		Value value = new Value();
+		value.setProperty("bDec");
+		value.setValue("0.3333");
+		filter.setValues(Collections.singletonList(value));
+		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, filter, EMPTY, null, false);
+		ApigenSearchResult<FakeEntityBigEntity> result = bigEntityRepository.search(search);
+		assertEquals(2, result.getSearchResult().size());
 	}
 }

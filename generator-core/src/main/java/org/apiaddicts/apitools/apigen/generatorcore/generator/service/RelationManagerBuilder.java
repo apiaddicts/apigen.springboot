@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.lang.model.element.Modifier;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -75,7 +76,7 @@ public class RelationManagerBuilder extends AbstractClassBuilder {
         sortedRelatedEntities.forEach(relatedEntityName -> {
             TypeName serviceType = ServiceBuilder.getTypeName(relatedEntityName, basePackage);
             String serviceName = StringUtils.uncapitalize(ServiceBuilder.getName(relatedEntityName));
-            FieldSpec fieldSpec = FieldSpec.builder(serviceType, serviceName, Modifier.PRIVATE)
+            FieldSpec fieldSpec = FieldSpec.builder(serviceType, serviceName, Modifier.PROTECTED)
                     .addAnnotation(Autowired.class).build();
             builder.addField(fieldSpec);
         });
@@ -91,26 +92,27 @@ public class RelationManagerBuilder extends AbstractClassBuilder {
                 .addAnnotation(getAnnotation(Transactional.class).addMember(PROPAGATION, ENUM_VALUE, Propagation.class, Propagation.MANDATORY.name()).build())
                 .addParameter(entityType, paramName);
         methodSpecBuilder.addStatement("$1T errors = new $1T()", RelationalErrors.class);
+        List<MethodSpec.Builder> fieldMethodBuilders = new ArrayList<>(sortedAttributes.size());
         for (String attribute : sortedAttributes) {
             AttributeData attributeData = attributes.get(attribute);
             if (!attributeData.isOwned()) continue;
             String capAttribute = StringUtils.capitalize(attribute);
             String serviceName = StringUtils.uncapitalize(ServiceBuilder.getName(attributeData.getRelatedEntity()));
+            methodSpecBuilder.addStatement("createOrRetrieveRelations$2L($1L, errors)", paramName, capAttribute);
 
-            methodSpecBuilder.beginControlFlow("if ($L.get$L() != null)", paramName, capAttribute);
-            if (attributeData.isCollection()) {
-                methodSpecBuilder.addStatement("$1L.set$2L($1L.get$2L().stream().map(e -> createOrRetrieve(e, $4L, errors)).collect($3T.toSet()))",
-                        paramName, capAttribute, Collectors.class, serviceName);
-            } else {
-                methodSpecBuilder.addStatement("$1L.set$2L(createOrRetrieve($1L.get$2L(), $3L, errors))", paramName, capAttribute, serviceName);
-            }
-            methodSpecBuilder.endControlFlow();
+            MethodSpec.Builder fieldMethodBuilder = MethodSpec.methodBuilder("createOrRetrieveRelations" + capAttribute)
+                    .addModifiers(Modifier.PROTECTED)
+                    .addParameter(entityType, paramName)
+                    .addParameter(RelationalErrors.class, "errors");
+            fieldMethodBuilder.addStatement("$1L.set$2L(createOrRetrieve($1L.get$2L(), $3L, errors))", paramName, capAttribute, serviceName);
+            fieldMethodBuilders.add(fieldMethodBuilder);
         }
         methodSpecBuilder.beginControlFlow("if (!errors.isEmpty())");
         methodSpecBuilder.addStatement("throw new $T(errors)", RelationalErrorsException.class);
         methodSpecBuilder.endControlFlow();
 
         builder.addMethod(methodSpecBuilder.build());
+        fieldMethodBuilders.forEach(b -> builder.addMethod(b.build()));
     }
 
     private void addUpdateRelationsMethod() {
@@ -128,6 +130,7 @@ public class RelationManagerBuilder extends AbstractClassBuilder {
 
         methodSpecBuilder.addStatement("$1T errors = new $1T()", RelationalErrors.class);
         methodSpecBuilder.addStatement("boolean updateAll = (fields == null)");
+        List<MethodSpec.Builder> fieldMethodBuilders = new ArrayList<>(sortedAttributes.size());
         for (String attribute : sortedAttributes) {
             AttributeData attributeData = attributes.get(attribute);
             if (!attributeData.isOwned()) continue;
@@ -135,23 +138,31 @@ public class RelationManagerBuilder extends AbstractClassBuilder {
             String serviceName = StringUtils.uncapitalize(ServiceBuilder.getName(attributeData.getRelatedEntity()));
 
             methodSpecBuilder.beginControlFlow("if (updateAll || fields.contains($S))", attribute);
-            methodSpecBuilder.beginControlFlow("if ($L.get$L() != null)", paramName, capAttribute);
+            methodSpecBuilder.addStatement("updateRelations$3L($1L, $2L, fields, errors)", persistedParamName, paramName, capAttribute);
+            methodSpecBuilder.endControlFlow();
+
+            MethodSpec.Builder fieldMethodBuilder = MethodSpec.methodBuilder("updateRelations" + capAttribute)
+                    .addModifiers(Modifier.PROTECTED)
+                    .addParameter(entityType, persistedParamName)
+                    .addParameter(entityType, paramName)
+                    .addParameter(ParameterizedTypeName.get(ClassName.get(Set.class), ClassName.get(String.class)), "fields")
+                    .addParameter(RelationalErrors.class, "errors");
+
             if (attributeData.isCollection()) {
-                methodSpecBuilder.addStatement("$1L.get$2L().clear()", persistedParamName, capAttribute);
-                methodSpecBuilder.addStatement("$1L.get$3L().addAll($2L.get$3L().stream().map(e -> retrieve(e, $5L, errors)).collect($4T.toSet()))",
-                        persistedParamName, paramName, capAttribute, Collectors.class, serviceName);
+                fieldMethodBuilder.addStatement("$1L.get$2L().clear()", persistedParamName, capAttribute);
+                fieldMethodBuilder.addStatement("$1L.get$3L().addAll(retrieve($2L.get$3L(), $4L, errors))",
+                        persistedParamName, paramName, capAttribute, serviceName);
             } else {
-                methodSpecBuilder.addStatement("$1L.set$3L(retrieve($2L.get$3L(), $4L, errors))", persistedParamName, paramName, capAttribute, serviceName);
+                fieldMethodBuilder.addStatement("$1L.set$3L(retrieve($2L.get$3L(), $4L, errors))", persistedParamName, paramName, capAttribute, serviceName);
             }
-            methodSpecBuilder.nextControlFlow("else");
-            methodSpecBuilder.addStatement("$L.set$L(null)", persistedParamName, capAttribute);
-            methodSpecBuilder.endControlFlow();
-            methodSpecBuilder.endControlFlow();
+
+            fieldMethodBuilders.add(fieldMethodBuilder);
         }
         methodSpecBuilder.beginControlFlow("if (!errors.isEmpty())");
         methodSpecBuilder.addStatement("throw new $T(errors)", RelationalErrorsException.class);
         methodSpecBuilder.endControlFlow();
 
         builder.addMethod(methodSpecBuilder.build());
+        fieldMethodBuilders.forEach(b -> builder.addMethod(b.build()));
     }
 }

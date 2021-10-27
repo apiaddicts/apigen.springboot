@@ -276,7 +276,147 @@ Ejemplo:
     
     spring.jpa.properties.hibernate.dialect = my.project.dialects.dialects.MyH2Dialect
     
+
+# Extender los principales componentes sin modificar el código generado
+
+Si queremos hacer uso al máximo de la generación a partir del OpenAPI, lo recomendable es no modificar manualmente el código generado, o en su defecto lo mínimo posible.
+
+## Extender un servicio
+
+````java
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
+
+@Slf4j
+@Primary
+@Service
+public class FooServiceExt extends FooService {
     
+    // Constructor ...
+    
+    @Override
+    protected void preSave(Foo foo) {
+        log.info("ALL OK");
+    }
+}
+````
+
+## Extender un repositorio
+
+````java
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
+
+@Primary
+@Repository
+public interface FooRepositoryExt extends FooRepository {
+    long countDistinctByBar(Bar bar);
+}
+````
+
+## Extender un mapper
+
+````java
+import lombok.extern.slf4j.Slf4j;
+import org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrors;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
+
+@Slf4j
+@Primary
+@Component
+public class FooRelationManagerExt extends FooRelationManager {
+
+    @Override
+    protected void createOrRetrieveRelationsBar(Foo foo, RelationalErrors errors) {
+        // Perform some relational validation or other logic
+        foo.setBar(createOrRetrieve(foo.getBar(), barService, errors));
+    }
+}
+````
+
+## Extender un relations manager
+
+````java
+import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.*;
+import org.springframework.context.annotation.Primary;
+
+@Primary
+@Slf4j
+@Mapper(componentModel = "spring", uses = {BarMapper.class})
+@DecoratedWith(FooMapperExtDecorator.class) // Only required if you need to change the mapper logic, not required if you can manage the changes with hooks
+public abstract class FooMapperExt extends StayMapper {
+
+    @Named("updateBasicData")
+    @BeforeMapping
+    public void beforeBasicDataUpdate(Foo source, @MappingTarget Foo target) {
+        log.info("Before mapping");
+    }
+
+    @Named("updateBasicData")
+    @AfterMapping
+    public void afterBasicDataUpdate(Foo source, @MappingTarget Foo target) {
+        log.info("After mapping");
+    }
+}
+````
+
+````java
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import java.util.List;
+import java.util.Set;
+
+@Slf4j
+@NoArgsConstructor
+@AllArgsConstructor
+public class FooMapperExtDecorator extends FooMapperExt {
+
+    @Autowired
+    @Qualifier("delegate")
+    private StayMapperExt mapper;
+
+    @Override
+    public FooOutResource toResource(Foo entity) {
+        return mapper.toResource(entity);
+    }
+
+    @Override
+    public List<FooOutResource> toResource(List<Foo> entities) {
+        return mapper.toResource(entities);
+    }
+
+    @Override
+    public Set<FooOutResource> toResource(Set<Foo> entities) {
+        return mapper.toResource(entities);
+    }
+
+    @Override
+    public Foo toEntity(CreateFooResource resource) {
+        return mapper.toEntity(resource);
+    }
+
+    @Override
+    public Foo toEntity(UpdateFooByIdResource resource) {
+        return mapper.toEntity(resource);
+    }
+
+    @Override
+    public void updateBasicData(Foo source, Foo target) {
+        // Simple example to keep a property without modifying the original mapper
+        String keep = target.getCause();
+        mapper.updateBasicData(source, target);
+        target.setCause(keep);
+    }
+}
+````
+
 # Tabla descriptiva del comportamiento por defecto en la creación
 
 | Tipo de campo     | Dato en el json | Resultado           | Notas                                                                                                                              |

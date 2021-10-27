@@ -12,4 +12,6 @@ public interface ApigenRepository<E, K extends Serializable> extends JpaReposito
 	ApigenSearchResult<E> search(ApigenSearch search);
 
 	Optional<E> searchById(K id, ApigenSearch search);
+
+	long count(ApigenSearch search);
 }
