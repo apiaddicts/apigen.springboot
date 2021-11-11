@@ -78,7 +78,7 @@ public class MapperBuilder extends AbstractClassBuilder {
     private void initializeBuilder() {
         builder = getClass(getName(entityName))
                 .addModifiers(Modifier.ABSTRACT)
-                .superclass(ParameterizedTypeName.get(ClassName.get(ApigenMapper.class), entityType));
+                .addSuperinterface(ParameterizedTypeName.get(ClassName.get(ApigenMapper.class), entityType));
     }
 
     private void addMapperAnnotation() {

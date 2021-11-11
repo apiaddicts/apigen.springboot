@@ -74,8 +74,8 @@ class MapperBuilderTest {
     }
 
     @Test
-    void givenValidAttributes_whenBuildMapper_thenSuperclassIsCorrect() {
-        assertEquals("org.apiaddicts.apitools.apigen.archetypecore.core.ApigenMapper<the.base.package.entityname.EntityName>", generatedMapper.superclass.toString());
+    void givenValidAttributes_whenBuildMapper_thenSuperinterfaceIsCorrect() {
+        assertEquals("[org.apiaddicts.apitools.apigen.archetypecore.core.ApigenMapper<the.base.package.entityname.EntityName>]", generatedMapper.superinterfaces.toString());
     }
 
     @Test
