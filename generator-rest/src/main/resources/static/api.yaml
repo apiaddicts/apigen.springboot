@@ -4,9 +4,26 @@ info:
   title: Apigen API
 
 paths:
+  /configuration/file:
+    post:
+      tags:
+        - Configuration
+      summary: Generate configuration from file
+      operationId: configurationFromFile
+      requestBody:
+        $ref: "#/components/requestBodies/file"
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/config"
   /generator/config:
     post:
-      summary: Create a project from a config file
+      tags:
+        - Generator
+      summary: Create a project from a config
       operationId: generateFromConfig
       requestBody:
         content:
@@ -14,9 +31,34 @@ paths:
             schema:
               $ref: "#/components/schemas/config"
       responses:
-        201:
-          description: Created
+        200:
+          description: OK
+  /generator/file:
+    post:
+      tags:
+        - Generator
+      summary: Create a project from a file
+      operationId: generateFromFile
+      requestBody:
+        $ref: "#/components/requestBodies/file"
+      responses:
+        200:
+          description: OK
 components:
+  requestBodies:
+    file:
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              file:
+                description: file
+                type: string
+                format: binary
+            required:
+              - file
+
   schemas:
     config:
       type: object
@@ -397,6 +439,8 @@ components:
 
     void-validation:
       type: object
+      required:
+        - type
       properties:
         type:
           type: string
@@ -405,6 +449,8 @@ components:
 
     long-validation:
       type: object
+      required:
+        - type
       properties:
         type:
           type: string
@@ -420,6 +466,8 @@ components:
 
     decimal-validation:
       type: object
+      required:
+        - type
       properties:
         type:
           type: string
@@ -435,6 +483,8 @@ components:
 
     size-validation:
       type: object
+      required:
+        - type
       properties:
         type:
           type: string
@@ -453,6 +503,8 @@ components:
 
     digits-validation:
       type: object
+      required:
+        - type
       properties:
         type:
           type: string
@@ -471,6 +523,9 @@ components:
 
     pattern-validation:
       type: object
+      required:
+        - type
+        - string_value
       properties:
         type:
           type: string

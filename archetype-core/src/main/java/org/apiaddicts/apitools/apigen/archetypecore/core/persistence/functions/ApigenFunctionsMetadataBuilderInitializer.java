@@ -1,7 +1,5 @@
 package org.apiaddicts.apitools.apigen.archetypecore.core.persistence.functions;
 
-import ch.qos.logback.core.db.dialect.OracleDialect;
-import ch.qos.logback.core.db.dialect.PostgreSQLDialect;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.boot.MetadataBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistry;

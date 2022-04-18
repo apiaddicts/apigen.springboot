@@ -2,7 +2,7 @@ package org.apiaddicts.apitools.apigen.generatorcore.generator.web.controller;
 
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.TypeSpec;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Controller;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
@@ -19,8 +19,7 @@ import javax.lang.model.element.Modifier;
 import java.util.List;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.STRING;
-import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.TAGS;
-import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.VALUE;
+import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.*;
 
 public abstract class ControllerBuilder extends AbstractClassBuilder {
 
@@ -51,8 +50,8 @@ public abstract class ControllerBuilder extends AbstractClassBuilder {
                                 .addMember(VALUE, STRING, requestMapping.getValue())
                                 .build()
                 ).addAnnotation(
-                        AnnotationSpec.builder(Api.class)
-                                .addMember(TAGS, STRING, getTag())
+                        AnnotationSpec.builder(Tag.class)
+                                .addMember(NAME, STRING, getTag())
                                 .build()
                 )
                 .addAnnotation(Validated.class);

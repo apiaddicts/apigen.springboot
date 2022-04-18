@@ -77,7 +77,10 @@ public class ZipUtils {
         while (entry != null) {
             String filePath = directory.toString() + File.separator + entry.getName();
             if (!entry.isDirectory()) {
-                try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath))) {
+                File file = new File(filePath);
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+                try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file, false))) {
                     byte[] bytesIn = new byte[BUFFER_SIZE];
                     int read;
                     while ((read = zipIn.read(bytesIn)) != -1) {

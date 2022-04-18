@@ -15,7 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
-@Import({ApigenDocumentationConfiguration.class, WebConfig.class})
+@Import({WebConfig.class})
 public class ApigenConfiguration {
 
 	@Bean

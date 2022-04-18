@@ -44,9 +44,9 @@ class EntityControllerBuilderTests {
         assertEquals("@org.springframework.web.bind.annotation.RequestMapping(\"/mapping\")",
                 generatedController.annotations.get(2).toString(),
                 "@RequestMapping annotation is wrong");
-        assertEquals("@io.swagger.annotations.Api(tags = \"EntityName\")",
+        assertEquals("@io.swagger.v3.oas.annotations.tags.Tag(name = \"EntityName\")",
                 generatedController.annotations.get(3).toString(),
-                "@Api annotation is wrong");
+                "@Tag annotation is wrong");
         assertEquals("@org.springframework.validation.annotation.Validated",
                 generatedController.annotations.get(4).toString(),
                 "@Validated annotation is wrong");

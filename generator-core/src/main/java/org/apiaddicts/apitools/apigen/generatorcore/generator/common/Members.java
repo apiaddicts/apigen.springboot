@@ -15,7 +15,6 @@ public class Members {
     public static final String REGEXP = "regexp";
     public static final String INTEGER = "integer";
     public static final String FRACTION = "fraction";
-    public static final String TAGS = "tags";
     public static final String COMPONENT_MODEL = "componentModel";
     public static final String USES = "uses";
     public static final String MODE = "mode";
