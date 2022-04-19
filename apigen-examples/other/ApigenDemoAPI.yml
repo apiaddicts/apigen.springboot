@@ -706,7 +706,6 @@ components:
     medico:
       x-apigen-mapping:
         model: Medico
-        type: READ
       type: object
       properties:
         id:
@@ -727,7 +726,6 @@ components:
     paciente:
       x-apigen-mapping:
         model: Paciente
-        type: READ
       type: object
       properties:
         id:
@@ -757,7 +755,6 @@ components:
     direccion:
       x-apigen-mapping:
         model: Direccion
-        type: READ
       type: object
       properties:
         id:
@@ -778,7 +775,6 @@ components:
     factura:
       x-apigen-mapping:
         model: Factura
-        type: READ
       type: object
       properties:
         id:
@@ -799,7 +795,6 @@ components:
     cama:
       x-apigen-mapping:
         model: Cama
-        type: READ
       type: object
       properties:
         id:
@@ -812,7 +807,6 @@ components:
     habitacion:
       x-apigen-mapping:
         model: Habitacion
-        type: READ
       type: object
       properties:
         id:
@@ -829,6 +823,8 @@ components:
             $ref: "#/components/schemas/cama"
 
     request_body_medico:
+      x-apigen-mapping:
+        model: Medico
       type: object
       properties:
         dni:
@@ -844,6 +840,8 @@ components:
             type: integer
             format: int64
     request_body_paciente:
+      x-apigen-mapping:
+        model: Paciente
       type: object
       properties:
         dni:
@@ -882,6 +880,8 @@ components:
               type: integer
               format: int64
     request_body_direccion:
+      x-apigen-mapping:
+        model: Direccion
       type: object
       properties:
         calle:
@@ -897,6 +897,8 @@ components:
           type: integer
           format: int64
     request_body_factura:
+      x-apigen-mapping:
+        model: Factura
       type: object
       properties:
         paciente:
@@ -912,6 +914,8 @@ components:
           type: string
           format: date-time
     request_body_cama:
+      x-apigen-mapping:
+        model: Cama
       type: object
       properties:
         habitacion:
@@ -920,6 +924,8 @@ components:
           type: integer
           format: int64
     request_body_habitacion:
+      x-apigen-mapping:
+        model: Habitacion
       type: object
       properties:
         planta:
@@ -949,7 +955,6 @@ components:
           type: String
           relational-persistence:
             column: medico_dni
-            primary-key: true
           validations:
             - type: NotEmpty
         - name: nombre
@@ -985,8 +990,7 @@ components:
         - name: dni
           type: String
           relational-persistence:
-            column: paciente_id
-            primary-key: true
+            column: dni
           validations:
             - type: NotEmpty
         - name: nombre
