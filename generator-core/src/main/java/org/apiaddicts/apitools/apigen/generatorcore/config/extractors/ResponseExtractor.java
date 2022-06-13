@@ -25,6 +25,11 @@ public class ResponseExtractor {
                 .filter(n -> n >= 200 && n <= 400)
                 .sorted()
                 .findFirst().orElse(0);
+
+        if (status == 204) {
+            return null;
+        }
+
         ApiResponse response = operation.getResponses().get(status == 0 ? "default" : String.valueOf(status));
 
         Response endpointResponse = new Response();

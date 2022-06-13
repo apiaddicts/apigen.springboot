@@ -108,8 +108,10 @@ class EntitiesGeneratorTest {
 
         assertTrue(generatedEntityOneToMany.fieldSpecs.get(2).annotations.contains(AnnotationSpec.builder(OneToMany.class).addMember("mappedBy", "$S", "manyToOneRelationAttribute").build()), "Checking if Entity1 contains @OneToMany annotation:");
 
-        assertTrue(generatedEntityManyToOne.fieldSpecs.get(0).annotations.contains(AnnotationSpec.builder(ManyToOne.class).build()), "Checking if Entity2 contains @ManyToOne annotation:");
-        assertTrue(generatedEntityManyToOne.fieldSpecs.get(0).annotations.contains(AnnotationSpec.builder(JoinColumn.class).addMember("name", "$S", "manyToOneRelationColumn").build()), "Checking if Entity2 contains @JoinColumn annotation:");
+        assertEquals("[" +
+                "@javax.persistence.ManyToOne(fetch = javax.persistence.FetchType.LAZY)," +
+                " @javax.persistence.JoinColumn(name = \"manyToOneRelationColumn\")" +
+                "]", generatedEntityManyToOne.fieldSpecs.get(0).annotations.toString());
     }
 
     @Test
@@ -149,10 +151,13 @@ class EntitiesGeneratorTest {
         assertEquals(testEntitiesList.get(0).getName(), generatedEntityOneToOneOwner.name, "Checking if Entity name matches given name:");
         assertEquals(testEntitiesList.get(1).getName(), generatedEntityOneToOne.name, "Checking if Entity name matches given name:");
 
-        assertTrue(generatedEntityOneToOneOwner.fieldSpecs.get(0).annotations.contains(AnnotationSpec.builder(OneToOne.class).build()), "Checking if Entity1 contains @OneToOne annotation:");
-        assertTrue(generatedEntityOneToOneOwner.fieldSpecs.get(0).annotations.contains(AnnotationSpec.builder(JoinColumn.class).addMember("name", "$S", "oneToOneOwnerRelationColumn").build()), "Checking if Entity1 contains @JoinColumn annotation:");
-
-        assertTrue(generatedEntityOneToOne.fieldSpecs.get(0).annotations.contains(AnnotationSpec.builder(OneToOne.class).addMember("mappedBy", "$S", "oneToOneOwnerRelationAttribute").build()), "Checking if Entity2 contains @OneToOne annotation:");
+        assertEquals("[" +
+                "@javax.persistence.OneToOne(fetch = javax.persistence.FetchType.LAZY)," +
+                " @javax.persistence.JoinColumn(name = \"oneToOneOwnerRelationColumn\")" +
+                "]", generatedEntityOneToOneOwner.fieldSpecs.get(0).annotations.toString());
+        assertEquals("[" +
+                "@javax.persistence.OneToOne(mappedBy = \"oneToOneOwnerRelationAttribute\", fetch = javax.persistence.FetchType.LAZY)" +
+                "]", generatedEntityOneToOne.fieldSpecs.get(0).annotations.toString());
     }
 
     private TypeSpec setValidationTest() {

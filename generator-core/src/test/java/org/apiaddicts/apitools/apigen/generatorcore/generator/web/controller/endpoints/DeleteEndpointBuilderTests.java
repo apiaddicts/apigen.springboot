@@ -69,7 +69,7 @@ class DeleteEndpointBuilderTests {
         AnnotationSpec annotationSpec = methodSpec.annotations.get(0);
         assertEquals("@org.springframework.web.bind.annotation.DeleteMapping(\"/{id}\")", annotationSpec.toString());
         annotationSpec = methodSpec.annotations.get(1);
-        assertEquals("@org.springframework.web.bind.annotation.ResponseStatus(code = org.springframework.http.HttpStatus.OK)", annotationSpec.toString());
+        assertEquals("@org.springframework.web.bind.annotation.ResponseStatus(code = org.springframework.http.HttpStatus.NO_CONTENT)", annotationSpec.toString());
         assertEquals(1, methodSpec.modifiers.size());
         assertEquals("[public]", methodSpec.modifiers.toString());
 

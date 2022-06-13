@@ -78,12 +78,8 @@ paths:
       parameters:
         - $ref: "#/components/parameters/string_id_param"
       responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/standard_response_owner"
+        '204':
+          description: No content
 
   /tags:
     x-apigen-binding:
@@ -181,12 +177,8 @@ paths:
       parameters:
         - $ref: "#/components/parameters/integer_id_param"
       responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/standard_response_pet"
+        '204':
+          description: No content
 
   /pets/search:
     x-apigen-binding:

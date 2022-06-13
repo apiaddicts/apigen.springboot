@@ -51,7 +51,9 @@ public class CustomEndpointBuilder extends EndpointBuilder {
 
     @Override
     protected HttpStatus getResponseStatus() {
-        HttpStatus status = HttpStatus.resolve(endpoint.getResponse().getDefaultStatusCode());
+        HttpStatus status;
+        if (endpoint.getResponse() == null) status = HttpStatus.NO_CONTENT;
+        else status = HttpStatus.resolve(endpoint.getResponse().getDefaultStatusCode());
         if (status == null) status = HttpStatus.OK;
         return status;
     }
@@ -59,7 +61,7 @@ public class CustomEndpointBuilder extends EndpointBuilder {
     @Override
     protected TypeName getReturnTypeName() {
         Response response = endpoint.getResponse();
-        if (response.getAttributes() == null) return null;
+        if (response == null || response.getAttributes() == null) return null;
 
         if (response.getIsStandard()) {
             return getStandardTypeName(response);

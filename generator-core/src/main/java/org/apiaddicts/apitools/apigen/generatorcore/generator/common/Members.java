@@ -5,6 +5,7 @@ public class Members {
     public static final String VALUE = "value";
     public static final String NAME = "name";
     public static final String MAPPED_BY = "mappedBy";
+    public static final String FETCH = "fetch";
     public static final String UNIQUE = "unique";
     public static final String SEQUENCE_NAME = "sequenceName";
     public static final String STRATEGY = "strategy";

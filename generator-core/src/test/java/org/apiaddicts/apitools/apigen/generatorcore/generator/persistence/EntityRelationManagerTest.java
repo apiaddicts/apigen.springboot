@@ -23,7 +23,7 @@ class EntityRelationManagerTest {
         m.applyRelation("One", entity.getAttributes().get(0), builder);
 
         assertEquals("[" +
-                        "@javax.persistence.ManyToOne, " +
+                        "@javax.persistence.ManyToOne(fetch = javax.persistence.FetchType.LAZY), " +
                         "@javax.persistence.JoinColumn(name = \"column\")" +
                         "]",
                 builder.annotations.toString());

@@ -3,9 +3,14 @@ package org.apiaddicts.apitools.apigen.generatorcore.generator.persistence.relat
 import com.squareup.javapoet.AnnotationSpec;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
 import java.util.List;
+
+import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.ENUM_VALUE;
+import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.LITERAL;
+import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.FETCH;
 
 @Slf4j
 public class ManyToOneBuilder extends RelatedFieldBuilder {
@@ -18,7 +23,9 @@ public class ManyToOneBuilder extends RelatedFieldBuilder {
 
     @Override
     protected void initialize() {
-        annotations.add(AnnotationSpec.builder(ManyToOne.class).build());
+        annotations.add(AnnotationSpec.builder(ManyToOne.class)
+                .addMember(FETCH, ENUM_VALUE, FetchType.class, FetchType.LAZY.name())
+                .build());
         for (ColumnRelation cr : columns) {
             annotations.add(joinColumn(cr.getName(), cr.getReferencedName()));
         }
