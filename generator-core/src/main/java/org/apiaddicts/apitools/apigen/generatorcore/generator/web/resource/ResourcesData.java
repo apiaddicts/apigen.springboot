@@ -6,6 +6,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.web.resource.outpu
 
 import java.util.*;
 
+@Deprecated
 public class ResourcesData {
     private Map<String, Set<TypeName>> resourcesToEntity = new HashMap<>();
     private Map<String, Set<TypeName>> entityToResources = new HashMap<>();

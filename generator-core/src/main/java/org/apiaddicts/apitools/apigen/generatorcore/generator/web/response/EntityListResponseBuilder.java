@@ -4,6 +4,7 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.web.resource.output.EntityOutputResourceBuilder;
 
+@Deprecated
 public class EntityListResponseBuilder extends ListResponseBuilder {
 
     private String entityName;

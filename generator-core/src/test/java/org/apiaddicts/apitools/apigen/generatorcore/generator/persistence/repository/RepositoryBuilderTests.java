@@ -12,6 +12,7 @@ import javax.lang.model.element.Modifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Deprecated
 public class RepositoryBuilderTests {
 
     private static TypeSpec generatedRepository;

@@ -7,6 +7,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
+@Deprecated
 @Slf4j
 public class DeleteEndpointBuilder extends EndpointBuilder {
 

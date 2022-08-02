@@ -9,6 +9,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Deprecated
 @Slf4j
 public class EntityRelationManager {
 

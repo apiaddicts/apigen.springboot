@@ -10,6 +10,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Deprecated
 class EntityRelationManagerTest {
 
     @Test

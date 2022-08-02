@@ -10,6 +10,7 @@ import javax.lang.model.element.Modifier;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Deprecated
 class EntityListResponseBuilderTests {
 
     static TypeSpec typeSpec;

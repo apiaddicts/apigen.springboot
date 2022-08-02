@@ -5,6 +5,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Response;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 
+@Deprecated
 public class ResponseBuilderFactory {
 
     private ResponseBuilderFactory() {

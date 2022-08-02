@@ -9,6 +9,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.persistence.Entiti
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Deprecated
 @Slf4j
 public class ControllersGenerator extends AbstractGenerator {
 

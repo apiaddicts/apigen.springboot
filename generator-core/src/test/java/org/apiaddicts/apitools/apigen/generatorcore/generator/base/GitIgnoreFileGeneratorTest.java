@@ -11,7 +11,9 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Deprecated
 class GitIgnoreFileGeneratorTest {
+
 
     @Test
     void thatGenerates(@TempDir File projectFolder) throws IOException {

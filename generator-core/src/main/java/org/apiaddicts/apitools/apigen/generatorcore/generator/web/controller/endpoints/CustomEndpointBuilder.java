@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
 
+@Deprecated
 public class CustomEndpointBuilder extends EndpointBuilder {
 
     public CustomEndpointBuilder(Mapping rootMapping, Endpoint endpoint, String basePackage) {

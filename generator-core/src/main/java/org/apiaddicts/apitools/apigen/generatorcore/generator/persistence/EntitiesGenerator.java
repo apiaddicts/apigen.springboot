@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Deprecated
 @Slf4j
 public class EntitiesGenerator extends AbstractGenerator {
 

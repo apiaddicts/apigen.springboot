@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class GitIgnoreGenerator {
 
     private GitIgnoreGenerator() {

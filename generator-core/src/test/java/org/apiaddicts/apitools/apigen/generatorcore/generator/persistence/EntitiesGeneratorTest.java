@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 // TODO #14908 refactor to avoid validate full generation
+
+@Deprecated
 class EntitiesGeneratorTest {
 
     private static final String BASE_PACKAGE = "org.test";

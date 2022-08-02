@@ -3,6 +3,7 @@ package org.apiaddicts.apitools.apigen.generatorcore.generator.web.resource.outp
 import com.squareup.javapoet.TypeName;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.web.resource.ResourceBuilder;
 
+@Deprecated
 public abstract class OutputResourceBuilder extends ResourceBuilder {
     public abstract String getEntityName();
 

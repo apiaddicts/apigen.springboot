@@ -19,6 +19,7 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 
+@Deprecated
 class ServicesGeneratorTest {
 
     @Test

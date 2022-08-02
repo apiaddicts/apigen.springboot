@@ -13,6 +13,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Deprecated
 class RelationManagerBuilderTests {
 
     static TypeSpec spec;

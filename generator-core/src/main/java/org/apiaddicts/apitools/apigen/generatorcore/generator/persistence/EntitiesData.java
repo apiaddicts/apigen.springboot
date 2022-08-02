@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 
+@Deprecated
 public class EntitiesData {
 
     private static final Set<TypeName> TO_ONE_RELATION = new HashSet<>(Arrays.asList(TypeName.get(OneToOne.class), TypeName.get(ManyToOne.class)));

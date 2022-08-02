@@ -14,6 +14,7 @@ import java.util.Set;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.STRING;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.VALUE;
 
+@Deprecated
 public class EntityOutputResourceBuilder extends OutputResourceBuilder {
 
     private String entityName;

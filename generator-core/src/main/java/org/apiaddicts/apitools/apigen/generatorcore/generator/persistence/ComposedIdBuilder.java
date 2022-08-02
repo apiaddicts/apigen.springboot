@@ -27,6 +27,7 @@ import static java.util.Objects.isNull;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.*;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.*;
 
+@Deprecated
 @Slf4j
 public class ComposedIdBuilder extends AbstractClassBuilder {
 

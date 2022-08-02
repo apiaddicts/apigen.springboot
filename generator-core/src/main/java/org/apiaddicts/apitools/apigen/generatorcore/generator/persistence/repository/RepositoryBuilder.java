@@ -8,6 +8,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.common.AbstractCla
 import org.apiaddicts.apitools.apigen.generatorcore.generator.persistence.EntityBuilder;
 import org.springframework.stereotype.Repository;
 
+@Deprecated
 public class RepositoryBuilder extends AbstractClassBuilder {
 
     private String entityName;

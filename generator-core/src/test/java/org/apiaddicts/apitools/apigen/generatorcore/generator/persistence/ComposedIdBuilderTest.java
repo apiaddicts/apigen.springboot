@@ -13,6 +13,7 @@ import javax.lang.model.element.Modifier;
 import org.apiaddicts.apitools.apigen.generatorcore.config.entity.Entity;
 import org.apiaddicts.apitools.apigen.generatorcore.config.entity.EntityObjectMother;
 
+@Deprecated
 public class ComposedIdBuilderTest {
 	
 	private static Entity entity;

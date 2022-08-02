@@ -21,6 +21,7 @@ import java.util.List;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.STRING;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.*;
 
+@Deprecated
 public abstract class ControllerBuilder extends AbstractClassBuilder {
 
     protected String basePackage;

@@ -13,6 +13,7 @@ import javax.lang.model.element.Modifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Deprecated
 class EntityControllerBuilderTests {
 
     private static TypeSpec generatedController;

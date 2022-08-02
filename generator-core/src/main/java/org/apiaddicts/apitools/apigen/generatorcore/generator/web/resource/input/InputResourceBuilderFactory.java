@@ -4,6 +4,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Controller
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 
+@Deprecated
 public class InputResourceBuilderFactory {
 
     private InputResourceBuilderFactory() {

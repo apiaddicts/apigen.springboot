@@ -15,6 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Deprecated
 class ResourceGeneratorTest {
 
     @Test

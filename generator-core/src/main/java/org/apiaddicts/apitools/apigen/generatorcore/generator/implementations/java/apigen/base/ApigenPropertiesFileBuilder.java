@@ -1,0 +1,26 @@
+package org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.base;
+
+import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
+import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
+import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.base.JavaPropertiesFileBuilder;
+
+public class ApigenPropertiesFileBuilder<C extends ApigenContext> extends JavaPropertiesFileBuilder<C> {
+
+    public ApigenPropertiesFileBuilder(C ctx, Configuration cfg) {
+        super("application.properties", ctx, cfg);
+    }
+
+    @Override
+    protected void init() {
+        addProperty("spring.application.name", "@name@");
+        addProperty("spring.profiles.active", "dev");
+        addProperty("logging.level.root", "info");
+        addProperty("spring.jackson.serialization.fail_on_empty_beans", "false");
+        addProperty("spring.jackson.default-property-inclusion", "NON_NULL");
+        addProperty("spring.main.allow-circular-references", "true");
+        addProperty("spring.mvc.throw-exception-if-no-handler-found", "true");
+        addProperty("spring.web.resources.add-mappings", "false");
+        addProperty("management.endpoints.enabled-by-default", "false");
+        addProperty("management.endpoint.health.enabled", "true");
+    }
+}

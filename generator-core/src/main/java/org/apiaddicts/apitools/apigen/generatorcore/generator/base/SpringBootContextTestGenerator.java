@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.lang.model.element.Modifier;
 
+@Deprecated
 public class SpringBootContextTestGenerator {
 
     private SpringBootContextTestGenerator() {

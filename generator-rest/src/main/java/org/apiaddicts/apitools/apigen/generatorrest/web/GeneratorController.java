@@ -1,8 +1,9 @@
 package org.apiaddicts.apitools.apigen.generatorrest.web;
 
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
-import org.apiaddicts.apitools.apigen.generatorcore.generator.ApigenProjectGenerator;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.Project;
+import org.apiaddicts.apitools.apigen.generatorcore.generator.ProjectGenerator;
+import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.ZipUtils;
 import org.apiaddicts.apitools.apigen.generatorrest.uitls.OpenAPIZipUtils;
 import org.springframework.core.io.Resource;
@@ -19,9 +20,9 @@ import java.io.IOException;
 @RequestMapping("/generator")
 public class GeneratorController {
 
-	private final ApigenProjectGenerator generator;
+	private final ProjectGenerator<ApigenContext> generator;
 
-	public GeneratorController(ApigenProjectGenerator generator) {
+	public GeneratorController(ProjectGenerator<ApigenContext> generator) {
 		this.generator = generator;
 	}
 

@@ -10,6 +10,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.web.resource.output.ResourceOutputResourceBuilder;
 
+@Deprecated
 public class ResourceSimpleResponseBuilder extends ResponseBuilder {
 
     private Mapping rootMapping;

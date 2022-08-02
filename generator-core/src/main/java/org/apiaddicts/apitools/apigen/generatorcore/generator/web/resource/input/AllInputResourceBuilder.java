@@ -26,6 +26,7 @@ import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Form
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.MODE;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.VALUE;
 
+@Deprecated
 public class AllInputResourceBuilder extends InputResourceBuilder {
 
     private String entityName;

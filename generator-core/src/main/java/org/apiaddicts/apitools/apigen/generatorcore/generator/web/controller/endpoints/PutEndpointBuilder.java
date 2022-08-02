@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 
 import java.util.Set;
 
+@Deprecated
 public class PutEndpointBuilder extends EndpointBuilder {
 
     private TypeName composedIdType;

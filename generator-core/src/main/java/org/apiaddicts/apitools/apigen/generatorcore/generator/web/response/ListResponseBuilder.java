@@ -13,6 +13,7 @@ import java.util.List;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.STRING;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.VALUE;
 
+@Deprecated
 public abstract class ListResponseBuilder extends ResponseBuilder {
 
     protected String basePackage;

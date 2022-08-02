@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.lang.model.element.Modifier;
 import java.util.Set;
 
+@Deprecated
 public class ServiceBuilder extends AbstractClassBuilder {
 
     private String entityName;

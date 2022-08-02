@@ -38,6 +38,7 @@ import java.util.List;
 
 
 @Slf4j
+@Deprecated
 public class ApigenProjectGenerator {
 
     private static final String JAVA_DIR = "src/main/java";

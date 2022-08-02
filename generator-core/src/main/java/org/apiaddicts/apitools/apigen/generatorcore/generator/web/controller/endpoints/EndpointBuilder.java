@@ -23,6 +23,7 @@ import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Form
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.CODE;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.VALUE;
 
+@Deprecated
 @Slf4j
 public abstract class EndpointBuilder {
 

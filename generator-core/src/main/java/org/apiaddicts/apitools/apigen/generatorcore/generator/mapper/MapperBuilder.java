@@ -16,6 +16,7 @@ import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Form
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.STRING;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.*;
 
+@Deprecated
 public class MapperBuilder extends AbstractClassBuilder {
 
     private static final String TO_RESOURCE = "toResource";

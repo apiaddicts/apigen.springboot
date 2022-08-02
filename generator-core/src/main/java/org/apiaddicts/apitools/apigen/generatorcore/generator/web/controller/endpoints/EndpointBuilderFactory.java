@@ -5,6 +5,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.persistence.EntitiesData;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 
+@Deprecated
 public class EndpointBuilderFactory {
 
     private EndpointBuilderFactory() {

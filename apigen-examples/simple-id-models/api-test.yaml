@@ -239,28 +239,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/statusResponse'
 
-  /entities-related:
-    get:
-      operationId: getEntities
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/standard_response_pets'
-  /entities-related/{id}:
-    get:
-      parameters:
-        - $ref: '#/components/parameters/integer_id_param'
-      operationId: getEntity
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/standard_response_pet'
   /standard:
     get:
       operationId: getStandardCollection

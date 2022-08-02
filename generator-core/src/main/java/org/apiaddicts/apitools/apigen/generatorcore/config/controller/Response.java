@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 public class Response {
     @JsonProperty("is_standard")
-    private Boolean isStandard;
+    private Boolean isStandard; // FIXME: Analyze to extract from this generic structure (this is a generation strategy responsability)
     @JsonProperty("is_collection")
     private Boolean isCollection;
     @JsonProperty("collection_name")

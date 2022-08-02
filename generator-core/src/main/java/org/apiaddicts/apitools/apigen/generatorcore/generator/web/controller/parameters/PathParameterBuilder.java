@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.STRING;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.VALUE;
 
+@Deprecated
 public class PathParameterBuilder extends ParameterBuilder {
 
     public PathParameterBuilder(Parameter parameter, String javaName) {

@@ -12,6 +12,7 @@ import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Form
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.STRING;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.*;
 
+@Deprecated
 public class QueryParameterBuilder extends ParameterBuilder {
 
     public QueryParameterBuilder(Parameter parameter, String javaName) {

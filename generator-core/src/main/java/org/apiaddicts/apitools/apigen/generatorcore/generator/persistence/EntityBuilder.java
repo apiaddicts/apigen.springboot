@@ -26,6 +26,7 @@ import static java.util.Objects.nonNull;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.*;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.*;
 
+@Deprecated
 @Slf4j
 public class EntityBuilder extends AbstractClassBuilder {
 

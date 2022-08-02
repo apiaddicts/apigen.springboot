@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Deprecated
 class EndpointBuilderFactoryTests {
 
     private final String PACKAGE = "the.base.package";

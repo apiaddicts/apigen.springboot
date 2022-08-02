@@ -3,6 +3,7 @@ package org.apiaddicts.apitools.apigen.generatorcore.generator.web.controller;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Controller;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.persistence.EntitiesData;
 
+@Deprecated
 public class ResourceControllerBuilder extends ControllerBuilder {
 
     public ResourceControllerBuilder(Controller controller, EntitiesData entitiesData, String basePackage) {

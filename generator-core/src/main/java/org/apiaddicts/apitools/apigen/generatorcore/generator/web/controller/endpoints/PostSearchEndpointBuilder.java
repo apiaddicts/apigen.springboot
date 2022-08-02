@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class PostSearchEndpointBuilder extends EndpointBuilder {
 
     public PostSearchEndpointBuilder(Mapping rootMapping, Endpoint endpoint, String basePackage) {

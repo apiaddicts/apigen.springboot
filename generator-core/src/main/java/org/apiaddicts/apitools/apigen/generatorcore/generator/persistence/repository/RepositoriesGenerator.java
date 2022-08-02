@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 @Slf4j
 public class RepositoriesGenerator extends AbstractGenerator {
 

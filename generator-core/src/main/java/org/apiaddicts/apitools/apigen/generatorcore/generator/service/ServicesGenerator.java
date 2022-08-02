@@ -9,6 +9,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.persistence.Entiti
 
 import java.util.*;
 
+@Deprecated
 @Slf4j
 public class ServicesGenerator extends AbstractGenerator {
     private Map<String, ServiceBuilder> builders = new HashMap<>();

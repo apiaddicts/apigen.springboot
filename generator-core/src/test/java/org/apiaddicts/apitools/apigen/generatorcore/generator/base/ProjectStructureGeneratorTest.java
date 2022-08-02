@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Deprecated
 class ProjectStructureGeneratorTest {
 
 
@@ -21,7 +22,7 @@ class ProjectStructureGeneratorTest {
 
     @BeforeEach
     void prepareTest() {
-        configuration = ConfigurationObjectMother.createCompleteConfigurationWithoutEntitiesAndControllers();
+        configuration = ConfigurationObjectMother.create();
     }
 
     @Test

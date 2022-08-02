@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.nio.file.Path;
 import java.util.Collection;
 
+@Deprecated
 @Slf4j
 public abstract class AbstractGenerator {
 

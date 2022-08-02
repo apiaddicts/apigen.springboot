@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 import javax.lang.model.element.Modifier;
 import java.util.TimeZone;
 
+@Deprecated
 public class ApplicationBuilder extends AbstractClassBuilder {
 
     private String basePackage;

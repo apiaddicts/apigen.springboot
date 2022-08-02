@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 
+@Deprecated
 public class PostEndpointBuilder extends EndpointBuilder {
 
     public PostEndpointBuilder(Mapping rootMapping, Endpoint endpoint, String basePackage) {

@@ -36,20 +36,9 @@
         <url>https://github.com/apiaddicts/apigen/tree/master</url>
     </scm>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
     <properties>
 
-        <revision>0.2.1</revision>
+        <revision>0.3.0-RC1</revision>
 
         <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -126,6 +115,79 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven-gpg-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>ossrh</id>
+                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+                <repository>
+                    <id>ossrh</id>
+                    <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>cloudappi</id>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>cloudappi-snapshots</id>
+                    <!--suppress UnresolvedMavenProperty -->
+                    <url>${env.CAPI_NEXUS_URL}/repository/maven-snapshots</url>
+                </snapshotRepository>
+                <repository>
+                    <id>cloudappi-releases</id>
+                    <!--suppress UnresolvedMavenProperty -->
+                    <url>${env.CAPI_NEXUS_URL}/repository/maven-releases</url>
+                </repository>
+            </distributionManagement>
+            <repositories>
+                <repository>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <id>cloudappi-releases</id>
+                    <!--suppress UnresolvedMavenProperty -->
+                    <url>${env.CAPI_NEXUS_URL}/repository/maven-releases</url>
+                </repository>
+                <repository>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                    <id>cloudappi-snapshots</id>
+                    <!--suppress UnresolvedMavenProperty -->
+                    <url>${env.CAPI_NEXUS_URL}/repository/maven-snapshots</url>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -150,20 +212,6 @@
                         <id>attach-javadocs</id>
                         <goals>
                             <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>${maven-gpg-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
                         </goals>
                     </execution>
                 </executions>

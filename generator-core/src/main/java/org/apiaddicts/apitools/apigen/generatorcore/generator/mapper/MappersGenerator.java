@@ -11,6 +11,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.web.resource.Resou
 import java.util.*;
 
 
+@Deprecated
 @Slf4j
 public class MappersGenerator extends AbstractGenerator {
 

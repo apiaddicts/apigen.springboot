@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Deprecated
 @Slf4j
 public class ResourcesGenerator extends AbstractGenerator {
 

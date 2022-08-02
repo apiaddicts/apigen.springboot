@@ -9,6 +9,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.common.Openapi2Jav
 
 import java.util.List;
 
+@Deprecated
 public abstract class ParameterBuilder {
 
     protected Parameter parameter;

@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.ENUM_VALUE;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.PROPAGATION;
 
+@Deprecated
 public class RelationManagerBuilder extends AbstractClassBuilder {
 
     private String basePackage;

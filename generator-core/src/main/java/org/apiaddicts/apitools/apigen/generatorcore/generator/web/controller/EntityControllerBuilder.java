@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.lang.model.element.Modifier;
 
+@Deprecated
 public class EntityControllerBuilder extends ControllerBuilder {
 
     private String entityName;

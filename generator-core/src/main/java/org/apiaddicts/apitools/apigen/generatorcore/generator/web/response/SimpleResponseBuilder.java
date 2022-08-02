@@ -8,6 +8,7 @@ import lombok.Data;
 import org.apiaddicts.apitools.apigen.archetypecore.core.responses.ApiResponse;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.web.resource.output.EntityOutputResourceBuilder;
 
+@Deprecated
 public class SimpleResponseBuilder extends ResponseBuilder {
 
     private String basePackage;

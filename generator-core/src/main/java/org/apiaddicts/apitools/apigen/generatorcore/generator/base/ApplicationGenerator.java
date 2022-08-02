@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 
+@Deprecated
 public class ApplicationGenerator extends AbstractGenerator {
 
     private ApplicationBuilder builder;

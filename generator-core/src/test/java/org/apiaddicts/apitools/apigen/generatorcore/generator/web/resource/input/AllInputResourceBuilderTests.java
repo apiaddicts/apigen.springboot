@@ -14,6 +14,7 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Deprecated
 class AllInputResourceBuilderTests {
 
     private static String basePackage = "the.base.pkge";
