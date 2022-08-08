@@ -34,7 +34,11 @@ public class PostSearchEndpointBuilder<C extends ApigenContext> extends ApigenAb
 
     @Override
     protected HttpStatus getResponseStatus() {
-        return HttpStatus.PARTIAL_CONTENT;
+        HttpStatus status = HttpStatus.OK;
+        if(null != this.endpoint.getResponse().getDefaultStatusCode() && this.endpoint.getResponse().getDefaultStatusCode() == 206){
+            return HttpStatus.PARTIAL_CONTENT;
+        }
+        return status;
     }
 
     @Override
@@ -58,11 +62,19 @@ public class PostSearchEndpointBuilder<C extends ApigenContext> extends ApigenAb
         String translatorParams = pathParamsAndFilterToString(Arrays.asList("select", "exclude", "expand", "filter", "orderby"));
         String params = pathParamsAndFilterToString(Arrays.asList("select", "exclude", "expand", "filter", "orderby", "init", "limit", "total"));
         String pageParams = pathParamsAndFilterToString(Arrays.asList("init", "limit"));
+        if(null != this.endpoint.getResponse().getDefaultStatusCode() && this.endpoint.getResponse().getDefaultStatusCode() == 200){
+            params = pathParamsAndFilterToString(Arrays.asList("select", "exclude", "expand", "filter", "orderby", "null", "null", "null"));
+        }
         builder.addStatement("$T filter = body.getFilter()", filterType);
         builder.addStatement("$L.translate($L, $T.class)", NAMING_TRANSLATOR_NAME, translatorParams, resourceType);
         builder.addStatement("$T searchResult = $L.search($L)", searchResultType, SERVICE_NAME, params);
         builder.addStatement("$T result = $L.toResource(searchResult.getSearchResult())", listResourceType, MAPPER_NAME);
-        builder.addStatement("return new $T(result).withMetadataPagination($L, searchResult.getTotal())", responseType, pageParams);
+        if(null != this.endpoint.getResponse().getDefaultStatusCode() && this.endpoint.getResponse().getDefaultStatusCode() == 200){
+            builder.addStatement("return new $T(result)", responseType);
+        }
+        else{
+            builder.addStatement("return new $T(result).withMetadataPagination($L, searchResult.getTotal())", responseType, pageParams);
+        }
     }
 
     private String pathParamsAndFilterToString(List<String> names) {
