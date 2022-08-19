@@ -6,6 +6,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Response;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.spec.components.Extensions.MAPPING;
@@ -72,11 +73,33 @@ public class ResponseExtractor {
     }
 
     private boolean isStandardResponse(Schema schema) {
-        return schema.getProperties() != null && schema.getProperties().containsKey("data") && schema.getProperties().containsKey("result");
+        if(schema.getExtensions() != null && schema.getExtensions().containsKey("x-apigen-response")){
+            HashMap<String, Object> apigenResponse = (HashMap<String, Object>) schema.getExtensions().get("x-apigen-response");
+            if(apigenResponse != null && apigenResponse.containsKey("standard") && apigenResponse.get("standard").equals(false) &&
+                    !schema.getProperties().containsKey(getStandardDataProperty(apigenResponse)))
+                    return false;
+        }
+        else if(schema.getProperties() == null || !schema.getProperties().containsKey("data") || !schema.getProperties().containsKey("result")){
+            return false;
+        }
+        return true;
     }
 
     private Schema getDataSchema(Schema schema) {
-        return (Schema) schema.getProperties().get("data");
+        String dataProperty = "data";
+        if(schema.getExtensions() != null && schema.getExtensions().containsKey("x-apigen-response")){
+            HashMap<String, Object> apigenResponse = (HashMap<String, Object>) schema.getExtensions().get("x-apigen-response");
+            dataProperty = getStandardDataProperty(apigenResponse);
+        }
+        return (Schema) schema.getProperties().get(dataProperty);
+    }
+
+    private String getStandardDataProperty(HashMap<String, Object> apigenResponse){
+        String dataProperty = "data";
+        if(apigenResponse != null && apigenResponse.containsKey("standard-data-property"))
+            dataProperty = (String) apigenResponse.get("standard-data-property");
+
+        return dataProperty;
     }
 
     private boolean isNamedCollectionSchema(Schema dataSchema) {
