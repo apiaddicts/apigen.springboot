@@ -20,7 +20,7 @@ CloudAppi is one leader in APIs in global word. See the [CloudAPPi Services](htt
 version: "3.3"
 services:
   apigen:
-    image: "apiaddicts/apitools-apigen:0.3.0-rc1"
+    image: "apiaddicts/apitools-apigen:0.3.0-rc2"
     ports:
       - "8080:8080"
 ```
@@ -35,6 +35,8 @@ services:
       java-properties:
         group-id: string
         artifact-id: string
+      standard-response-operations:
+        - <jsonpatch operation node>
 
 ### Definición
  - `x-apigen-project`: Apartado donde se define la información sobre el proyecto
@@ -44,7 +46,9 @@ services:
      - `java-properties`: Apartado donde se define la información específica de java del proyecto
        - `group-id`: Nombre del paquete inicial donde estará el proyecto, en caso de ser varias palabras, estarán separadas por `.`
        - `artifact-id`: Nombre que identificará el proyecto
-    
+     - `standard-response-operations`: Apartado donde se definen las operaciones de transformación de la respuesta estandar apigen (es opcional)
+        - `<jsonpatch operation node>`: Nodo que cumple con el estandar de json-patch, permitiendo declarar de forma opcional operaciones sobre todos los elementos de un array    
+
 ### Ejemplo
     x-apigen-project:
       name: Colores
@@ -53,7 +57,25 @@ services:
       java-properties:
         group-id: the.group
         artifact-id: app
-        
+      standard-response-operations:
+        - op: copy
+          from: /data
+          path: /payload
+        - op: move
+          from: /result/errors
+          path: /errors
+        - op: move
+          from: /metadata/paging
+          path: /pagination
+        - op: move
+          from: /errors/*/message
+          path: /errors/*/description
+        - op: remove
+          path: /result
+        - op: remove
+          path: /metadata
+        - op: remove    
+          path: /errors/*/element
 ## Modelos
 
 ### Esquema
@@ -281,6 +303,39 @@ La extensión de Apigen para OpenAPI nos obliga a tener en cuenta una serie de c
         - type: object
           properties:
             data:
+              $ref: "#/components/schemas/<model_resource>"
+````
+
+### Customización del schema de la respuesta estandar
+
+Por defecto apigen detecta en cada operación si es o no una respuesta estandar a partir de los nodos `data` y `result`
+Mediante las anotaciones de respuesta se puede customizar tanto la detección como el nodo de datos para así luego indicar las operaciones de transfomración oportunas
+
+#### Definición
+- `x-apigen-response`: Apartado en el que se definen todos los datos relacionados con la respuesta
+  - `standard`: Campo que indica si la respuesta es estandar
+  - `standard-data-property`: Nombre del atributo de la respuesta que contiene los datos de los recursos
+
+#### Ejemplo
+
+````yaml
+  schemas:
+    standard_response_result:
+      x-apigen-response:
+        standard: true
+        standard-data-property: payload
+      properties:
+        ...
+````
+
+````yaml
+  schemas:
+    standard_response_<model>:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            payload:
               $ref: "#/components/schemas/<model_resource>"
 ````
 

@@ -19,7 +19,6 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class ApigenGeneratorsFactory implements GeneratorsAbstractFactory<ApigenContext> {
 
@@ -38,15 +37,14 @@ public class ApigenGeneratorsFactory implements GeneratorsAbstractFactory<Apigen
     }
 
     @Override
-    public List<Generator> createNonPartial(ApigenContext ctx, Configuration c, Map<String, Object> extensions) {
+    public List<Generator> createNonPartial(ApigenContext ctx, Configuration c) {
         return Arrays.asList(
                 new JavaProjectGenerator<>(ctx, c),
                 new GitIgnoreFileGenerator<>(ctx, c),
                 new LombokConfigFileGenerator<>(ctx, c),
-                new ApigenPropertiesGenerator<>(ctx, c, extensions),
+                new ApigenPropertiesGenerator<>(ctx, c),
                 new ApigenPomGenerator<>(ctx, c),
                 new ApigenApplicationGenerator<>(ctx, c),
-                new ApigenApiResponseFilterGenerator<>(ctx, c),
                 new ApplicationTestGenerator<>(ctx, c)
         );
     }

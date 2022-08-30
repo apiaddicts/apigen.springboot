@@ -6,11 +6,9 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Response;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import static org.apiaddicts.apitools.apigen.generatorcore.spec.components.Extensions.MAPPING;
-import static org.apiaddicts.apitools.apigen.generatorcore.spec.components.Extensions.MAPPING_MODEL;
+import static org.apiaddicts.apitools.apigen.generatorcore.spec.components.Extensions.*;
 
 public class ResponseExtractor {
 
@@ -41,11 +39,11 @@ public class ResponseExtractor {
             return endpointResponse;
         }
 
-        Schema schema = response.getContent().get("application/json").getSchema();
+        Schema<?> schema = response.getContent().get("application/json").getSchema();
 
         if (isStandardResponse(schema)) {
             endpointResponse.setIsStandard(true);
-            Schema dataSchema = getDataSchema(schema);
+            Schema<?> dataSchema = getDataSchema(schema);
             boolean isCollection = isNamedCollectionSchema(dataSchema);
             endpointResponse.setIsCollection(isCollection);
             if (isCollection) {
@@ -73,32 +71,34 @@ public class ResponseExtractor {
     }
 
     private boolean isStandardResponse(Schema schema) {
-        if(schema.getExtensions() != null && schema.getExtensions().containsKey("x-apigen-response")){
-            HashMap<String, Object> apigenResponse = (HashMap<String, Object>) schema.getExtensions().get("x-apigen-response");
-            if(apigenResponse != null && apigenResponse.containsKey("standard") && apigenResponse.get("standard").equals(false) &&
-                    !schema.getProperties().containsKey(getStandardDataProperty(apigenResponse)))
-                    return false;
-        }
-        else if(schema.getProperties() == null || !schema.getProperties().containsKey("data") || !schema.getProperties().containsKey("result")){
+        if (schema.getExtensions() != null && schema.getExtensions().containsKey(RESPONSE)) {
+            Map<String, Object> apigenResponse = (Map<String, Object>) schema.getExtensions().get(RESPONSE);
+            if (apigenResponse != null && apigenResponse.containsKey(RESPONSE_STANDARD)
+                    && apigenResponse.get(RESPONSE_STANDARD).equals(false)
+                    && !schema.getProperties().containsKey(getStandardDataProperty(apigenResponse))) {
+                return false;
+            }
+        } else if (schema.getProperties() == null || !schema.getProperties().containsKey("data")
+                || !schema.getProperties().containsKey("result")) {
             return false;
         }
         return true;
     }
 
-    private Schema getDataSchema(Schema schema) {
+    private Schema<?> getDataSchema(Schema<?> schema) {
         String dataProperty = "data";
-        if(schema.getExtensions() != null && schema.getExtensions().containsKey("x-apigen-response")){
-            HashMap<String, Object> apigenResponse = (HashMap<String, Object>) schema.getExtensions().get("x-apigen-response");
+        if (schema.getExtensions() != null && schema.getExtensions().containsKey(RESPONSE)) {
+            Map<String, Object> apigenResponse = (Map<String, Object>) schema.getExtensions().get(RESPONSE);
             dataProperty = getStandardDataProperty(apigenResponse);
         }
-        return (Schema) schema.getProperties().get(dataProperty);
+        return schema.getProperties().get(dataProperty);
     }
 
-    private String getStandardDataProperty(HashMap<String, Object> apigenResponse){
+    private String getStandardDataProperty(Map<String, Object> schema) {
         String dataProperty = "data";
-        if(apigenResponse != null && apigenResponse.containsKey("standard-data-property"))
-            dataProperty = (String) apigenResponse.get("standard-data-property");
-
+        if (schema != null && schema.containsKey(RESPONSE_STANDARD_DATA_PROPERTY)) {
+            dataProperty = (String) schema.get(RESPONSE_STANDARD_DATA_PROPERTY);
+        }
         return dataProperty;
     }
 

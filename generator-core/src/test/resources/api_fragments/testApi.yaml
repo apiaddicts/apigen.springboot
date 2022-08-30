@@ -124,6 +124,9 @@ components:
 
   schemas:
     standard_response_result:
+      x-apigen-response:
+        standard: true
+        standard-data-property: data
       properties:
         result:
           type: object

@@ -7,6 +7,7 @@ import org.apiaddicts.apitools.apigen.archetypecore.core.errors.DefaultApigenErr
 import org.apiaddicts.apitools.apigen.archetypecore.core.resource.ResourceNamingTranslator;
 import org.apiaddicts.apitools.apigen.archetypecore.core.resource.ResourceNamingTranslatorByReflection;
 import org.apiaddicts.apitools.apigen.archetypecore.interceptors.response.ApiResponseBodyAdvice;
+import org.apiaddicts.apitools.apigen.archetypecore.interceptors.response.ApigenResponseConverterFilter;
 import org.apiaddicts.apitools.apigen.archetypecore.interceptors.update.CachingRequestBodyFilter;
 import org.apiaddicts.apitools.apigen.archetypecore.interceptors.update.UpdateRequestBodyAdvice;
 import org.apiaddicts.apitools.apigen.archetypecore.interceptors.WebConfig;
@@ -46,6 +47,12 @@ public class ApigenConfiguration {
 	@ConditionalOnMissingBean(ApiResponseBodyAdvice.class)
 	public ApiResponseBodyAdvice apiResponseBodyAdvice(ApigenProperties properties) {
 		return new ApiResponseBodyAdvice(properties);
+	}
+
+	@Bean
+	@ConditionalOnMissingBean(ApigenResponseConverterFilter.class)
+	public ApigenResponseConverterFilter apigenResponseConverterFilter(ApigenProperties properties, ObjectMapper mapper) {
+		return new ApigenResponseConverterFilter(mapper, properties);
 	}
 
 	@Bean

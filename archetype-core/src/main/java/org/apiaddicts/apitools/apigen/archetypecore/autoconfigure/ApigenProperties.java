@@ -4,9 +4,7 @@ import lombok.Data;
 import org.apiaddicts.apitools.apigen.archetypecore.core.errors.ApigenError;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @ConfigurationProperties(prefix = "apigen")
@@ -17,6 +15,7 @@ public class ApigenProperties {
 	private String traceHeader = "x-trace-id";
 	private Map<String, ApigenError> errors;
 	private Api api = new Api();
+	private StandardResponse standardResponse = new StandardResponse();
 
 	@Data
 	public static class Api {
@@ -41,5 +40,10 @@ public class ApigenProperties {
 				private Set<String> excluded;
 			}
 		}
+	}
+
+	@Data
+	public static class StandardResponse {
+		private List<String> operations = new ArrayList<>();
 	}
 }

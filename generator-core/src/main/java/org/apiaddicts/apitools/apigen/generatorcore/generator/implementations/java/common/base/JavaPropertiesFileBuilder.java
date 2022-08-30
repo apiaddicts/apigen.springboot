@@ -14,10 +14,6 @@ public class JavaPropertiesFileBuilder<C extends JavaContext> extends AbstractPr
         super(filename, ctx, cfg);
     }
 
-    public JavaPropertiesFileBuilder(String filename, C ctx, Configuration cfg, Map<String, Object> extensions){
-        super(filename, ctx, cfg, extensions);
-    }
-
     @Override
     protected void init(){
         // Intentional blank
@@ -28,4 +24,3 @@ public class JavaPropertiesFileBuilder<C extends JavaContext> extends AbstractPr
         return JavaConstants.RESOURCES_PATH;
     }
 }
-    

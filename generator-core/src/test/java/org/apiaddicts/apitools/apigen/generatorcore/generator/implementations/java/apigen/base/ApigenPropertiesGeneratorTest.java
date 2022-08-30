@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -21,7 +20,6 @@ class ApigenPropertiesGeneratorTest {
     Configuration cfg;
     ApigenContext context = ApigenContextObjectMother.create();
 
-    private Map<String, Object> extensions;
     @BeforeEach
     void prepareTest() {
         cfg = ConfigurationObjectMother.create();
@@ -29,7 +27,7 @@ class ApigenPropertiesGeneratorTest {
 
     @Test
     void thatGenerates(@TempDir File projectFolder) throws IOException {
-        new ApigenPropertiesGenerator<>(context, cfg, extensions).generate(projectFolder.toPath());
+        new ApigenPropertiesGenerator<>(context, cfg).generate(projectFolder.toPath());
         assertPropertiesFilesExists(projectFolder);
     }
 

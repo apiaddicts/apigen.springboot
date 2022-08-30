@@ -3,7 +3,7 @@ package org.apiaddicts.apitools.apigen.generatorcore.spec;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.media.Schema;
@@ -67,7 +67,7 @@ public class OpenAPIExtended {
     private void initializeMapper() {
         mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
+        mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
     }
 
 }

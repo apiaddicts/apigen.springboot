@@ -27,7 +27,6 @@ public class ProjectGenerator<C extends Context> {
 
     private final GenerationStrategy<C> generationStrategy;
     private final Map<String, Object> globalConfig;
-    private Map<String, Object> extensions;
 
     public ProjectGenerator(GenerationStrategy<C> generationStrategy, Map<String, Object> globalConfig) {
         this.generationStrategy = generationStrategy;
@@ -40,13 +39,11 @@ public class ProjectGenerator<C extends Context> {
 
     public Configuration getConfiguration(String location) {
         OpenAPI openAPI = new OpenAPIParser().readLocation(location, null, getParseOptions()).getOpenAPI();
-        this.extensions = openAPI.getExtensions();
         return getConfiguration(openAPI);
     }
 
     public Configuration getConfiguration(byte[] file) {
         OpenAPI openAPI = new OpenAPIParser().readContents(new String(file), null, getParseOptions()).getOpenAPI();
-        this.extensions = openAPI.getExtensions();
         return getConfiguration(openAPI);
     }
 
@@ -87,7 +84,7 @@ public class ProjectGenerator<C extends Context> {
             }
             boolean partial = config.getPartial();
             if (!partial) {
-                for (Generator generator : generatorsFactory.createNonPartial(context, config, this.extensions)) {
+                for (Generator generator : generatorsFactory.createNonPartial(context, config)) {
                     generator.generate(projectFolder);
                 }
             }
