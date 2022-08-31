@@ -35,6 +35,7 @@ public class Configuration {
     @JsonProperty("entities")
     private List<Entity> entities;
     @NotEmpty
+    @JsonProperty("controllers")
     private List<Controller> controllers;
 
     @JsonProperty("standard_response_operations")

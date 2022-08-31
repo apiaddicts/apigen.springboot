@@ -14,13 +14,13 @@ public abstract class AbstractPropertiesFileBuilder<C extends Context> extends A
     protected final LinkedHashMap<String, String> properties = new LinkedHashMap<>();
     protected final String filename;
 
-    public AbstractPropertiesFileBuilder(String filename, C ctx, Configuration cfg)  {
+    public AbstractPropertiesFileBuilder(String filename, C ctx, Configuration cfg) {
         super(ctx, cfg);
         this.filename = filename;
         init();
     }
 
-    protected abstract void init() ;
+    protected abstract void init();
 
     protected void addProperty(String key, String value) {
         properties.put(key, value);

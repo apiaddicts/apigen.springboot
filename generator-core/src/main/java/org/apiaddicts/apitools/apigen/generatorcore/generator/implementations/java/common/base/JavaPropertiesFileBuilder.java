@@ -10,12 +10,12 @@ import java.util.Map;
 
 public class JavaPropertiesFileBuilder<C extends JavaContext> extends AbstractPropertiesFileBuilder<C> {
 
-    public JavaPropertiesFileBuilder(String filename, C ctx, Configuration cfg)  {
+    public JavaPropertiesFileBuilder(String filename, C ctx, Configuration cfg) {
         super(filename, ctx, cfg);
     }
 
     @Override
-    protected void init(){
+    protected void init() {
         // Intentional blank
     }
 
