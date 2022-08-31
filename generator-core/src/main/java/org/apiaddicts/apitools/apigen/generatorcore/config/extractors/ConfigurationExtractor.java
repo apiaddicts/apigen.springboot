@@ -51,6 +51,7 @@ public class ConfigurationExtractor extends AbstractExtractor {
         configuration.setArtifact(project.getJavaProperties().getArtifactId());
         configuration.setVersion(project.getVersion());
         configuration.setPartial(project.getPartial());
+        configuration.setStandardResponseOperations(project.getStandardResponseOperations());
         return configuration;
     }
 }

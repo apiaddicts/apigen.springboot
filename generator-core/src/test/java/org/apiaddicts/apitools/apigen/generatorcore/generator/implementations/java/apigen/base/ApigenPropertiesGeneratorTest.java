@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ApigenPropertiesGeneratorTest {
     Configuration cfg;
     ApigenContext context = ApigenContextObjectMother.create();
+
     @BeforeEach
     void prepareTest() {
         cfg = ConfigurationObjectMother.create();

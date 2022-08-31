@@ -1,9 +1,12 @@
 package org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.base;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.components.java.JavaConstants;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.common.base.AbstractPropertiesFileBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.JavaContext;
+
+import java.util.Map;
 
 public class JavaPropertiesFileBuilder<C extends JavaContext> extends AbstractPropertiesFileBuilder<C> {
 

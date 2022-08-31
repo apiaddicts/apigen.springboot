@@ -8,8 +8,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Response;
 
 import java.util.Map;
 
-import static org.apiaddicts.apitools.apigen.generatorcore.spec.components.Extensions.MAPPING;
-import static org.apiaddicts.apitools.apigen.generatorcore.spec.components.Extensions.MAPPING_MODEL;
+import static org.apiaddicts.apitools.apigen.generatorcore.spec.components.Extensions.*;
 
 public class ResponseExtractor {
 
@@ -40,11 +39,11 @@ public class ResponseExtractor {
             return endpointResponse;
         }
 
-        Schema schema = response.getContent().get("application/json").getSchema();
+        Schema<?> schema = response.getContent().get("application/json").getSchema();
 
         if (isStandardResponse(schema)) {
             endpointResponse.setIsStandard(true);
-            Schema dataSchema = getDataSchema(schema);
+            Schema<?> dataSchema = getDataSchema(schema);
             boolean isCollection = isNamedCollectionSchema(dataSchema);
             endpointResponse.setIsCollection(isCollection);
             if (isCollection) {
@@ -72,11 +71,35 @@ public class ResponseExtractor {
     }
 
     private boolean isStandardResponse(Schema schema) {
-        return schema.getProperties() != null && schema.getProperties().containsKey("data") && schema.getProperties().containsKey("result");
+        if (schema.getExtensions() != null && schema.getExtensions().containsKey(RESPONSE)) {
+            Map<String, Object> apigenResponse = (Map<String, Object>) schema.getExtensions().get(RESPONSE);
+            if (apigenResponse != null && apigenResponse.containsKey(RESPONSE_STANDARD)
+                    && apigenResponse.get(RESPONSE_STANDARD).equals(false)
+                    && !schema.getProperties().containsKey(getStandardDataProperty(apigenResponse))) {
+                return false;
+            }
+        } else if (schema.getProperties() == null || !schema.getProperties().containsKey("data")
+                || !schema.getProperties().containsKey("result")) {
+            return false;
+        }
+        return true;
     }
 
-    private Schema getDataSchema(Schema schema) {
-        return (Schema) schema.getProperties().get("data");
+    private Schema<?> getDataSchema(Schema<?> schema) {
+        String dataProperty = "data";
+        if (schema.getExtensions() != null && schema.getExtensions().containsKey(RESPONSE)) {
+            Map<String, Object> apigenResponse = (Map<String, Object>) schema.getExtensions().get(RESPONSE);
+            dataProperty = getStandardDataProperty(apigenResponse);
+        }
+        return schema.getProperties().get(dataProperty);
+    }
+
+    private String getStandardDataProperty(Map<String, Object> schema) {
+        String dataProperty = "data";
+        if (schema != null && schema.containsKey(RESPONSE_STANDARD_DATA_PROPERTY)) {
+            dataProperty = (String) schema.get(RESPONSE_STANDARD_DATA_PROPERTY);
+        }
+        return dataProperty;
     }
 
     private boolean isNamedCollectionSchema(Schema dataSchema) {

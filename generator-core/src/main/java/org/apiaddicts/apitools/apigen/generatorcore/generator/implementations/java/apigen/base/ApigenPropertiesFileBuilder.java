@@ -1,9 +1,12 @@
 package org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.base;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import lombok.extern.slf4j.Slf4j;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.base.JavaPropertiesFileBuilder;
 
+@Slf4j
 public class ApigenPropertiesFileBuilder<C extends ApigenContext> extends JavaPropertiesFileBuilder<C> {
 
     public ApigenPropertiesFileBuilder(C ctx, Configuration cfg) {
@@ -22,5 +25,14 @@ public class ApigenPropertiesFileBuilder<C extends ApigenContext> extends JavaPr
         addProperty("spring.web.resources.add-mappings", "false");
         addProperty("management.endpoints.enabled-by-default", "false");
         addProperty("management.endpoint.health.enabled", "true");
+        addStandardResponseProperties();
+    }
+
+    protected void addStandardResponseProperties() {
+        ArrayNode operations = cfg.getStandardResponseOperations();
+        if (operations == null) return;
+        for (int i = 0; i < operations.size(); i++) {
+            addProperty("apigen.standard-response.operations["+i+"]", operations.get(i).toString());
+        }
     }
 }

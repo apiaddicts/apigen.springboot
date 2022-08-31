@@ -1,6 +1,7 @@
 package org.apiaddicts.apitools.apigen.generatorcore.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.Data;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Controller;
 import org.apiaddicts.apitools.apigen.generatorcore.config.entity.Entity;
@@ -36,6 +37,9 @@ public class Configuration {
     @NotEmpty
     @JsonProperty("controllers")
     private List<Controller> controllers;
+
+    @JsonProperty("standard_response_operations")
+    private ArrayNode standardResponseOperations;
 
     public String getBasePackage() {
         return group + "." + artifact;

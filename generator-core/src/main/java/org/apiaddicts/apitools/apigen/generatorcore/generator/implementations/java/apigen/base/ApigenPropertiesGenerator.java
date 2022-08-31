@@ -8,6 +8,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import java.util.Arrays;
 
 public class ApigenPropertiesGenerator<C extends ApigenContext> extends JavaPropertiesGenerator<C> {
+
     public ApigenPropertiesGenerator(C ctx, Configuration cfg) {
         super(ctx, cfg);
     }

@@ -13,7 +13,13 @@ public class FakeApiResultController {
 
     @GetMapping(value = "/with-200")
     public @ResponseBody ApiResponse getNewApiResultWith200() {
-        return ApiResponseObjectMother.createEmptyApiResponse();
+        return new ValueResponse("value");
+    }
+
+    public class ValueResponse extends ApiResponse<String> {
+        public ValueResponse(String value) {
+            super(value);
+        }
     }
 
     @GetMapping(value = "/with-301")

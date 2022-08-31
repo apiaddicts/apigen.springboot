@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 ### Changed
-- Enhance the generation mechanism to allow to extend and replace by custom code generators
+- Enhance the code generation mechanism to allow to extend and replace by custom code generation strategies
+- Generated non paginated controller endpoints for list and search if the OpenAPI file specifies it
+- Allow to customize the standard api response
 
 ## [0.2.1] - 2022-06-13
 ### Changed
