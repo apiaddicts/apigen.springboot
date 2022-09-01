@@ -140,7 +140,7 @@ public class GenericInputResourceBuilder<C extends JavaContext> extends InputRes
     }
 
     protected boolean requiredNestedObject(Attribute attribute) {
-        return Openapi2JavapoetType.TYPE_OBJECT.equals(attribute.getType()) || Openapi2JavapoetType.TYPE_ARRAY.equals(attribute.getType());
+        return Openapi2JavapoetType.TYPE_OBJECT.equals(attribute.getType()) || Openapi2JavapoetType.TYPE_ARRAY.equals(attribute.getType()) || null == attribute.getType();
     }
 
     protected TypeName createNestedObject(String javaName, List<Attribute> attributes, TypeName parentType, Builder builder) {
