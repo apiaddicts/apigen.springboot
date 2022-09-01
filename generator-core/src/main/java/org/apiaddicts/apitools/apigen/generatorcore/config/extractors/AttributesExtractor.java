@@ -47,6 +47,7 @@ public class AttributesExtractor {
             if (!isCollection) {
                 attribute.setType(propSchema.getType());
                 attribute.setFormat(propSchema.getFormat());
+                attribute.setImplementationType(getImplementationType(propSchema));
             }
 
             boolean isObject = Openapi2JavapoetType.TYPE_OBJECT.equalsIgnoreCase(attribute.getType());
@@ -97,11 +98,18 @@ public class AttributesExtractor {
 
             attribute.setType(propSchema.getType());
             attribute.setFormat(propSchema.getFormat());
+            attribute.setImplementationType(getImplementationType(propSchema));
 
             attribute.setAttributes(getAttributes(propSchema, level++));
             attributes.add(attribute);
         }
         return attributes;
+    }
+
+    private String getImplementationType(Schema<?> schema) {
+        Map<String, Object> extensions = schema.getExtensions();
+        if (extensions == null) return null;
+        return (String) extensions.get(TYPE);
     }
 
     private String getMappingEntity(Schema schema) {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.squareup.javapoet.*;
 import lombok.Data;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.*;
+import org.apiaddicts.apitools.apigen.generatorcore.generator.common.ApigenExt2JavapoetType;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.common.Openapi2JavapoetType;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 import org.apache.commons.lang3.StringUtils;
@@ -101,7 +102,11 @@ public class ResourceOutputResourceBuilder extends OutputResourceBuilder {
             if (nested) {
                 type = createNestedObject(javaName, attribute.getAttributes(), parentType);
             } else {
-                type = Openapi2JavapoetType.transformSimpleType(attribute.getType(), attribute.getFormat());
+                if (attribute.getImplementationType() != null) {
+                    type = ApigenExt2JavapoetType.transformType(attribute.getImplementationType());
+                } else {
+                    type = Openapi2JavapoetType.transformSimpleType(attribute.getType(), attribute.getFormat());
+                }
             }
             if (attribute.isCollection()) {
                 type = ParameterizedTypeName.get(ClassName.get(Set.class), type);

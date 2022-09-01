@@ -18,6 +18,8 @@ public class Attribute {
     protected String type;
     @JsonProperty("format")
     protected String format;
+    @JsonProperty("implementation_type")
+    protected String implementationType;
     @JsonProperty("is_collection")
     protected boolean isCollection;
     @JsonProperty("related_entity")

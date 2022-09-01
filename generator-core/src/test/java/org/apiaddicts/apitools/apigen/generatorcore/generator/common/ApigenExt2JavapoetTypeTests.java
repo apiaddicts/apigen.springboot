@@ -18,10 +18,15 @@ public class ApigenExt2JavapoetTypeTests {
                 Arguments.of("Boolean", "java.lang.Boolean"),
                 Arguments.of("Float", "java.lang.Float"),
                 Arguments.of("Double", "java.lang.Double"),
+                Arguments.of("BigDecimal", "java.math.BigDecimal"),
                 Arguments.of("Integer", "java.lang.Integer"),
                 Arguments.of("Long", "java.lang.Long"),
+                Arguments.of("BigInteger", "java.math.BigInteger"),
                 Arguments.of("LocalDate", "java.time.LocalDate"),
-                Arguments.of("OffsetDateTime", "java.time.OffsetDateTime")
+                Arguments.of("OffsetDateTime", "java.time.OffsetDateTime"),
+                Arguments.of("ZonedDateTime", "java.time.ZonedDateTime"),
+                Arguments.of("LocalDateTime", "java.time.LocalDateTime"),
+                Arguments.of("Instant", "java.time.Instant")
         );
     }
 
@@ -29,6 +34,11 @@ public class ApigenExt2JavapoetTypeTests {
     @ParameterizedTest(name = "{index} => type={0} -> javaType={1}")
     void givenType_whenTransformToSimpleType_thenReturnJavaType(String type, String javaType) {
         assertEquals(javaType, ApigenExt2JavapoetType.transformSimpleType(type).toString());
+    }
+
+    @Test
+    void givenType_whenTransformToType_thenReturnJavaType() {
+        assertEquals("java.time.LocalDateTime", ApigenExt2JavapoetType.transformType("java.time.LocalDateTime").toString());
     }
 
     @Test

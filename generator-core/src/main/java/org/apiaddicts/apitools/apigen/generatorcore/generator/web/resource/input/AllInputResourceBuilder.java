@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Attribute;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
+import org.apiaddicts.apitools.apigen.generatorcore.generator.common.ApigenExt2JavapoetType;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Request;
 import org.apiaddicts.apitools.apigen.generatorcore.config.validation.Validation;
@@ -117,7 +118,11 @@ public class AllInputResourceBuilder extends InputResourceBuilder {
                 type = createNestedObject(javaName, attribute.getAttributes(), parentType, builder);
                 nested = true;
             } else {
-                type = Openapi2JavapoetType.transformSimpleType(attribute.getType(), attribute.getFormat());
+                if (attribute.getImplementationType() != null) {
+                    type = ApigenExt2JavapoetType.transformType(attribute.getImplementationType());
+                } else {
+                    type = Openapi2JavapoetType.transformSimpleType(attribute.getType(), attribute.getFormat());
+                }
                 boolean isUnwrappedIdentifier = isUnwrappedIdentifier(attribute);
                 if (isUnwrappedIdentifier) {
                     type = createIdentifierNestedObject(javaName, type, parentType);
