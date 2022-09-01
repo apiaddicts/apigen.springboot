@@ -85,7 +85,7 @@ services:
           table: string
         attributes:
           - name: string
-            type: string [ENUM[Array, String, Boolean, Double, Float, Integer, Long, LocalDate y OffsetDateTime, ComposedID] o <model_name>]
+            type: string [ENUM[Array, String, Boolean, Double, Float, BigDecimal, Integer, Long, BigInteger, LocalDate, LocalDateTime, ZonedDateTime, OffsetDateTime, Instant, ComposedID] o <model_name>]
             items-type: string [<model_name>]
             relational-persistence:
               column: string
@@ -110,7 +110,7 @@ services:
       - `table`: Nombre de la tabla en la base de datos
     - `attributes`: Apartado que contiene los atributos del modelo
       - `name`: Nombre del atributo
-      - `type`: Tipo del atributo, los tipos soportados son: [Array, String, Boolean, Double, Float, Integer, Long, LocalDate, OffsetDateTime, ComposedID] o en caso de ser de otro modelo, el nombre de este
+      - `type`: Tipo del atributo, los tipos soportados son: [Array, String, Boolean, Double, Float, BigDecimal, Integer, Long, BigInteger, LocalDate, LocalDateTime, ZonedDateTime, OffsetDateTime, Instant, ComposedID] o en caso de ser de otro modelo, el nombre de este
       - `items-type`: En el caso que el valor de `type` sea un `Array`, este campo se debe definir con el nombre del modelo al que hace referencia
       - `attributes`: Apartado similar a `attributes` del modelo, solo se utiliza cuando el type es ComposedID para indicar los atributos que forman parte de dicho identificador
       - `relational-persistence`: Apartado en el que se indican todos los aspector relacionados con la persistencia relacional del atributo del modelo
@@ -205,6 +205,7 @@ services:
       properties:
         <prop_name>:
           type: string
+          x-apigen-type: string [ENUM[String, Boolean, Double, Float, BigDecimal, Integer, Long, BigInteger, LocalDate, LocalDateTime, ZonedDateTime, OffsetDateTime, Instant]
           x-apigen-mapping:
             model: string
             field: string
@@ -214,6 +215,7 @@ services:
 
 ### Definición
 
+- `x-apigen-mapping`: Extensión que permite indicar el tipo de dato a utilizar en la implementación. Es opcional ya que la mayoría de tipos se infieren directamente de los campos `type` y `format`. Necesario para especificar que la implementación haga uso de `BigDecimal`, `BigInteger`, `LocalDateTime`, `ZonedDateTime` e `Instant`.
 - `x-apigen-mapping`: Apartado en el que se definen todos los datos de mapeo entre los recursos y los modelos. Cada atributo de un recurso de entrada, incluyendo el propio recurso de entrada pueden tener definido este apartado, si no esta definido se asume que tiene los valores por defecto indicados en cada apartado.
   - `model`: Nombre del modelo al que representa el recurso o atributo, si a nivel de recurso no se indica no se considera un recurso estandar de entrada
   - `field`: Nombre del atributo del modelo al que se mapeará el atributo del recurso, por defecto si no se indica nada se mapeará a un atributo con el mismo nombre si existe, sino se ingnorará. Existen dos casos específicos en los que es obligatorio definir este campo:

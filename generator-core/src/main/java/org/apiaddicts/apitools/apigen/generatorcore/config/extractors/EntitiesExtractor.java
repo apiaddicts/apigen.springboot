@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.exceptions.GeneratorErrors.*;
+import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.ApigenExt2JavapoetType.isBasicType;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.ApigenExt2JavapoetType.isComposedID;
 
 public class EntitiesExtractor extends AbstractExtractor {
@@ -185,10 +186,5 @@ public class EntitiesExtractor extends AbstractExtractor {
 
     private boolean isCollectionType(String type) {
         return "Array".equals(type);
-    }
-
-    private boolean isBasicType(String type) {
-        Set<String> basic = new HashSet<>(Arrays.asList("Boolean", "String", "Long", "Integer", "Float", "Double", "LocalDate", "OffsetDateTime"));
-        return basic.contains(type);
     }
 }

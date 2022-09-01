@@ -8,6 +8,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Attribute;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Response;
+import org.apiaddicts.apitools.apigen.generatorcore.generator.common.ApigenExt2JavapoetType;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.common.Openapi2JavapoetType;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.JavaContext;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
@@ -105,7 +106,11 @@ public class GenericOutputResourceBuilder<C extends JavaContext> extends OutputR
             if (nested) {
                 type = createNestedObject(javaName, attribute.getAttributes(), parentType);
             } else {
-                type = Openapi2JavapoetType.transformSimpleType(attribute.getType(), attribute.getFormat());
+                if (attribute.getImplementationType() != null) {
+                    type = ApigenExt2JavapoetType.transformType(attribute.getImplementationType());
+                } else {
+                    type = Openapi2JavapoetType.transformSimpleType(attribute.getType(), attribute.getFormat());
+                }
             }
             if (attribute.isCollection()) {
                 type = ParameterizedTypeName.get(ClassName.get(Set.class), type);
