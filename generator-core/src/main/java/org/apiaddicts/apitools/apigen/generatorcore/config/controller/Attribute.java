@@ -26,4 +26,6 @@ public class Attribute {
     private String relatedEntity;
     @JsonProperty("entity_field_name")
     private String entityFieldName;
+    @JsonProperty("nullable")
+    private boolean nullable;
 }

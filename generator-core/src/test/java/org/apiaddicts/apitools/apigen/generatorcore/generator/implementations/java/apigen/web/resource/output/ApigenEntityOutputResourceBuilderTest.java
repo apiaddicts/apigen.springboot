@@ -3,12 +3,18 @@ package org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.j
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import org.apiaddicts.apitools.apigen.generatorcore.config.ConfigurationObjectMother;
+import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Attribute;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.EndpointBaseResponseObjectMother;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Response;
+import org.apiaddicts.apitools.apigen.generatorcore.config.validation.ValidationType;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContextObjectMother;
 import org.junit.jupiter.api.Test;
+
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -103,5 +109,27 @@ class ApigenEntityOutputResourceBuilderTest {
     void givenAValidResponse_whenGenerateResource_thenTypeNameIsCorrect() {
         TypeName typeName = ApigenEntityOutputResourceBuilder.getTypeName("EntityName", "the.group.artifact");
         assertEquals("the.group.artifact.entityname.web.EntityNameOutResource", typeName.toString(), "TypeName is wrong");
+    }
+
+    @Test
+    void givenANullableAndRequiredAttribute_whenGenerateResource_thenParameterHasNotNullAnotation() {
+        Response response = EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes("EntityName");
+        List<Attribute> attributes = new ArrayList<>();
+        Attribute attribute = new Attribute();
+        attribute.setName("prueba");
+        attribute.setType("string");
+        attribute.setEntityFieldName("prueba");
+        attributes.add(attribute);
+        response.setAttributes(attributes);
+        List<String> requireds = new ArrayList<>();
+        requireds.add("prueba");
+        response.setRequired(requireds);
+        Endpoint endpoint = new Endpoint();
+        endpoint.setResponse(response);
+
+        ApigenEntityOutputResourceBuilder<ApigenContext> builder = new ApigenEntityOutputResourceBuilder<>(endpoint, ApigenContextObjectMother.create(),
+                ConfigurationObjectMother.create());
+        TypeSpec spec = builder.build();
+        assertEquals("@javax.validation.constraints.NotNull", spec.fieldSpecs.get(0).annotations.get(1).toString());
     }
 }

@@ -56,6 +56,8 @@ public class AttributesExtractor {
                 attribute.setRelatedEntity(relatedEntity);
             }
 
+            if(property.getValue().getNullable() != null)
+                attribute.setNullable(property.getValue().getNullable().booleanValue());
             attributes.add(attribute);
         }
         return attributes;
