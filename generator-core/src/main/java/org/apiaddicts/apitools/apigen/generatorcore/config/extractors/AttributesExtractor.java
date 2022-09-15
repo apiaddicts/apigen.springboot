@@ -97,6 +97,7 @@ public class AttributesExtractor {
             attribute.setRelatedEntity(relatedEntity);
 
             attribute.setType(propSchema.getType());
+            if (attribute.getType() == null) attribute.setType("object");
             attribute.setFormat(propSchema.getFormat());
             attribute.setImplementationType(getImplementationType(propSchema));
 
