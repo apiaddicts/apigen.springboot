@@ -120,7 +120,7 @@ public class GenericOutputResourceBuilder<C extends JavaContext> extends OutputR
     }
 
     protected boolean requiredNestedObject(Attribute attribute) {
-        return Openapi2JavapoetType.TYPE_OBJECT.equals(attribute.getType()) || Openapi2JavapoetType.TYPE_ARRAY.equals(attribute.getType()) || null == attribute.getType();
+        return Openapi2JavapoetType.TYPE_OBJECT.equals(attribute.getType()) || Openapi2JavapoetType.TYPE_ARRAY.equals(attribute.getType());
     }
 
     protected TypeName createNestedObject(String javaName, List<Attribute> attributes, TypeName parentType) {
