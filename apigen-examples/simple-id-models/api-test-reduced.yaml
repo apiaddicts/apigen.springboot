@@ -438,15 +438,12 @@ components:
         default: 23
   schemas:
     statusResponse:
-      type: object
       properties:
         value:
           type: string
     configRequest:
-      type: object
       properties:
         general:
-          type: object
           properties:
             name:
               type: string
@@ -455,19 +452,16 @@ components:
         custom:
           type: array
           items:
-            type: object
             properties:
               key:
                 type: string
               value:
                 type: string
     configResponse:
-      type: object
       properties:
         values:
           type: array
           items:
-            type: object
             properties:
               name:
                 type: string
@@ -476,7 +470,6 @@ components:
     standard_response_result:
       properties:
         result:
-          type: object
           properties:
             status:
               type: boolean
@@ -497,14 +490,12 @@ components:
             - http_code
             - trace_id
     standard_error:
-      type: object
       properties:
         code:
           type: integer
         message:
           type: string
     standard_search:
-      type: object
       properties:
         operation:
           type: string
@@ -512,7 +503,6 @@ components:
         values:
           type: array
           items:
-            type: object
             properties:
               property:
                 type: string
@@ -532,10 +522,8 @@ components:
     standard_response_pets:
       allOf:
         - $ref: "#/components/schemas/standard_response_result"
-        - type: object
-          properties:
+        - properties:
             data:
-              type: object
               properties:
                 pets:
                   type: array
@@ -545,18 +533,15 @@ components:
     standard_response_pet:
       allOf:
         - $ref: "#/components/schemas/standard_response_result"
-        - type: object
-          properties:
+        - properties:
             data:
               $ref: "#/components/schemas/pet"
 
     standard_response_owners:
       allOf:
         - $ref: "#/components/schemas/standard_response_result"
-        - type: object
-          properties:
+        - properties:
             data:
-              type: object
               properties:
                 owners:
                   type: array
@@ -566,18 +551,15 @@ components:
     standard_response_owner:
       allOf:
         - $ref: "#/components/schemas/standard_response_result"
-        - type: object
-          properties:
+        - properties:
             data:
               $ref: "#/components/schemas/owner"
 
     standard_response_tags:
       allOf:
         - $ref: "#/components/schemas/standard_response_result"
-        - type: object
-          properties:
+        - properties:
             data:
-              type: object
               properties:
                 tags:
                   type: array
@@ -587,18 +569,15 @@ components:
     standard_response_tag:
       allOf:
         - $ref: "#/components/schemas/standard_response_result"
-        - type: object
-          properties:
+        - properties:
             data:
               $ref: "#/components/schemas/tag"
 
     standard_response_pojos:
       allOf:
         - $ref: "#/components/schemas/standard_response_result"
-        - type: object
-          properties:
+        - properties:
             data:
-              type: object
               properties:
                 pojos:
                   type: array
@@ -608,18 +587,15 @@ components:
     standard_response_pojo:
       allOf:
         - $ref: "#/components/schemas/standard_response_result"
-        - type: object
-          properties:
+        - properties:
             data:
               $ref: "#/components/schemas/pojo"
 
     pojo:
-      type: object
       properties:
         values:
           type: array
           items:
-            type: object
             properties:
               level:
                 type: number
@@ -631,7 +607,6 @@ components:
     pet:
       x-apigen-mapping:
         model: Pet
-      type: object
       properties:
         json_id:
           type: integer
@@ -657,7 +632,6 @@ components:
     tag:
       x-apigen-mapping:
         model: Tag
-      type: object
       properties:
         id:
           type: integer
@@ -671,7 +645,6 @@ components:
     owner:
       x-apigen-mapping:
         model: Owner
-      type: object
       properties:
         id:
           type: string
@@ -685,7 +658,6 @@ components:
     newPet:
       x-apigen-mapping:
         model: Pet
-      type: object
       properties:
         name:
           type: string
@@ -698,14 +670,12 @@ components:
         parent:
           x-apigen-mapping:
             model: Pet
-          type: object
           properties:
             id:
               type: integer
         tags:
           type: array
           items:
-            type: object
             properties:
               id:
                 type: integer
@@ -715,7 +685,6 @@ components:
         main_tag:
           x-apigen-mapping:
             field: mainTag
-          type: object
           properties:
             id:
               type: integer
@@ -727,7 +696,6 @@ components:
     newOwner:
       x-apigen-mapping:
         model: Owner
-      type: object
       properties:
         name:
           type: string
@@ -737,7 +705,6 @@ components:
     updatePet:
       x-apigen-mapping:
         model: Pet
-      type: object
       properties:
         name:
           type: string
@@ -745,7 +712,6 @@ components:
     updateOwner:
       x-apigen-mapping:
         model: Owner
-      type: object
       properties:
         name:
           type: string
