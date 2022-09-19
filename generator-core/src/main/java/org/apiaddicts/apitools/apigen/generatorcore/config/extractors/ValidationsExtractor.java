@@ -67,7 +67,7 @@ public class ValidationsExtractor {
 
     public List<Validation> getValidations(Schema schema, boolean required) {
         List<Validation> validations = new ArrayList<>();
-        addRequiredValidation(required, validations);
+        addRequiredValidation(schema, required, validations);
         addNumberValidations(schema, validations);
         addSizeValidation(schema, validations);
         addPatternValidation(schema, validations);
@@ -75,9 +75,11 @@ public class ValidationsExtractor {
         return validations;
     }
 
-    private void addRequiredValidation(boolean required, List<Validation> validations) {
-        if (!required) return;
-        validations.add(new Validation(ValidationType.NOT_NULL));
+    private void addRequiredValidation(Schema schema, boolean required, List<Validation> validations) {
+        boolean nullable = Boolean.TRUE.equals(schema.getNullable());
+        if (!nullable && required) {
+            validations.add(new Validation(ValidationType.NOT_NULL));
+        }
     }
 
     private void addNumberValidations(Schema schema, List<Validation> validations) {
