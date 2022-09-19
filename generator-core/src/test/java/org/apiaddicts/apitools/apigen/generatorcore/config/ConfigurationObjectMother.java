@@ -21,6 +21,7 @@ public class ConfigurationObjectMother {
         c.setDescription("description");
         c.setGroup("the.group");
         c.setArtifact(("artifact"));
+        c.setBasePackage("the.group.artifact");
         c.setVersion(("1.0.0"));
         c.setPartial(false);
         c.setEntities(entities);

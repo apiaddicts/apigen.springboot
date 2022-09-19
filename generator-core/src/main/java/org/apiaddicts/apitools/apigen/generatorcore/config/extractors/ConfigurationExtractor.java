@@ -50,6 +50,10 @@ public class ConfigurationExtractor extends AbstractExtractor {
         configuration.setGroup(project.getJavaProperties().getGroupId());
         configuration.setArtifact(project.getJavaProperties().getArtifactId());
         configuration.setVersion(project.getVersion());
+        configuration.setBasePackage(project.getJavaProperties().getBasePackage());
+        if (configuration.getBasePackage() == null) {
+            configuration.setBasePackage(configuration.getGroup() + "." + configuration.getArtifact());
+        }
         configuration.setPartial(project.getPartial());
         configuration.setStandardResponseOperations(project.getStandardResponseOperations());
         return configuration;

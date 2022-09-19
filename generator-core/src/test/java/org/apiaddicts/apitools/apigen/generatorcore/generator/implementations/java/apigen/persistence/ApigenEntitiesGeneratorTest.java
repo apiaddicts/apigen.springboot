@@ -474,6 +474,7 @@ class ApigenEntitiesGeneratorTest {
         cfg.setEntities(entities);
         cfg.setGroup("org");
         cfg.setArtifact("test");
+        cfg.setBasePackage("org.test");
         ApigenEntitiesGenerator<ApigenContext> entitiesGenerator = new ApigenEntitiesGenerator<>(ctx, cfg);
         entitiesGenerator.init();
         return entitiesGenerator.getBuilders().stream().map(AbstractJavaClassBuilder::build).collect(Collectors.toMap(b -> b.name, b -> b));

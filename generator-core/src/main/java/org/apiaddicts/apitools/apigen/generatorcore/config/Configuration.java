@@ -28,6 +28,9 @@ public class Configuration {
     @NotBlank
     @JsonProperty("version")
     private String version;
+    @NotBlank
+    @JsonProperty("base_package")
+    public String basePackage;
     @NotNull
     @JsonProperty("partial")
     private Boolean partial;
@@ -40,8 +43,4 @@ public class Configuration {
 
     @JsonProperty("standard_response_operations")
     private ArrayNode standardResponseOperations;
-
-    public String getBasePackage() {
-        return group + "." + artifact;
-    }
 }

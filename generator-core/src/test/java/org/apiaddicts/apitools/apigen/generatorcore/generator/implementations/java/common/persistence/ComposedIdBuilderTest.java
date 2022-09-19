@@ -27,6 +27,7 @@ public class ComposedIdBuilderTest {
 		cfg = new Configuration();
 		cfg.setGroup("org");
 		cfg.setArtifact("test");
+		cfg.setBasePackage("org.test");
         entity = EntityObjectMother.createSimpleEntityWithComposedID();
         ComposedIdBuilder<JavaContext> composedIdbuilder = new ComposedIdBuilder<>(entity, ctx, cfg);
         entityTypeSpec = composedIdbuilder.build();
