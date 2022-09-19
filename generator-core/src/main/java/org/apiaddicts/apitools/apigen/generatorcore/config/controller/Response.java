@@ -19,6 +19,4 @@ public class Response {
     private List<Attribute> attributes;
     @JsonProperty("default_status_code")
     private Integer defaultStatusCode;
-    @JsonProperty("required")
-    private List<String> required;
 }

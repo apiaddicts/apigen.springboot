@@ -12,7 +12,6 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.common.Openapi2Jav
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.resource.output.OutputResourceBuilder;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
 
@@ -24,14 +23,12 @@ public class ApigenEntityOutputResourceBuilder<C extends ApigenContext> extends 
     protected final String entityName;
     protected final String basePackage;
     protected final List<Attribute> attributes;
-    protected final List<String> required;
 
     public ApigenEntityOutputResourceBuilder(Endpoint endpoint, C ctx, Configuration cfg) {
         super(ctx, cfg);
         this.basePackage = cfg.getBasePackage();
         this.entityName = endpoint.getResponse().getRelatedEntity();
         this.attributes = endpoint.getResponse().getAttributes();
-        this.required = endpoint.getResponse().getRequired();
     }
 
     public static TypeName getTypeName(String entityName, String basePackage) {
@@ -89,7 +86,7 @@ public class ApigenEntityOutputResourceBuilder<C extends ApigenContext> extends 
         if (attribute.isCollection()) {
             type = ParameterizedTypeName.get(ClassName.get(Set.class), type);
         }
-        addAttribute(type, attribute.getEntityFieldName(), attribute.getName(), attribute.isNullable(), builder);
+        addAttribute(type, attribute.getEntityFieldName(), attribute.getName(), builder);
     }
 
     protected void addSimpleAttribute(Attribute attribute, TypeSpec.Builder builder) {
@@ -99,21 +96,16 @@ public class ApigenEntityOutputResourceBuilder<C extends ApigenContext> extends 
         } else {
             type = Openapi2JavapoetType.transformSimpleType(attribute.getType(), attribute.getFormat());
         }
-        addAttribute(type, attribute.getEntityFieldName(), attribute.getName(), attribute.isNullable(), builder);
+        addAttribute(type, attribute.getEntityFieldName(), attribute.getName(), builder);
     }
 
-    protected void addAttribute(TypeName type, String name, String jsonName, boolean nullable, TypeSpec.Builder builder) {
+    protected void addAttribute(TypeName type, String name, String jsonName, TypeSpec.Builder builder) {
         FieldSpec.Builder fieldBuilder = getField(type, name);
         addJsonName(jsonName, fieldBuilder);
-        if(!nullable && null!= this.required && this.required.contains(name)) addNotNull(fieldBuilder);
         builder.addField(fieldBuilder.build());
     }
 
     protected void addJsonName(String name, FieldSpec.Builder builder) {
         builder.addAnnotation(getAnnotation(JsonProperty.class).addMember(VALUE, STRING, name).build());
-    }
-
-    protected void addNotNull(FieldSpec.Builder builder) {
-        builder.addAnnotation(getAnnotation(NotNull.class).build());
     }
 }

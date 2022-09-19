@@ -6,7 +6,6 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Response;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.spec.components.Extensions.*;
@@ -59,7 +58,6 @@ public class ResponseExtractor {
                 endpointResponse.setRelatedEntity(relatedEntity);
                 endpointResponse.setAttributes(attributesExtractor.getFirstLvlAttributes(dataSchema));
             }
-            endpointResponse.setRequired(dataSchema.getRequired());
         } else {
             if (schema instanceof ArraySchema) {
                 endpointResponse.setIsCollection(true);
@@ -68,7 +66,6 @@ public class ResponseExtractor {
                 endpointResponse.setIsCollection(false);
             }
             endpointResponse.setAttributes(attributesExtractor.getAttributes(schema));
-            endpointResponse.setRequired(schema.getRequired());
         }
         return endpointResponse;
     }
