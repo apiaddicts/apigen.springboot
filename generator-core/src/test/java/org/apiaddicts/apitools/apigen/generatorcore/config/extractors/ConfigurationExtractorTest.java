@@ -104,7 +104,7 @@ class ConfigurationExtractorTest {
     }
 
     @Test
-    void checkExtractedValidationsFromYAML() {
+    void checkExtractedValidationsFromYAMLModels() {
         assertNotNull(configuration.getEntities());
 
         List<Validation> validations = configuration.getEntities().get(0).getAttributes().get(0).getValidations();
@@ -156,6 +156,12 @@ class ConfigurationExtractorTest {
         assertEquals(ValidationType.DECIMAL_MAX, validations.get(18).getType(), "Check DecimalMax Validation");
         assertEquals(BigDecimal.valueOf(0.2), validations.get(18).getDecimalValue(), "Check DecimanMax Value");
 
+    }
+
+    @Test
+    void checkExtractedValidationsFromYAMLResources() {
+        List<Validation> validations = configuration.getControllers().get(0).getEndpoints().get(0).getRequest().getAttributes().get(0).getValidations();
+        assertEquals(ValidationType.NOT_NULL, validations.get(0).getType(), "Check NotNull Validation");
     }
 
     @Test

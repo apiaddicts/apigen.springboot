@@ -11,6 +11,11 @@ paths:
       model: Owner
     post:
       operationId: createOwner
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/new_owner'
       responses:
         '201':
           description: Ok
@@ -170,6 +175,16 @@ components:
                   items:
                     $ref: "#/components/schemas/owner"
 
+    new_owner:
+      x-apigen-mapping:
+        model: Owner
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+
     owner:
       x-apigen-mapping:
         model: Owner
@@ -177,6 +192,8 @@ components:
       type: object
       properties:
         id:
+          type: string
+        name:
           type: string
         pets:
           type: array
@@ -186,7 +203,6 @@ components:
     pet:
       x-apigen-mapping:
         model: Pet
-        type: READ
       type: object
       properties:
         owner:
