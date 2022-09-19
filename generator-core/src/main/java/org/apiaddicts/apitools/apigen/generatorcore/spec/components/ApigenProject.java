@@ -18,5 +18,6 @@ public class ApigenProject {
     public static class JavaProperties {
         private String groupId;
         private String artifactId;
+        private String basePackage;
     }
 }

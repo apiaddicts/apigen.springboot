@@ -35,6 +35,7 @@ services:
       java-properties:
         group-id: string
         artifact-id: string
+        base-package: string
       standard-response-operations:
         - <jsonpatch operation node>
 
@@ -46,6 +47,7 @@ services:
      - `java-properties`: Apartado donde se define la información específica de java del proyecto
        - `group-id`: Nombre del paquete inicial donde estará el proyecto, en caso de ser varias palabras, estarán separadas por `.`
        - `artifact-id`: Nombre que identificará el proyecto
+       - `base-package`: Nombre del paquete base a utilizar en el código generado, si no se especifica se obtiene a partir del `group-id` y `artifact-id`
      - `standard-response-operations`: Apartado donde se definen las operaciones de transformación de la respuesta estandar apigen (es opcional)
         - `<jsonpatch operation node>`: Nodo que cumple con el estandar de json-patch, permitiendo declarar de forma opcional operaciones sobre todos los elementos de un array    
 
@@ -57,6 +59,7 @@ services:
       java-properties:
         group-id: the.group
         artifact-id: app
+        base-package: the.group.myapp
       standard-response-operations:
         - op: copy
           from: /data
