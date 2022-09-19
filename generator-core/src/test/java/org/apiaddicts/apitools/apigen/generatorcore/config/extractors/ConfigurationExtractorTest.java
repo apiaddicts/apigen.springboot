@@ -1,6 +1,7 @@
 package org.apiaddicts.apitools.apigen.generatorcore.config.extractors;
 
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 import io.swagger.v3.parser.core.models.ParseOptions;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint.Method.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -268,4 +270,13 @@ class ConfigurationExtractorTest {
         assertEquals("boolean", parameter.getType(), "Check Endpoint BooleanParameter type");
     }
 
+    @Test
+    void allOfWithProperties() {
+        OpenAPIExtended openAPIExtended = load("0001_allOffProps.yaml");
+        configuration = new ConfigurationExtractor(openAPIExtended).extract();
+        Schema<?> schema = openAPIExtended.getSchemas().get("standard_response_res_one");
+        Map<String, Schema> props = schema.getProperties();
+        assertTrue(props.containsKey("data"), "'data' property expected");
+        assertTrue(props.containsKey("result"), "'result' property expected");
+    }
 }
