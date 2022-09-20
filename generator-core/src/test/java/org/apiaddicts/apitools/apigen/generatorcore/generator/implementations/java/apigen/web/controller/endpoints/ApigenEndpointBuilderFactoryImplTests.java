@@ -60,11 +60,27 @@ class ApigenEndpointBuilderFactoryImplTests {
     }
 
     @Test
+    void givenGetAllMoreLevelsEndpoint_whenAskForBuilder_thenCorrectBuilderIsReturned() {
+        Endpoint endpoint = EndpointObjectMother.standardGetAlMoreLevels("getAllMoreLevelsEndpoint", ENTITY_NAME);
+        EndpointBuilder<ApigenContext> endpointBuilder = FACTORY.create(ROOT_MAPPING, endpoint, CTX, CFG);
+
+        assertTrue(endpointBuilder instanceof GetAllMoreLevelsEndpointBuilder, "Expected GetAllMoreLevelsEndpointBuilder");
+    }
+
+    @Test
     void givenGetByIdEndpoint_whenAskForBuilder_thenCorrectBuilderIsReturned() {
         Endpoint endpoint = EndpointObjectMother.standardGetById("getByIdEndpoint", ENTITY_NAME);
         EndpointBuilder<ApigenContext> endpointBuilder = FACTORY.create(ROOT_MAPPING, endpoint, CTX, CFG);
 
         assertTrue(endpointBuilder instanceof GetByIdEndpointBuilder, "Expected GetByIdEndpointBuilder");
+    }
+
+    @Test
+    void givenGetByIdMoreLevelsEndpoint_whenAskForBuilder_thenCorrectBuilderIsReturned() {
+        Endpoint endpoint = EndpointObjectMother.standardGetAlMoreLevels("getByIdMoreLevelsEndpoint", ENTITY_NAME);
+        EndpointBuilder<ApigenContext> endpointBuilder = FACTORY.create(ROOT_MAPPING, endpoint, CTX, CFG);
+
+        assertTrue(endpointBuilder instanceof GetAllMoreLevelsEndpointBuilder, "Expected GetByIdMoreLevelsEndpointBuilder");
     }
 
     @Test

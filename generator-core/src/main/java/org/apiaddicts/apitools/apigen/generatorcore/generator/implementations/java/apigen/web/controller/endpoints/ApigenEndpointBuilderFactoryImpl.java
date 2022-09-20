@@ -18,8 +18,14 @@ public class ApigenEndpointBuilderFactoryImpl<C extends ApigenContext> implement
         boolean isGetAll = isStandardWithEntity && method == Endpoint.Method.GET && mapping.isEmpty();
         if (isGetAll) return new GetAllEndpointBuilder<>(rootMapping, endpoint, ctx, cfg);
 
+        boolean isGetAllMoreLevels = isStandardWithEntity && method == Endpoint.Method.GET && mapping.isGetAllMoreLevels();
+        if (isGetAllMoreLevels) return new GetAllMoreLevelsEndpointBuilder<>(rootMapping, endpoint, ctx, cfg);
+
         boolean isGetOne = isStandardWithEntity && method == Endpoint.Method.GET && mapping.isById();
         if (isGetOne) return new GetByIdEndpointBuilder<>(rootMapping, endpoint, ctx, cfg);
+
+        boolean isGetOneMoreLevels = isStandardWithEntity && method == Endpoint.Method.GET && mapping.isByIdMoreLevels();
+        if (isGetOneMoreLevels) return new GetByIdMoreLevelsEndpointBuilder<>(rootMapping, endpoint, ctx, cfg);
 
         boolean isPost = isStandardWithEntity && method == Endpoint.Method.POST && mapping.isEmpty();
         if (isPost) return new PostEndpointBuilder<>(rootMapping, endpoint, ctx, cfg);

@@ -39,11 +39,33 @@ public class EndpointObjectMother {
         return endpoint;
     }
 
+    public static Endpoint standardGetAlMoreLevels(String endpointName, String entityName) {
+        List<Parameter> parameters = ParameterObjectMother.createGetAllStandardParameters();
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("id", "integer");
+        parameters.add(0, parameter);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.GET, "/{id}/elements", parameters);
+        endpoint.setResponse(EndpointBaseResponseObjectMother.listResponseWithoutAttributesAndCollectionNameEqualsEntityName(entityName));
+        endpoint.setRelatedEntity(entityName);
+        return endpoint;
+    }
+
     public static Endpoint standardGetById(String endpointName, String entityName) {
         List<Parameter> parameters = ParameterObjectMother.createGetByIdStandardParameters();
         Parameter parameter = ParameterObjectMother.getBasicPathParameter("id", "integer");
         parameters.add(0, parameter);
         Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.GET, "/{id}", parameters);
+        endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
+        endpoint.setRelatedEntity(entityName);
+        return endpoint;
+    }
+
+    public static Endpoint standardGetByIdMoreLevels(String endpointName, String entityName) {
+        List<Parameter> parameters = ParameterObjectMother.createGetByIdStandardParameters();
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("id", "integer");
+        parameters.add(0, parameter);
+        parameter = ParameterObjectMother.getBasicPathParameter("idElement", "integer");
+        parameters.add(0, parameter);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.GET, "/{id}/elements/{idElement}", parameters);
         endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
         endpoint.setRelatedEntity(entityName);
         return endpoint;

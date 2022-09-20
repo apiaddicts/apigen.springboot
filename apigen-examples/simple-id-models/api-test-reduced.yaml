@@ -85,6 +85,82 @@ paths:
               schema:
                 $ref: "#/components/schemas/standard_response_owner"
 
+  /owners/{ownerId}/pets:
+    x-apigen-binding:
+      model: Owner
+    get:
+      operationId: getPetsById
+      parameters:
+        - $ref: "#/components/parameters/string_owner_id_param"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_pets"
+
+  /owners/{ownerId}/pets/{petId}:
+    x-apigen-binding:
+      model: Owner
+    get:
+      operationId: getPetById
+      parameters:
+        - $ref: "#/components/parameters/string_owner_id_param"
+        - $ref: "#/components/parameters/string_pet_id_param"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_pet"
+
+  /owners/{ownerId}/pets/{petId}/tags:
+    x-apigen-binding:
+      model: Owner
+    get:
+      operationId: getTagsById
+      parameters:
+        - $ref: "#/components/parameters/string_owner_id_param"
+        - $ref: "#/components/parameters/string_pet_id_param"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_tags"
+
+  /owners/{ownerId}/pets/{petId}/tags/{tagId}:
+    x-apigen-binding:
+      model: Owner
+    get:
+      operationId: getTagById
+      parameters:
+        - $ref: "#/components/parameters/string_owner_id_param"
+        - $ref: "#/components/parameters/string_pet_id_param"
+        - $ref: "#/components/parameters/string_tag_id_param"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_tag"
+
   /tags:
     x-apigen-binding:
       model: Tag
@@ -363,6 +439,24 @@ components:
     string_id_param:
       in: path
       name: id
+      required: true
+      schema:
+        type: string
+    string_owner_id_param:
+      in: path
+      name: ownerId
+      required: true
+      schema:
+        type: string
+    string_pet_id_param:
+      in: path
+      name: petId
+      required: true
+      schema:
+        type: string
+    string_tag_id_param:
+      in: path
+      name: tagId
       required: true
       schema:
         type: string

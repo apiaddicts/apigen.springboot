@@ -32,12 +32,28 @@ public class Mapping {
         return isVariable(0);
     }
 
+    public boolean isLastVariable(int lastElement) {
+        return isVariable(lastElement);
+    }
+
+    public boolean haveMoreLevels() {
+        return size() != 1 && parts != null && isFirstVariable();
+    }
+
+    public boolean isGetAllMoreLevels() {
+        return haveMoreLevels() && !isLastVariable(parts.length - 1);
+    }
+
     public boolean isSearch() {
         return size() == 1 && parts[0].equals("search");
     }
 
     public boolean isById() {
         return size() == 1 && isFirstVariable();
+    }
+
+    public boolean isByIdMoreLevels() {
+        return haveMoreLevels() && isLastVariable(parts.length - 1);
     }
 
     public String getValue() {
