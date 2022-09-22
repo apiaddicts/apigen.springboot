@@ -6,11 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [unreleased]
+### Added
+- Support for nullable in OpenAPI file interpretation
 ### Changed
 - Enhance the code generation mechanism to allow to extend and replace by custom code generation strategies
 - Generated non paginated controller endpoints for list and search if the OpenAPI file specifies it
 - Allow to customize the standard api response
 - Allow to customize the field implementation type for properties
+- Honor default OpenAPI object type in file interpretation
+- Allow independence between basePackage and artifactId in OpenAPI extension
+### removed
+- Remove dependency on `reflections` library
 
 ## [0.2.1] - 2022-06-13
 ### Changed

@@ -54,7 +54,6 @@
         <swagger-parser.version>2.0.32</swagger-parser.version>
         <beanutils.version>1.9.4</beanutils.version>
         <mapstruct.version>1.3.1.Final</mapstruct.version>
-        <reflections.version>0.9.11</reflections.version>
         <jsonpatch.version>0.4.12</jsonpatch.version>
         <springdoc.version>1.6.7</springdoc.version>
 
@@ -101,11 +100,6 @@
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>${beanutils.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.reflections</groupId>
-                <artifactId>reflections</artifactId>
-                <version>${reflections.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.flipkart.zjsonpatch</groupId>
