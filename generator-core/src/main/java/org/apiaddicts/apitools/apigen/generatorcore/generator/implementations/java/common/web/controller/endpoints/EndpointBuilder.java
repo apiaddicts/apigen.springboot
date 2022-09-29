@@ -39,7 +39,6 @@ public abstract class EndpointBuilder<C extends JavaContext> extends AbstractJav
     protected Mapping rootMapping;
     protected Mapping mapping;
     protected Endpoint endpoint;
-    protected List<String> entityNameMoreLevels = new ArrayList<>();
 
     protected final ParameterBuilderFactory<C> paramFactory;
 
@@ -54,15 +53,6 @@ public abstract class EndpointBuilder<C extends JavaContext> extends AbstractJav
         this.endpoint = endpoint;
         this.mapping = new Mapping(endpoint.getMapping());
         this.paramFactory = paramFactory;
-        if(this.mapping.haveMoreLevels() && null != cfg.getControllers()){
-            for(int i = 1; i < this.mapping.getParts().length; i+=2){
-                String resource = this.mapping.getParts()[i];
-                Optional<Controller> controller = cfg.getControllers().stream()
-                        .filter(x -> resource.equals(x.getMapping()))
-                        .findFirst();
-                if(controller.isPresent()) this.entityNameMoreLevels.add(controller.get().getEntity());
-            }
-        }
     }
 
     @Override

@@ -88,10 +88,10 @@ class AbstractReadServiceTest {
 		ApigenSearchResult searchResult = mock(ApigenSearchResult.class);
 		when(repository.search(any(ApigenSearch.class))).thenReturn(searchResult);
 		ArgumentCaptor<ApigenSearch> captor = ArgumentCaptor.forClass(ApigenSearch.class);
-		ApigenSearchResult result = service.search(SELECT, EXCLUDE, EXPAND, FILTER, ORDER_BY, INIT, LIMIT, TOTAL);
+		ApigenSearchResult result = service.search(SELECT, EXCLUDE, EXPAND, ORDER_BY, INIT, LIMIT, TOTAL, FILTER);
 		verify(repository).search(captor.capture());
 		assertSame(searchResult, result);
-		assertApigenSearch(SELECT, EXCLUDE, EXPAND, FILTER, ORDER_BY, INIT, LIMIT, TOTAL, captor.getValue());
+		assertApigenSearch(SELECT, EXCLUDE, EXPAND, ORDER_BY, INIT, LIMIT, TOTAL, FILTER, captor.getValue());
 	}
 
 	@Test
@@ -99,7 +99,7 @@ class AbstractReadServiceTest {
 		Entity entity = new Entity(1L);
 		when(repository.searchById(anyLong(), any(ApigenSearch.class))).thenReturn(Optional.of(entity));
 		ArgumentCaptor<ApigenSearch> captor = ArgumentCaptor.forClass(ApigenSearch.class);
-		Entity result = service.search(1L, SELECT, EXCLUDE, EXPAND);
+		Entity result = service.search(1L, SELECT, EXCLUDE, EXPAND, null);
 		verify(repository).searchById(anyLong(), captor.capture());
 		assertSame(entity, result);
 		assertApigenSearch(SELECT, EXCLUDE, EXPAND, null, null, null, null, null, captor.getValue());
@@ -108,7 +108,7 @@ class AbstractReadServiceTest {
 	@Test
 	void givenPersistedEntity_whenSearchOne_thenException() {
 		when(repository.searchById(anyLong(), any(ApigenSearch.class))).thenReturn(Optional.empty());
-		assertThrows(EntityNotFoundException.class, () -> service.search(1L, SELECT, EXCLUDE, EXPAND));
+		assertThrows(EntityNotFoundException.class, () -> service.search(1L, SELECT, EXCLUDE, EXPAND, null));
 	}
 
 	@Test
@@ -131,7 +131,7 @@ class AbstractReadServiceTest {
 		assertThrows(IllegalArgumentException.class, () -> service.safeGetOne(null));
 	}
 
-	private void assertApigenSearch(List<String> select, List<String> exclude, List<String> expand, Filter filter, List<String> orderBy, Integer init, Integer limit, Boolean total, ApigenSearch search) {
+	private void assertApigenSearch(List<String> select, List<String> exclude, List<String> expand, List<String> orderBy, Integer init, Integer limit, Boolean total, Filter filter, ApigenSearch search) {
 		assertSame(select, search.getSelect());
 		assertSame(exclude, search.getExclude());
 		assertSame(expand, search.getExpand());

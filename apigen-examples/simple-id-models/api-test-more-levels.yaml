@@ -25,21 +25,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/standard_response_owners"
 
-    post:
-      operationId: postOwner
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/newOwner"
-      responses:
-        '201':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/standard_response_owner"
-
   /owners/{id}:
     x-apigen-binding:
       model: Owner
@@ -57,69 +42,23 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/standard_response_owner"
-    put:
-      operationId: putOwner
-      parameters:
-        - $ref: "#/components/parameters/string_id_param"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/updateOwner"
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/standard_response_owner"
-    delete:
-      operationId: deleteOwner
-      parameters:
-        - $ref: "#/components/parameters/string_id_param"
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/standard_response_owner"
 
-  /tags:
+  /owners/{ownerId}/pets:
     x-apigen-binding:
-      model: Tag
+      model: Owner
+      child-model: Pet
+      child-parent-relation-property: owner.id
     get:
-      operationId: getTags
+      operationId: getOwnerPets
       parameters:
         - $ref: "#/components/parameters/init_param"
         - $ref: "#/components/parameters/limit_param"
-        - $ref: "#/components/parameters/total_param"
+        - $ref: "#/components/parameters/total_param"        
         - $ref: "#/components/parameters/select_param"
         - $ref: "#/components/parameters/exclude_param"
         - $ref: "#/components/parameters/expand_param"
         - $ref: "#/components/parameters/order_by_param"
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/standard_response_tags"
-
-
-  /pets:
-    x-apigen-binding:
-      model: Pet
-    get:
-      operationId: getPets
-      parameters:
-        - $ref: "#/components/parameters/init_param"
-        - $ref: "#/components/parameters/limit_param"
-        - $ref: "#/components/parameters/total_param"
-        - $ref: "#/components/parameters/select_param"
-        - $ref: "#/components/parameters/exclude_param"
-        - $ref: "#/components/parameters/expand_param"
-        - $ref: "#/components/parameters/order_by_param"
+        - $ref: "#/components/parameters/string_owner_id_param"
       responses:
         '200':
           description: Ok
@@ -127,8 +66,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/standard_response_pets"
+
     post:
-      operationId: postPet
+      operationId: postOwnerPet
+      parameters:
+        - $ref: "#/components/parameters/string_owner_id_param"
       requestBody:
         content:
           application/json:
@@ -142,55 +84,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/standard_response_pets"
 
-  /pets/{id}:
+  /owners/{ownerId}/pets/search:
     x-apigen-binding:
-      model: Pet
-    get:
-      operationId: getPet
-      parameters:
-        - $ref: "#/components/parameters/integer_id_param"
-        - $ref: "#/components/parameters/select_param"
-        - $ref: "#/components/parameters/exclude_param"
-        - $ref: "#/components/parameters/expand_param"
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/standard_response_pet"
-
-    put:
-      operationId: putPet
-      parameters:
-        - $ref: "#/components/parameters/integer_id_param"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/updatePet"
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/standard_response_pet"
-    delete:
-      operationId: deletePet
-      parameters:
-        - $ref: "#/components/parameters/integer_id_param"
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/standard_response_pet"
-
-  /pets/search:
-    x-apigen-binding:
-      model: Pet
+      model: Owner
+      child-model: Pet
+      child-parent-relation-property: owner.id
     post:
       operationId: searchPet
       parameters:
@@ -201,6 +99,7 @@ paths:
         - $ref: "#/components/parameters/exclude_param"
         - $ref: "#/components/parameters/expand_param"
         - $ref: "#/components/parameters/order_by_param"
+        - $ref: "#/components/parameters/string_owner_id_param"
       requestBody:
         content:
           application/json:
@@ -214,155 +113,76 @@ paths:
               schema:
                 $ref: "#/components/schemas/standard_response_pet"
 
-  /status:
+  /owners/{ownerId}/pets/{petId}:
+    x-apigen-binding:
+      model: Owner
+      child-model: Pet
+      child-parent-relation-property: owner.id
     get:
-      operationId: getStatus
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/statusResponse'
-
-  /status/other:
-    get:
-      operationId: getStatus2
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/statusResponse'
-
-  /status/other/nested/nested/end:
-    get:
-      operationId: getStatus3
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/statusResponse'
-
-  /entities-related:
-    get:
-      operationId: getEntities
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/standard_response_pets'
-  /entities-related/{id}:
-    get:
+      operationId: getOwnerPet
       parameters:
-        - $ref: '#/components/parameters/integer_id_param'
-      operationId: getEntity
+        - $ref: "#/components/parameters/string_owner_id_param"
+        - $ref: "#/components/parameters/string_pet_id_param"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
       responses:
         '200':
-          description: OK
+          description: Ok
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/standard_response_pet'
-  /standard:
-    get:
-      operationId: getStandardCollection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/standard_response_pojos'
-  /standard/{id}:
-    get:
+                $ref: "#/components/schemas/standard_response_pet"
+
+    
+                
+    put:
+      operationId: putOwnerPet
       parameters:
-        - $ref: '#/components/parameters/integer_id_param'
-      operationId: getStandardElement
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/standard_response_pojo'
-  /reconfig:
-    post:
-      operationId: reconfig
+        - $ref: "#/components/parameters/string_owner_id_param"
+        - $ref: "#/components/parameters/string_pet_id_param"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/configRequest'
+              $ref: "#/components/schemas/updatePet"
       responses:
         '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/configResponse'
-
-  /reconfig/{id}:
-    post:
-      operationId: reconfig2
+                $ref: "#/components/schemas/standard_response_pet"
+    delete:
+      operationId: deleteOwnerPet
       parameters:
-        - $ref: '#/components/parameters/id'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/configRequest'
+        - $ref: "#/components/parameters/string_owner_id_param"
+        - $ref: "#/components/parameters/string_pet_id_param"
       responses:
         '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/configResponse'
-
-  /reconfig/{id}/nested/level:
-    post:
-      operationId: reconfig3
-      parameters:
-        - $ref: '#/components/parameters/id'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/configRequest'
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/configResponse'
-  /nothing:
-    get:
-      operationId: nothing
-      responses:
-        '204':
-          description: Ok
+                $ref: "#/components/schemas/standard_response_pet"
 
 components:
   parameters:
-    integer_id_param:
+    string_id_param:
       in: path
       name: id
       required: true
       schema:
-        type: integer
-        format: int64
-    string_id_param:
+        type: string
+    string_owner_id_param:
       in: path
-      name: id
+      name: ownerId
+      required: true
+      schema:
+        type: string
+    string_pet_id_param:
+      in: path
+      name: petId
       required: true
       schema:
         type: string
@@ -437,36 +257,6 @@ components:
         minimum: 0
         default: 23
   schemas:
-    statusResponse:
-      properties:
-        value:
-          type: string
-    configRequest:
-      properties:
-        general:
-          properties:
-            name:
-              type: string
-            timeout:
-              type: integer
-        custom:
-          type: array
-          items:
-            properties:
-              key:
-                type: string
-              value:
-                type: string
-    configResponse:
-      properties:
-        values:
-          type: array
-          items:
-            properties:
-              name:
-                type: string
-              status:
-                type: boolean
     standard_response_result:
       properties:
         result:
@@ -518,7 +308,6 @@ components:
               filter:
                 $ref: '#/components/schemas/standard_search'
 
-
     standard_response_pets:
       allOf:
         - $ref: "#/components/schemas/standard_response_result"
@@ -555,55 +344,6 @@ components:
             data:
               $ref: "#/components/schemas/owner"
 
-    standard_response_tags:
-      allOf:
-        - $ref: "#/components/schemas/standard_response_result"
-        - properties:
-            data:
-              properties:
-                tags:
-                  type: array
-                  items:
-                    $ref: "#/components/schemas/tag"
-
-    standard_response_tag:
-      allOf:
-        - $ref: "#/components/schemas/standard_response_result"
-        - properties:
-            data:
-              $ref: "#/components/schemas/tag"
-
-    standard_response_pojos:
-      allOf:
-        - $ref: "#/components/schemas/standard_response_result"
-        - properties:
-            data:
-              properties:
-                pojos:
-                  type: array
-                  items:
-                    $ref: "#/components/schemas/pojo"
-
-    standard_response_pojo:
-      allOf:
-        - $ref: "#/components/schemas/standard_response_result"
-        - properties:
-            data:
-              $ref: "#/components/schemas/pojo"
-
-    pojo:
-      properties:
-        values:
-          type: array
-          items:
-            properties:
-              level:
-                type: number
-                format: int64
-        name:
-          type: string
-        enabled:
-          type: boolean
     pet:
       x-apigen-mapping:
         model: Pet
@@ -654,7 +394,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/pet"
-
+    
     newPet:
       x-apigen-mapping:
         model: Pet
@@ -693,29 +433,12 @@ components:
       required:
         - name
 
-    newOwner:
-      x-apigen-mapping:
-        model: Owner
-      properties:
-        name:
-          type: string
-          x-apigen-mapping: # Optional
-            name: name
-
     updatePet:
       x-apigen-mapping:
         model: Pet
       properties:
         name:
           type: string
-
-    updateOwner:
-      x-apigen-mapping:
-        model: Owner
-      properties:
-        name:
-          type: string
-
 
   # -------------------------------------------------
 

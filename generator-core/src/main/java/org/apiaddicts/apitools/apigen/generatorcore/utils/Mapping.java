@@ -36,16 +36,16 @@ public class Mapping {
         return isVariable(lastElement);
     }
 
-    public boolean haveMoreLevels() {
-        return size() != 1 && parts != null && isFirstVariable();
+    public boolean hasMoreLevels(int maxSize) {
+        return parts != null && size() > 2 && size() <= maxSize;
     }
 
-    public boolean isGetAllMoreLevels() {
-        return haveMoreLevels() && !isLastVariable(parts.length - 1);
+    public boolean isNotByIdMoreLevels(int maxSize) {
+        return hasMoreLevels(maxSize) && !isLastVariable(parts.length - 1);
     }
 
     public boolean isSearch() {
-        return size() == 1 && parts[0].equals("search");
+        return parts.length > 0 ? parts[parts.length - 1].equals("search") : false;
     }
 
     public boolean isById() {
@@ -53,7 +53,7 @@ public class Mapping {
     }
 
     public boolean isByIdMoreLevels() {
-        return haveMoreLevels() && isLastVariable(parts.length - 1);
+        return hasMoreLevels(4) && isLastVariable(parts.length - 1);
     }
 
     public String getValue() {

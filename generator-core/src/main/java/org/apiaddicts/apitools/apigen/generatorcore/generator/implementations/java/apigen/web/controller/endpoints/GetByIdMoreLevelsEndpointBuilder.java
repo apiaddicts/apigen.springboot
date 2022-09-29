@@ -1,6 +1,8 @@
 package org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.web.controller.endpoints;
 
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.TypeName;
+import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
@@ -34,23 +36,18 @@ public class GetByIdMoreLevelsEndpointBuilder<C extends ApigenContext> extends A
 
     @Override
     protected void addStatements() {
+        TypeName filterType = ClassName.get(Filter.class);
         TypeName entityType = EntityBuilder.getTypeName(entityName, cfg.getBasePackage());
         TypeName resourceType = ApigenEntityOutputResourceBuilder.getTypeName(entityName, cfg.getBasePackage());
         String translatorParams = pathParamsToString(Arrays.asList("select", "exclude", "expand"));
         String params = pathParamsToString(Arrays.asList("select", "exclude", "expand"));
         builder.addStatement("$L.translate($L, $T.class)", NAMING_TRANSLATOR_NAME, translatorParams, resourceType);
-        builder.addStatement("$T searchResult = $L.search($L, $L)", entityType, SERVICE_NAME, pathParams.get(0), params);
-        builder.addStatement("$T searchResultMapped = $L.toResource(searchResult)", resourceType, MAPPER_NAME);
+        builder.addStatement("$T filter = getParentFilter($L, $L, \"$L\")", filterType, pathParams.get(0), null, endpoint.getChildParentRelationProperty());
+        builder.addStatement("expand = getparentExpand(expand, \"$L\")", endpoint.getParentEntity());
+        builder.addStatement("$T searchResult = $L.search(Long.valueOf($L), $L, $L)", entityType, SERVICE_NAME, pathParams.get(1), params, "filter");
+        builder.addStatement("$T result = $L.toResource(searchResult)", resourceType, MAPPER_NAME);
         TypeName responseTypeMoreLevel = EntitySimpleResponseBuilder.getTypeName(endpoint.getResponse().getRelatedEntity(), cfg.getBasePackage());
-        for(int i = 0; i < entityNameMoreLevels.size(); i++){
-            TypeName resourceTypeMoreLevel = ApigenEntityOutputResourceBuilder.getTypeName(entityNameMoreLevels.get(i), cfg.getBasePackage());
-            String searchChild = "get" + entityNameMoreLevels.get(i) + "s";
-            String previousVariableName = i == 0 ? "searchResultMapped" : "searchResultMapped" + i;
-            String variableName = i == entityNameMoreLevels.size() - 1 ?  "result" : previousVariableName + (i + 1);
-            builder.addStatement("Optional<$T> $L = $L.$L().stream().filter(x -> $L.equals(x.getId())).findFirst()",
-                    resourceTypeMoreLevel, variableName, previousVariableName, searchChild, pathParams.get(i + 1));
-        }
-        builder.addStatement("return new $T(result.get())", responseTypeMoreLevel);
+        builder.addStatement("return new $T(result)", responseTypeMoreLevel);
     }
 
     private String pathParamsToString(List<String> names) {

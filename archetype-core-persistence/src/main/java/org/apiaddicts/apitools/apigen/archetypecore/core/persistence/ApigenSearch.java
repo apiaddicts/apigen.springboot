@@ -16,19 +16,20 @@ public class ApigenSearch {
 	private Pagination pagination;
 	private Boolean total = false;
 
-	public ApigenSearch(List<String> select, List<String> exclude, List<String> expand) {
-		this.select = select;
-		this.exclude = exclude;
-		this.expand = expand;
-	}
-
-	public ApigenSearch(List<String> select, List<String> exclude, List<String> expand, Filter filter, List<String> orderBy, Pagination pagination, Boolean total) {
+	public ApigenSearch(List<String> select, List<String> exclude, List<String> expand, Filter filter) {
 		this.select = select;
 		this.exclude = exclude;
 		this.expand = expand;
 		this.filter = filter;
+	}
+
+	public ApigenSearch(List<String> select, List<String> exclude, List<String> expand, List<String> orderBy, Pagination pagination, Boolean total, Filter filter) {
+		this.select = select;
+		this.exclude = exclude;
+		this.expand = expand;
 		this.orderBy = orderBy;
 		this.pagination = pagination;
 		this.total = total;
+		this.filter = filter;
 	}
 }

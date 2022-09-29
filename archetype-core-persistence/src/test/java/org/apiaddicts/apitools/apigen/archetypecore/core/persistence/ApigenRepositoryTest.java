@@ -38,7 +38,7 @@ class ApigenRepositoryTest {
 
 	@Test
 	void givenPersistedRecords_whenCount_thenCount() {
-		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, null, EMPTY, null, false);
+		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, EMPTY, null, false, null);
 		long result = datesRepository.count(search);
 		assertEquals(TOTAL_DATES_ENTITIES, result);
 	}
@@ -46,7 +46,7 @@ class ApigenRepositoryTest {
 	@Test
 	void givenPersistedRecords_whenSearchedPaginated_thenSearchAll() {
 		Pagination pagination = new Pagination(0, 10);
-		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, null, EMPTY, pagination, true);
+		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, EMPTY, pagination, true, null);
 		ApigenSearchResult<FakeEntityDates> result = datesRepository.search(search);
 		assertEquals(TOTAL_DATES_ENTITIES, result.getSearchResult().size());
 		assertEquals(TOTAL_DATES_ENTITIES, result.getTotal());
@@ -56,7 +56,7 @@ class ApigenRepositoryTest {
 	void givenPersistedRecords_whenSearchedPaginatedSmall_thenSearchPage() {
 		Pagination pagination = new Pagination(0, 1);
 		List<String> orderBy = Collections.singletonList("+oneId");
-		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, null, orderBy, pagination, true);
+		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, orderBy, pagination, true, null);
 		ApigenSearchResult<FakeEntityDates> result = datesRepository.search(search);
 		assertEquals(1, result.getSearchResult().size());
 		assertEquals(PAST_DATE_ENTITY_ID, result.getSearchResult().get(0).getId());
@@ -66,7 +66,7 @@ class ApigenRepositoryTest {
 	@Test
 	void givenPersistedRecords_whenSearchedPaginatedSmallWithoutOrder_thenSearchPageOrderById() {
 		Pagination pagination = new Pagination(0, 1);
-		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, null, null, pagination, true);
+		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, null, pagination, true, null);
 		ApigenSearchResult<FakeEntityDates> result = datesRepository.search(search);
 		assertEquals(1, result.getSearchResult().size());
 		assertEquals(PAST_DATE_ENTITY_ID, result.getSearchResult().get(0).getId());
@@ -76,7 +76,7 @@ class ApigenRepositoryTest {
 	@Test
 	void givenPersistedRecords_whenSearchedPaginatedSmallWithEmptyOrder_thenSearchPageOrderById() {
 		Pagination pagination = new Pagination(0, 1);
-		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, null, EMPTY, pagination, true);
+		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, EMPTY, pagination, true, null);
 		ApigenSearchResult<FakeEntityDates> result = datesRepository.search(search);
 		assertEquals(1, result.getSearchResult().size());
 		assertEquals(PAST_DATE_ENTITY_ID, result.getSearchResult().get(0).getId());
@@ -92,7 +92,7 @@ class ApigenRepositoryTest {
 		value.setProperty("dateTime");
 		value.setValue("2020-02-02T12:00:00.000+01:00");
 		filter.setValues(Collections.singletonList(value));
-		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, filter, EMPTY, pagination, false);
+		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, EMPTY, pagination, false, filter);
 		ApigenSearchResult<FakeEntityDates> result = datesRepository.search(search);
 		assertEquals(1, result.getSearchResult().size());
 		assertEquals(FUTURE_DATE_ENTITY_ID, result.getSearchResult().get(0).getId());
@@ -107,7 +107,7 @@ class ApigenRepositoryTest {
 		value.setProperty("date");
 		value.setValue("2020-02-02");
 		filter.setValues(Collections.singletonList(value));
-		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, filter, EMPTY, pagination, false);
+		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, EMPTY, pagination, false, filter);
 		ApigenSearchResult<FakeEntityDates> result = datesRepository.search(search);
 		assertEquals(1, result.getSearchResult().size());
 		assertEquals(PAST_DATE_ENTITY_ID, result.getSearchResult().get(0).getId());
@@ -116,7 +116,7 @@ class ApigenRepositoryTest {
 	@Test
 	void givenPersistedRecords_whenExpand_thenSuccess() {
 		List<String> expand = Arrays.asList("children", "children.children");
-		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, expand);
+		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, expand, null);
 		FakeEntityNode center = nodeRepository.searchById(CENTER_NODE_ENTITY_ID, search).orElse(null);
 		assertNotNull(center);
 		assertNotNull(center.getChildren());
@@ -131,7 +131,7 @@ class ApigenRepositoryTest {
 	void givenPersistedRecords_whenExpandAndSelect_thenSuccess() {
 		List<String> expand = Arrays.asList("children", "children.children");
 		List<String> select = Arrays.asList("id", "children.id", "children.children.id");
-		ApigenSearch search = new ApigenSearch(select, EMPTY, expand);
+		ApigenSearch search = new ApigenSearch(select, EMPTY, expand, null);
 		FakeEntityNode center = nodeRepository.searchById(CENTER_NODE_ENTITY_ID, search).orElse(null);
 		assertNotNull(center);
 		assertNotNull(center.getChildren());
@@ -162,7 +162,7 @@ class ApigenRepositoryTest {
 		value.setProperty("bDec");
 		value.setValue("0.3333");
 		filter.setValues(Collections.singletonList(value));
-		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, filter, EMPTY, null, false);
+		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, EMPTY, null, false, filter);
 		ApigenSearchResult<FakeEntityBigEntity> result = bigEntityRepository.search(search);
 		assertEquals(2, result.getSearchResult().size());
 	}

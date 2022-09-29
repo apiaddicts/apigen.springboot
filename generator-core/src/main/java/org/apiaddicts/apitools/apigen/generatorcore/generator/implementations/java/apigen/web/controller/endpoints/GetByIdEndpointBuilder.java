@@ -37,8 +37,8 @@ public class GetByIdEndpointBuilder<C extends ApigenContext> extends ApigenAbstr
         TypeName entityType = EntityBuilder.getTypeName(entityName, cfg.getBasePackage());
         TypeName resourceType = ApigenEntityOutputResourceBuilder.getTypeName(entityName, cfg.getBasePackage());
         TypeName responseType = EntitySimpleResponseBuilder.getTypeName(entityName, cfg.getBasePackage());
-        String translatorParams = pathParamsToString(Arrays.asList("select", "exclude", "expand"));
-        String params = pathParamsToString(Arrays.asList("select", "exclude", "expand"));
+        String translatorParams = pathParamsToString(Arrays.asList("select", "exclude", "expand", "null"));
+        String params = pathParamsToString(Arrays.asList("select", "exclude", "expand", "null"));
         builder.addStatement("$L.translate($L, $T.class)", NAMING_TRANSLATOR_NAME, translatorParams, resourceType);
         builder.addStatement("$T searchResult = $L.search($L, $L)", entityType, SERVICE_NAME, pathParams.get(0), params);
         builder.addStatement("$T result = $L.toResource(searchResult)", resourceType, MAPPER_NAME);

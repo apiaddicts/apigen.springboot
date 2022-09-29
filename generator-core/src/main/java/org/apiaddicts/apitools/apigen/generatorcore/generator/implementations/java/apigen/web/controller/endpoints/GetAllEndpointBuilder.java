@@ -52,10 +52,10 @@ public class GetAllEndpointBuilder<C extends ApigenContext> extends ApigenAbstra
         TypeName listResourceType = ParameterizedTypeName.get(ClassName.get(List.class), resourceType);
         TypeName responseType = EntityListResponseBuilder.getTypeName(entityName, cfg.getBasePackage());
         String translatorParams = pathParamsToString(Arrays.asList("select", "exclude", "expand", "orderby"));
-        String params = pathParamsToString(Arrays.asList("select", "exclude", "expand", "filter", "orderby", "init", "limit", "total"));
+        String params = pathParamsToString(Arrays.asList("select", "exclude", "expand", "orderby", "init", "limit", "total", "filter"));
         String pageParams = pathParamsToString(Arrays.asList("init", "limit"));
         if(null != this.endpoint.getResponse().getDefaultStatusCode() && this.endpoint.getResponse().getDefaultStatusCode() == 200){
-            params = pathParamsToString(Arrays.asList("select", "exclude", "expand", "filter", "orderby", "null", "null", "null"));
+            params = pathParamsToString(Arrays.asList("select", "exclude", "expand", "orderby", "null", "null", "null", "filter"));
         }
         builder.addStatement("$L.translate($L, $T.class)", NAMING_TRANSLATOR_NAME, translatorParams, resourceType);
         builder.addStatement("$T searchResult = $L.search($L)", searchResultType, SERVICE_NAME, params);

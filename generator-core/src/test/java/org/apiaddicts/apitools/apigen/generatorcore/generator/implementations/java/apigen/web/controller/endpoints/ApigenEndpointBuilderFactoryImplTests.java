@@ -92,6 +92,14 @@ class ApigenEndpointBuilderFactoryImplTests {
     }
 
     @Test
+    void givenPutMoreLevelsEndpoint_whenAskForBuilder_thenCorrectBuilderIsReturned() {
+        Endpoint endpoint = EndpointObjectMother.standardPutMoreLevels("putMoreLevelsEndpoint", ENTITY_NAME);
+        EndpointBuilder<ApigenContext> endpointBuilder = FACTORY.create(ROOT_MAPPING, endpoint, CTX, CFG);
+
+        assertTrue(endpointBuilder instanceof PutMoreLevelsEndpointBuilder, "Expected PutMoreLevelsEndpointBuilder");
+    }
+
+    @Test
     void givenDeleteEndpoint_whenAskForBuilder_thenCorrectBuilderIsReturned() {
         Endpoint endpoint = EndpointObjectMother.standardDelete("deleteEndpoint", ENTITY_NAME);
         EndpointBuilder<ApigenContext> endpointBuilder = FACTORY.create(ROOT_MAPPING, endpoint, CTX, CFG);

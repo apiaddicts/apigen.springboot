@@ -23,11 +23,34 @@ public class EndpointObjectMother {
         return endpoint;
     }
 
+    public static Endpoint standardPostMoreLevels(String endpointName, String entityName) {
+        List<Parameter> parameters = ParameterObjectMother.createGetAllStandardParameters();
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("id", "integer");
+        parameters.add(0, parameter);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.POST, "/{id}/elements", parameters);
+        endpoint.setRequest(EndpointRequestObjectMother.requestWithoutAttributes(entityName));
+        endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
+        endpoint.setRelatedEntity(entityName);
+        endpoint.setParentEntity("main");
+        return endpoint;
+    }
+
     public static Endpoint standardSearch(String endpointName, String entityName) {
         List<Parameter> parameters = ParameterObjectMother.createGetAllStandardParameters();
         Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.POST, "/search", parameters);
         endpoint.setResponse(EndpointBaseResponseObjectMother.listResponseWithoutAttributesAndCollectionNameEqualsEntityName(entityName));
         endpoint.setRelatedEntity(entityName);
+        return endpoint;
+    }
+
+    public static Endpoint standardSearchMoreLevels(String endpointName, String entityName) {
+        List<Parameter> parameters = ParameterObjectMother.createGetAllStandardParameters();
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("id", "integer");
+        parameters.add(0, parameter);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.POST, "/{id}/elements/search", parameters);
+        endpoint.setResponse(EndpointBaseResponseObjectMother.listResponseWithoutAttributesAndCollectionNameEqualsEntityName(entityName));
+        endpoint.setRelatedEntity(entityName);
+        endpoint.setParentEntity("main");
         return endpoint;
     }
 
@@ -46,6 +69,7 @@ public class EndpointObjectMother {
         Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.GET, "/{id}/elements", parameters);
         endpoint.setResponse(EndpointBaseResponseObjectMother.listResponseWithoutAttributesAndCollectionNameEqualsEntityName(entityName));
         endpoint.setRelatedEntity(entityName);
+        endpoint.setParentEntity("main");
         return endpoint;
     }
 
@@ -68,6 +92,7 @@ public class EndpointObjectMother {
         Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.GET, "/{id}/elements/{idElement}", parameters);
         endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
         endpoint.setRelatedEntity(entityName);
+        endpoint.setParentEntity("main");
         return endpoint;
     }
 
@@ -79,7 +104,20 @@ public class EndpointObjectMother {
         endpoint.setRequest(EndpointRequestObjectMother.requestWithoutAttributes(entityName));
         endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
         endpoint.setRelatedEntity(entityName);
-        ;
+        return endpoint;
+    }
+
+    public static Endpoint standardPutMoreLevels(String endpointName, String entityName) {
+        List<Parameter> parameters = new ArrayList<>();
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("id", "integer");
+        parameters.add(parameter);
+        parameter = ParameterObjectMother.getBasicPathParameter("idElement", "integer");
+        parameters.add(0, parameter);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.PUT, "/{id}/elements/{idElement}", parameters);
+        endpoint.setRequest(EndpointRequestObjectMother.requestWithoutAttributes(entityName));
+        endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
+        endpoint.setRelatedEntity(entityName);
+        endpoint.setParentEntity("main");
         return endpoint;
     }
 
@@ -90,6 +128,19 @@ public class EndpointObjectMother {
         Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.DELETE, "/{id}", parameters);
         endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
         endpoint.setRelatedEntity(entityName);
+        return endpoint;
+    }
+
+    public static Endpoint standardDeleteMoreLevels(String endpointName, String entityName) {
+        List<Parameter> parameters = new ArrayList<>();
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("id", "integer");
+        parameters.add(0, parameter);
+        parameter = ParameterObjectMother.getBasicPathParameter("idElement", "integer");
+        parameters.add(0, parameter);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.DELETE, "/{id}/elements/{idElement}", parameters);
+        endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
+        endpoint.setRelatedEntity(entityName);
+        endpoint.setParentEntity("main");
         return endpoint;
     }
 

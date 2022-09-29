@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class PostSearchEndpointBuilder<C extends ApigenContext> extends ApigenAbstractEndpointBuilder<C> {
+public class PostSearchMoreLevelsEndpointBuilder<C extends ApigenContext> extends ApigenAbstractEndpointBuilder<C> {
 
-    public PostSearchEndpointBuilder(Mapping rootMapping, Endpoint endpoint, C ctx, Configuration cfg) {
+    public PostSearchMoreLevelsEndpointBuilder(Mapping rootMapping, Endpoint endpoint, C ctx, Configuration cfg) {
         super(rootMapping, endpoint, ctx, cfg);
     }
 
@@ -59,15 +59,16 @@ public class PostSearchEndpointBuilder<C extends ApigenContext> extends ApigenAb
         TypeName resourceType = ApigenEntityOutputResourceBuilder.getTypeName(entityName, cfg.getBasePackage());
         TypeName listResourceType = ParameterizedTypeName.get(ClassName.get(List.class), resourceType);
         TypeName responseType = EntityListResponseBuilder.getTypeName(entityName, cfg.getBasePackage());
-        String translatorParams = pathParamsAndFilterToString(Arrays.asList("select", "exclude", "expand", "orderby", "filter"));
-        String params = pathParamsAndFilterToString(Arrays.asList("select", "exclude", "expand", "orderby", "init", "limit", "total", "filter"));
+        String translatorParams = pathParamsAndFilterToString(Arrays.asList("select", "exclude", "expand", "orderby"));
+        String params = pathParamsAndFilterToString(Arrays.asList("select", "exclude", "expand", "orderby", "init", "limit", "total"));
         String pageParams = pathParamsAndFilterToString(Arrays.asList("init", "limit"));
         if(null != this.endpoint.getResponse().getDefaultStatusCode() && this.endpoint.getResponse().getDefaultStatusCode() == 200){
-            params = pathParamsAndFilterToString(Arrays.asList("select", "exclude", "expand", "orderby", "null", "null", "null", "filter"));
+            params = pathParamsAndFilterToString(Arrays.asList("select", "exclude", "expand", "orderby", "null", "null", "null"));
         }
-        builder.addStatement("$T filter = body.getFilter()", filterType);
+        builder.addStatement("$T filter = getParentFilter($L, $L, \"$L\")", filterType, pathParams.get(0), null, endpoint.getChildParentRelationProperty());
+        builder.addStatement("expand = getparentExpand(expand, \"$L\")", endpoint.getParentEntity());
         builder.addStatement("$L.translate($L, $T.class)", NAMING_TRANSLATOR_NAME, translatorParams, resourceType);
-        builder.addStatement("$T searchResult = $L.search($L)", searchResultType, SERVICE_NAME, params);
+        builder.addStatement("$T searchResult = $L.search($L, $L)", searchResultType, SERVICE_NAME, params, "filter");
         builder.addStatement("$T result = $L.toResource(searchResult.getSearchResult())", listResourceType, MAPPER_NAME);
         if(null != this.endpoint.getResponse().getDefaultStatusCode() && this.endpoint.getResponse().getDefaultStatusCode() == 200){
             builder.addStatement("return new $T(result)", responseType);
