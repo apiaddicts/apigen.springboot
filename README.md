@@ -1,11 +1,6 @@
+# Apigen
 
-
-<p align="center">
-	<a href="https://apiaddicts.org/">
-	  <img src="https://apiaddicts.org/logo.png">
-	</a>
-</p>
-# OpenAPI Apigen Extension
+Apigen allow generate springboot archetipe using openapi file as mapping tool between the openapi definition and the database.
 
 # Contributors
 
