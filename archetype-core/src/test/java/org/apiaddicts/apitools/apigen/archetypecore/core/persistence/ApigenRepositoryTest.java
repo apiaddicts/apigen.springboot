@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-@TestPropertySource(properties = {"spring.datasource.initialization-mode=always"})
+@TestPropertySource(properties = {"spring.sql.init.mode=always"})
 class ApigenRepositoryTest {
 
 	private static final List<String> EMPTY = Collections.emptyList();
