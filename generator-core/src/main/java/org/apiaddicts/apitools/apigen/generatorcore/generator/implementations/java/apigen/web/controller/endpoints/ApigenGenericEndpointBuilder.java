@@ -32,14 +32,14 @@ public class ApigenGenericEndpointBuilder<C extends ApigenContext> extends Gener
     protected TypeName getReturnTypeName() {
         Response response = endpoint.getResponse();
         if (response == null || response.getAttributes() == null) return null;
-        TypeName responseType;
+        TypeName responseType = null;
         if (response.getRelatedEntity() != null) {
             if (response.getIsCollection()) {
                 responseType = EntityListResponseBuilder.getTypeName(response.getRelatedEntity(), cfg.getBasePackage());
             } else {
                 responseType = EntitySimpleResponseBuilder.getTypeName(response.getRelatedEntity(), cfg.getBasePackage());
             }
-        } else {
+        } else if(endpoint.getResponse().getMimeType() == null) {
             responseType = GenericOutputResourceBuilder.getTypeName(rootMapping, endpoint, cfg.getBasePackage());
             if (response.getIsCollection()) {
                 responseType = ParameterizedTypeName.get(ClassName.get(List.class), responseType);

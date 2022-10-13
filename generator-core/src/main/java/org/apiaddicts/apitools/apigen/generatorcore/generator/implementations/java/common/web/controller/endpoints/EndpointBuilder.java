@@ -69,6 +69,8 @@ public abstract class EndpointBuilder<C extends JavaContext> extends AbstractJav
         AnnotationSpec.Builder mappingAnnotation = AnnotationSpec.builder(getMappingClass());
         String mappingValue = getMapping();
         if (mappingValue != null) mappingAnnotation.addMember(VALUE, STRING, mappingValue);
+        if (endpoint.getResponse() != null && endpoint.getResponse().getMimeType() != null)
+            mappingAnnotation.addMember("produces", STRING, endpoint.getResponse().getMimeType());
         builder.addAnnotation(mappingAnnotation.build());
     }
 

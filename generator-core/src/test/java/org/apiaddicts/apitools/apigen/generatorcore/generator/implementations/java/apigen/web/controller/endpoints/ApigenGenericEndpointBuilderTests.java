@@ -29,6 +29,13 @@ class ApigenGenericEndpointBuilderTests {
                 ApigenContextObjectMother.create(), ConfigurationObjectMother.create());
         TypeSpec.Builder builder = TypeSpec.classBuilder("Endpoint");
         builderEndpoint.apply(builder);
+
+        Endpoint endPointWithMimeType = EndpointObjectMother.customEndpoint();
+        endPointWithMimeType.getResponse().setMimeType("application/pdf");
+        ApigenGenericEndpointBuilder<ApigenContext>
+                builderEndpointWithMimeType = new ApigenGenericEndpointBuilder<>(new Mapping("/custom"), endPointWithMimeType,
+                ApigenContextObjectMother.create(), ConfigurationObjectMother.create());
+        builderEndpointWithMimeType.apply(builder);
         typeSpec = builder.build();
     }
 
@@ -57,4 +64,28 @@ class ApigenGenericEndpointBuilderTests {
                 "throw new org.apiaddicts.apitools.apigen.archetypecore.exceptions.NotImplementedException(\"POST /endpoint\");\n", methodSpec.code.toString());
     }
 
+    @Test
+    void givenCustomEndpointBuilderWithMimeType_whenBuild_thenHaveMethodSpecIsCorrect() {
+        MethodSpec methodSpec = typeSpec.methodSpecs.get(1);
+        assertFalse(methodSpec.isConstructor());
+        assertEquals("custom", methodSpec.name);
+
+        assertEquals(2, methodSpec.annotations.size());
+        AnnotationSpec annotationSpec = methodSpec.annotations.get(0);
+        assertEquals("@org.springframework.web.bind.annotation.PostMapping(value = \"/endpoint\", produces = \"application/pdf\")", annotationSpec.toString());
+        annotationSpec = methodSpec.annotations.get(1);
+        assertEquals("@org.springframework.web.bind.annotation.ResponseStatus(code = org.springframework.http.HttpStatus.CREATED)", annotationSpec.toString());
+
+        assertEquals(1, methodSpec.modifiers.size());
+        assertEquals("[public]", methodSpec.modifiers.toString());
+
+        assertEquals(1, methodSpec.parameters.size());
+        ParameterSpec parameterSpec = methodSpec.parameters.get(0);
+        assertEquals("[@org.springframework.web.bind.annotation.RequestBody, @javax.validation.Valid]", parameterSpec.annotations.toString());
+        assertEquals("the.group.artifact.custom.web.CreateCustomEndpointResource", parameterSpec.type.toString());
+        assertEquals("body", parameterSpec.name);
+
+        assertEquals("// TODO: Implement this non standard endpoint\n" +
+                "throw new org.apiaddicts.apitools.apigen.archetypecore.exceptions.NotImplementedException(\"POST /endpoint\");\n", methodSpec.code.toString());
+    }
 }
