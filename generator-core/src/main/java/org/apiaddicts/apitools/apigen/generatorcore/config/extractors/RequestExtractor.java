@@ -14,28 +14,28 @@ public class RequestExtractor {
 
     private final AttributesExtractor attributesExtractor;
 
-    public RequestExtractor(Map<String, Schema> schemas) {
+    public RequestExtractor(Map<String, Schema<?>> schemas) {
         this.attributesExtractor = new AttributesExtractor(schemas);
     }
 
     public Request getRequest(Operation operation) {
         RequestBody requestBody = operation.getRequestBody();
         if (requestBody == null || requestBody.getContent().get("application/json") == null) return null;
-        Schema bodySchema = requestBody.getContent().get("application/json").getSchema();
+        Schema<?> bodySchema = requestBody.getContent().get("application/json").getSchema();
         Request request = new Request();
         request.setAttributes(attributesExtractor.getAttributes(bodySchema));
         request.setRelatedEntity(getMappingEntity(bodySchema));
         return request;
     }
 
-    private String getMappingEntity(Schema schema) {
+    private String getMappingEntity(Schema<?> schema) {
         Map<String, Object> apigenExtension = getMappingExtension(schema);
         if (apigenExtension == null) return null;
         return (String) apigenExtension.get(MAPPING_MODEL);
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, Object> getMappingExtension(Schema schema) {
+    private Map<String, Object> getMappingExtension(Schema<?> schema) {
         Map<String, Object> extensions = schema.getExtensions();
         if (extensions == null) return null;
         return (Map<String, Object>) extensions.get(MAPPING);

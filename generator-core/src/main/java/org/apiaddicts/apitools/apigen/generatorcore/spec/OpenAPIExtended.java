@@ -37,8 +37,10 @@ public class OpenAPIExtended {
         this.paths = openAPI.getPaths();
     }
 
-    public Map<String, Schema> getSchemas() {
-        return this.openAPI.getComponents().getSchemas();
+    public Map<String, Schema<?>> getSchemas() {
+        Map<String, Schema<?>> schemas = new HashMap<>();
+        this.openAPI.getComponents().getSchemas().forEach(schemas::put);
+        return schemas;
     }
 
     private ApigenProject getProject(OpenAPI openAPI) {

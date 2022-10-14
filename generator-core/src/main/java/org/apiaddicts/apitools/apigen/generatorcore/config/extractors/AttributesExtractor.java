@@ -14,21 +14,21 @@ public class AttributesExtractor {
 
     private static final int MAX_DEPTH_LEVEL = 10;
 
-    private Map<String, Schema> schemas;
+    private final Map<String, Schema<?>> schemas;
     private final ValidationsExtractor validationsExtractor;
 
-    public AttributesExtractor(Map<String, Schema> schemas) {
+    public AttributesExtractor(Map<String, Schema<?>> schemas) {
         this.schemas = schemas;
         this.validationsExtractor = new ValidationsExtractor();
     }
 
 
     @SuppressWarnings("unchecked")
-    public List<Attribute> getFirstLvlAttributes(Schema schema) {
+    public List<Attribute> getFirstLvlAttributes(Schema<?> schema) {
         List<Attribute> attributes = new ArrayList<>();
-        for (Map.Entry<String, Schema> property : (Set<Map.Entry<String, Schema>>) schema.getProperties().entrySet()) {
+        for (Map.Entry<String, Schema> property : schema.getProperties().entrySet()) {
             String propName = property.getKey();
-            Schema propSchema = property.getValue();
+            Schema<?> propSchema = property.getValue();
 
             Attribute attribute = new Attribute();
             attribute.setName(propName);
@@ -61,21 +61,21 @@ public class AttributesExtractor {
         return attributes;
     }
 
-    public List<Attribute> getAttributes(Schema schema) {
+    public List<Attribute> getAttributes(Schema<?> schema) {
         return getAttributes(schema, 0);
     }
 
     @SuppressWarnings("unchecked")
-    private List<Attribute> getAttributes(Schema schema, int level) {
+    private List<Attribute> getAttributes(Schema<?> schema, int level) {
 
         List<Attribute> attributes = new ArrayList<>();
         if (schema.getProperties() == null || level > MAX_DEPTH_LEVEL) return attributes;
         List<String> required = schema.getRequired();
         if (required == null) required = Collections.emptyList();
 
-        for (Map.Entry<String, Schema> property : (Set<Map.Entry<String, Schema>>) schema.getProperties().entrySet()) {
+        for (Map.Entry<String, Schema> property : schema.getProperties().entrySet()) {
             String propName = property.getKey();
-            Schema propSchema = property.getValue();
+            Schema<?> propSchema = property.getValue();
 
             Attribute attribute = new Attribute();
             attribute.setName(propName);
@@ -85,7 +85,7 @@ public class AttributesExtractor {
 
             if (isCollection) {
                 attribute.setValidations(validationsExtractor.getValidations(propSchema, required.contains(propName)));
-                propSchema = ((ArraySchema) propSchema).getItems();
+                propSchema = propSchema.getItems();
             } else {
                 attribute.setValidations(validationsExtractor.getValidations(propSchema, required.contains(propName)));
             }
@@ -113,27 +113,27 @@ public class AttributesExtractor {
         return (String) extensions.get(TYPE);
     }
 
-    private String getMappingEntity(Schema schema) {
+    private String getMappingEntity(Schema<?> schema) {
         Map<String, Object> apigenExtension = getMappingExtension(schema);
         if (apigenExtension == null) return null;
         return (String) apigenExtension.get(MAPPING_MODEL);
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, Object> getMappingExtension(Schema schema) {
+    private Map<String, Object> getMappingExtension(Schema<?> schema) {
         Map<String, Object> extensions = schema.getExtensions();
         if (extensions == null) return null;
         return (Map<String, Object>) extensions.get(MAPPING);
     }
 
-    private String getEntityFieldName(Schema schema, String defaultName) {
+    private String getEntityFieldName(Schema<?> schema, String defaultName) {
         Map<String, Object> apigenExtension = getMappingExtension(schema);
         defaultName = CustomStringUtils.snakeCaseToCamelCase(defaultName);
         if (apigenExtension == null) return defaultName;
         return (String) apigenExtension.getOrDefault(MAPPING_FIELD, defaultName);
     }
 
-    private Schema solveSchema(Schema schema) {
+    private Schema<?> solveSchema(Schema<?> schema) {
         if (schema.get$ref() == null) return schema;
         String schemaName = schema.get$ref();
         schemaName = schemaName.substring(schemaName.lastIndexOf('/') + 1);

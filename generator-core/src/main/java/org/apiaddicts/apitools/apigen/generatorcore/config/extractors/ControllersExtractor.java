@@ -23,7 +23,7 @@ public class ControllersExtractor {
     private final RequestExtractor requestExtractor;
     private final ResponseExtractor responseExtractor;
 
-    public ControllersExtractor(Map<String, Schema> schemas) {
+    public ControllersExtractor(Map<String, Schema<?>> schemas) {
         this.parametersExtractor = new ParametersExtractor();
         this.requestExtractor = new RequestExtractor(schemas);
         this.responseExtractor = new ResponseExtractor(schemas);

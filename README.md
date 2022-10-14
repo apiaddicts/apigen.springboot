@@ -20,7 +20,7 @@ CloudAppi is one leader in APIs in global word. See the [CloudAPPi Services](htt
 version: "3.3"
 services:
   apigen:
-    image: "apiaddicts/apitools-apigen:0.3.0-RC3"
+    image: "apiaddicts/apitools-apigen:0.3.0-rc3"
     ports:
       - "8080:8080"
 ```
