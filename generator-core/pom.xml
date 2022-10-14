@@ -36,7 +36,7 @@
     </scm>
 
     <properties>
-        <archunit.version>1.0.0-rc1</archunit.version>
+        <archunit.version>1.0.0</archunit.version>
     </properties>
 
     <dependencies>
