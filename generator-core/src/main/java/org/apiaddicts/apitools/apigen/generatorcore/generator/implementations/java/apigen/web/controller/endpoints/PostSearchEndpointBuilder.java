@@ -59,11 +59,11 @@ public class PostSearchEndpointBuilder<C extends ApigenContext> extends ApigenAb
         TypeName resourceType = ApigenEntityOutputResourceBuilder.getTypeName(entityName, cfg.getBasePackage());
         TypeName listResourceType = ParameterizedTypeName.get(ClassName.get(List.class), resourceType);
         TypeName responseType = EntityListResponseBuilder.getTypeName(entityName, cfg.getBasePackage());
-        String translatorParams = pathParamsAndFilterToString(Arrays.asList("select", "exclude", "expand", "orderby", "filter"));
-        String params = pathParamsAndFilterToString(Arrays.asList("select", "exclude", "expand", "orderby", "init", "limit", "total", "filter"));
+        String translatorParams = pathParamsAndFilterToString(Arrays.asList("select", "exclude", "expand", "filter", "orderby"));
+        String params = pathParamsAndFilterToString(Arrays.asList("select", "exclude", "expand", "filter", "orderby", "init", "limit", "total"));
         String pageParams = pathParamsAndFilterToString(Arrays.asList("init", "limit"));
         if(null != this.endpoint.getResponse().getDefaultStatusCode() && this.endpoint.getResponse().getDefaultStatusCode() == 200){
-            params = pathParamsAndFilterToString(Arrays.asList("select", "exclude", "expand", "orderby", "null", "null", "null", "filter"));
+            params = pathParamsAndFilterToString(Arrays.asList("select", "exclude", "expand", "filter", "orderby", "null", "null", "null"));
         }
         builder.addStatement("$T filter = body.getFilter()", filterType);
         builder.addStatement("$L.translate($L, $T.class)", NAMING_TRANSLATOR_NAME, translatorParams, resourceType);

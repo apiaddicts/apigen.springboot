@@ -61,7 +61,7 @@ public class PutMoreLevelsEndpointBuilder<C extends ApigenContext> extends Apige
         builder.addStatement("$L.search(Long.valueOf($L), null, null, $L, $L)", SERVICE_NAME, pathParams.get(1), "expand", "filter");
         builder.addStatement("$T updateRequest = $L.toEntity(body)", entityType, MAPPER_NAME);
         builder.addStatement("$L.update(Long.valueOf($L), updateRequest, updatedFields)", SERVICE_NAME, pathParams.get(1));
-        builder.addStatement("$T createResult = $L.search(Long.valueOf($L), null, null, null, null)", entityType, SERVICE_NAME, pathParams.get(1));
+        builder.addStatement("$T createResult = $L.search(Long.valueOf($L), null, null, null)", entityType, SERVICE_NAME, pathParams.get(1));
         builder.addStatement("$T result = $L.toResource(createResult)", resourceType, MAPPER_NAME);
         builder.addStatement("return new $T(result)", responseType);
     }

@@ -88,7 +88,7 @@ class PostMoreLevelsEndpointBuilderTests {
         assertEquals("the.group.artifact.entityname.EntityName createRequest = mapper.toEntity(body);\n" +
                 "createRequest.setmain(new the.group.artifact.main.main(id));\n" +
                 "service.create(createRequest);\n" +
-                "the.group.artifact.entityname.EntityName createResult = service.search(createRequest.getId(), null, null, null, null);\n" +
+                "the.group.artifact.entityname.EntityName createResult = service.search(createRequest.getId(), null, null, null);\n" +
                 "the.group.artifact.entityname.web.EntityNameOutResource result = mapper.toResource(createResult);\n" +
                 "return new the.group.artifact.entityname.web.EntityNameResponse(result);\n", methodSpec.code.toString());
     }

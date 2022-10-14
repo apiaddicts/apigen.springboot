@@ -67,6 +67,11 @@ public abstract class AbstractReadService<E extends ApigenAbstractPersistable<K>
 	}
 
 	@Transactional(readOnly = true)
+	public E search(K id, List<String> select, List<String> exclude, List<String> expand) {
+		return search(id, select, exclude, expand, null);
+	}
+
+	@Transactional(readOnly = true)
 	public E search(K id, List<String> select, List<String> exclude, List<String> expand, Filter filter) {
 		Assert.notNull(id, "The argument id cannot be null");
 		ApigenSearch search = new ApigenSearch(select, exclude, expand, filter);
@@ -74,13 +79,13 @@ public abstract class AbstractReadService<E extends ApigenAbstractPersistable<K>
 	}
 
 	@Transactional(readOnly = true)
-	public ApigenSearchResult<E> search(List<String> select, List<String> exclude, List<String> expand, List<String> orderBy, Integer init, Integer limit, Boolean total, Filter filter) { // NOSONAR
+	public ApigenSearchResult<E> search(List<String> select, List<String> exclude, List<String> expand, Filter filter, List<String> orderBy, Integer init, Integer limit, Boolean total) { // NOSONAR
 		Pagination pagination = null;
 		if (init != null && limit != null) {
 			pagination = new Pagination(init, limit);
 		}
 		if (total == null) total = false;
-		ApigenSearch search = new ApigenSearch(select, exclude, expand, orderBy, pagination, total, filter);
+		ApigenSearch search = new ApigenSearch(select, exclude, expand, filter, orderBy, pagination, total);
 		search.setTotal(total);
 		return repository.search(search);
 	}

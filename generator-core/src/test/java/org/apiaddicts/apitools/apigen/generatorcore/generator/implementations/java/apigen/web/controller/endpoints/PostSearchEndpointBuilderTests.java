@@ -130,8 +130,8 @@ class PostSearchEndpointBuilderTests {
         assertEquals("body", parameterSpec.name);
 
         assertEquals("org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = body.getFilter();\n" +
-                "namingTranslator.translate(select, exclude, expand, orderby, filter, the.group.artifact.entityname.web.EntityNameOutResource.class);\n" +
-                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenSearchResult<the.group.artifact.entityname.EntityName> searchResult = service.search(select, exclude, expand, orderby, init, limit, total, filter);\n" +
+                "namingTranslator.translate(select, exclude, expand, filter, orderby, the.group.artifact.entityname.web.EntityNameOutResource.class);\n" +
+                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenSearchResult<the.group.artifact.entityname.EntityName> searchResult = service.search(select, exclude, expand, filter, orderby, init, limit, total);\n" +
                 "java.util.List<the.group.artifact.entityname.web.EntityNameOutResource> result = mapper.toResource(searchResult.getSearchResult());\n" +
                 "return new the.group.artifact.entityname.web.EntityNameListResponse(result).withMetadataPagination(init, limit, searchResult.getTotal());\n", methodSpec.code.toString());
     }
@@ -191,8 +191,8 @@ class PostSearchEndpointBuilderTests {
         assertEquals("body", parameterSpec.name);
 
         assertEquals("org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = body.getFilter();\n" +
-                "namingTranslator.translate(select, exclude, expand, orderby, filter, the.group.artifact.entityname.web.EntityNameOutResource.class);\n" +
-                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenSearchResult<the.group.artifact.entityname.EntityName> searchResult = service.search(select, exclude, expand, orderby, null, null, null, filter);\n" +
+                "namingTranslator.translate(select, exclude, expand, filter, orderby, the.group.artifact.entityname.web.EntityNameOutResource.class);\n" +
+                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenSearchResult<the.group.artifact.entityname.EntityName> searchResult = service.search(select, exclude, expand, filter, orderby, null, null, null);\n" +
                 "java.util.List<the.group.artifact.entityname.web.EntityNameOutResource> result = mapper.toResource(searchResult.getSearchResult());\n" +
                 "return new the.group.artifact.entityname.web.EntityNameListResponse(result);\n", methodSpec.code.toString());
     }

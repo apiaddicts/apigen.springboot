@@ -100,14 +100,14 @@ class PutMoreLevelsEndpointBuilderTests {
         parameterSpec = methodSpec.parameters.get(2);
         assertEquals("[@org.springframework.web.bind.annotation.RequestBody, @javax.validation.Valid]", parameterSpec.annotations.toString());
         assertEquals("the.group.artifact.entityname.web.UpdateEntityNameByIdElementsByIdelementResource", parameterSpec.type.toString());
-        assertEquals("body", parameterSpec.name);        
+        assertEquals("body", parameterSpec.name);
 
         assertEquals("org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(idelement, null, \"null\");\n" +
                 "List<String> expand = getparentExpand(null, \"main\");\n" +
                 "service.search(Long.valueOf(id), null, null, expand, filter);\n" +
                 "the.group.artifact.entityname.EntityName updateRequest = mapper.toEntity(body);\n" +
                 "service.update(Long.valueOf(id), updateRequest, updatedFields);\n" +
-                "the.group.artifact.entityname.EntityName createResult = service.search(Long.valueOf(id), null, null, null, null);\n" +
+                "the.group.artifact.entityname.EntityName createResult = service.search(Long.valueOf(id), null, null, null);\n" +
                 "the.group.artifact.entityname.web.EntityNameOutResource result = mapper.toResource(createResult);\n" +
                 "return new the.group.artifact.entityname.web.EntityNameResponse(result);\n", methodSpec.code.toString());
     }

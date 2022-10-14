@@ -52,7 +52,7 @@ public class PostMoreLevelsEndpointBuilder<C extends ApigenContext> extends Apig
         builder.addStatement("$T createRequest = $L.toEntity(body)", entityType, MAPPER_NAME);
         builder.addStatement("createRequest.$L(new $T($L))", "set" + endpoint.getParentEntity(), parentEntityType, pathParams.get(0));
         builder.addStatement("$L.create(createRequest)", SERVICE_NAME);
-        builder.addStatement("$T createResult = $L.search(createRequest.getId(), null, null, null, null)", entityType, SERVICE_NAME);
+        builder.addStatement("$T createResult = $L.search(createRequest.getId(), null, null, null)", entityType, SERVICE_NAME);
         builder.addStatement("$T result = $L.toResource(createResult)", resourceType, MAPPER_NAME);
         builder.addStatement("return new $T(result)", responseType);
     }
