@@ -4,6 +4,7 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
+import java.util.Collections;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Response;
 
 import java.util.Map;
@@ -14,7 +15,7 @@ public class ResponseExtractor {
 
     private final AttributesExtractor attributesExtractor;
 
-    public ResponseExtractor(Map<String, Schema> schemas) {
+    public ResponseExtractor(Map<String, Schema<?>> schemas) {
         this.attributesExtractor = new AttributesExtractor(schemas);
     }
 
@@ -70,7 +71,7 @@ public class ResponseExtractor {
         return endpointResponse;
     }
 
-    private boolean isStandardResponse(Schema schema) {
+    private boolean isStandardResponse(Schema<?> schema) {
         if (schema.getExtensions() != null && schema.getExtensions().containsKey(RESPONSE)) {
             Map<String, Object> apigenResponse = (Map<String, Object>) schema.getExtensions().get(RESPONSE);
             if (apigenResponse != null && apigenResponse.containsKey(RESPONSE_STANDARD)
@@ -102,26 +103,25 @@ public class ResponseExtractor {
         return dataProperty;
     }
 
-    private boolean isNamedCollectionSchema(Schema dataSchema) {
+    private boolean isNamedCollectionSchema(Schema<?> dataSchema) {
         if (dataSchema.getProperties().size() != 1) return false;
         String key = getNamedCollectionName(dataSchema);
         return dataSchema.getProperties().get(key) instanceof ArraySchema;
     }
 
-    private String getNamedCollectionName(Schema dataSchema) {
-        return (String) dataSchema.getProperties().keySet().iterator().next();
+    private String getNamedCollectionName(Schema<?> dataSchema) {
+        return dataSchema.getProperties().keySet().iterator().next();
     }
 
-    private String getMappingEntity(Schema schema) {
+    private String getMappingEntity(Schema<?> schema) {
         Map<String, Object> apigenExtension = getMappingExtension(schema);
-        if (apigenExtension == null) return null;
         return (String) apigenExtension.get(MAPPING_MODEL);
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, Object> getMappingExtension(Schema schema) {
+    private Map<String, Object> getMappingExtension(Schema<?> schema) {
         Map<String, Object> extensions = schema.getExtensions();
-        if (extensions == null) return null;
+        if (extensions == null) return Collections.emptyMap();
         return (Map<String, Object>) extensions.get(MAPPING);
     }
 }

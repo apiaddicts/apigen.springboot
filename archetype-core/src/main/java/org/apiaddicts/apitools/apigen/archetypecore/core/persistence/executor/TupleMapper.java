@@ -19,12 +19,12 @@ public class TupleMapper {
 
 	private static final String ROOT_PATH = null;
 
-	private Class clazz;
-	private EntityInfo entityData;
-	private EntityLookup lookup;
+	private final Class<?> clazz;
+	private final EntityInfo entityData;
+	private final EntityLookup lookup;
 	private List<EntityAttributesGroup> groups;
 
-	public TupleMapper(List<String> fields, EntityInfo entityData, Class clazz) {
+	public TupleMapper(List<String> fields, EntityInfo entityData, Class<?> clazz) {
 		this.clazz = clazz;
 		this.entityData = entityData;
 		this.lookup = new EntityLookup();
@@ -71,10 +71,10 @@ public class TupleMapper {
 	public <T> List<T> map(List<Tuple> result) {
 		List<Serializable> rootIds = new ArrayList<>();
 		for (Tuple tuple : result) {
-			Map<String, ApigenAbstractPersistable> tupleEntities = new HashMap<>();
+			Map<String, ApigenAbstractPersistable<?>> tupleEntities = new HashMap<>();
 			for (EntityAttributesGroup group : groups) {
 				String fieldId = group.getFieldId();
-				ApigenAbstractPersistable entity = createInstance(group.path, clazz);
+				ApigenAbstractPersistable<?> entity = createInstance(group.path, clazz);
 				tupleEntities.put(group.path, entity);
 				for (OrderedField orderedField : group.simpleFields) {
 					if (isRootPath(group.path) && orderedField.field.equals(fieldId)) {
@@ -98,26 +98,26 @@ public class TupleMapper {
 	 * @return instance of the entity class of the attribute
 	 */
 	@SuppressWarnings("unchecked")
-	private ApigenAbstractPersistable<? extends Serializable> createInstance(String path, Class clazz) {
+	private ApigenAbstractPersistable<? extends Serializable> createInstance(String path, Class<?> clazz) {
 		try {
-			return (ApigenAbstractPersistable) entityData.getClass(path, clazz).getConstructor().newInstance();
+			return (ApigenAbstractPersistable<?>) entityData.getClass(path, clazz).getConstructor().newInstance();
 		} catch (Exception e) {
 			log.error("Attribute '{}' of entity {} can not be instanced", path, clazz, e);
 			throw new RuntimeException(e);
 		}
 	}
 
-	private void addToParent(ApigenAbstractPersistable entity, String path, Map<String, ApigenAbstractPersistable> instanced, EntityLookup lookup) {
+	private void addToParent(ApigenAbstractPersistable<?> entity, String path, Map<String, ApigenAbstractPersistable<?>> instanced, EntityLookup lookup) {
 		if (isRootPath(path)) return;
 		boolean isNested = path.contains(".");
 		String key = isNested ? path.substring(0, path.lastIndexOf('.')) : null;
 		String attributeName = isNested ? path.substring(path.lastIndexOf('.') + 1) : path;
-		ApigenAbstractPersistable parent = instanced.get(key);
-		ApigenAbstractPersistable trueParent = lookup.get(parent, key);
+		ApigenAbstractPersistable<?> parent = instanced.get(key);
+		ApigenAbstractPersistable<?> trueParent = lookup.get(parent, key);
 		addIfAbsent(trueParent, attributeName, entity);
 	}
 
-	private void addIfAbsent(ApigenAbstractPersistable entity, String attribute, Object value) {
+	private void addIfAbsent(ApigenAbstractPersistable<?> entity, String attribute, Object value) {
 		try {
 			Object currentValue = PropertyUtils.getSimpleProperty(entity, attribute);
 			AttributeInfo attributeInfo = entityData.getAttributeInfo(entity, attribute);
@@ -132,10 +132,10 @@ public class TupleMapper {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void addIfAbsentCollection(ApigenAbstractPersistable entity, String attribute, Object value, Object currentValue, boolean isSet) {
-		Collection collection = (Collection) currentValue;
+	private void addIfAbsentCollection(ApigenAbstractPersistable<?> entity, String attribute, Object value, Object currentValue, boolean isSet) {
+		Collection<Object> collection = (Collection<Object>) currentValue;
 		if (collection == null) {
-			collection = isSet ? new HashSet() : new ArrayList();
+			collection = isSet ? new HashSet<>() : new ArrayList<>();
 			setFieldValue(entity, attribute, collection);
 		}
 		if (!collection.contains(value)) {
@@ -143,13 +143,13 @@ public class TupleMapper {
 		}
 	}
 
-	private void addIfAbsentObject(ApigenAbstractPersistable entity, String attribute, Object value, Object currentValue) {
+	private void addIfAbsentObject(ApigenAbstractPersistable<?> entity, String attribute, Object value, Object currentValue) {
 		if (currentValue == null) {
 			setFieldValue(entity, attribute, value);
 		}
 	}
 
-	private void setFieldValue(ApigenAbstractPersistable instance, String field, Object value) {
+	private void setFieldValue(ApigenAbstractPersistable<?> instance, String field, Object value) {
 		try {
 			BeanUtils.copyProperty(instance, field, value);
 		} catch (Exception e) {

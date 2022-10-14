@@ -48,16 +48,16 @@ public class ApigenControllerAdvice {
 	@ResponseBody
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ApiResponse requiredQueryParamNotFound(MissingServletRequestParameterException ex) {
+	public ApiResponse<Void> requiredQueryParamNotFound(MissingServletRequestParameterException ex) {
 		String paramName = ex.getParameterName();
 		ApiError error = errorManager.getError(DefaultApigenError.QUERY_PARAM_REQUIRED, paramName);
-		return new ApiResponse().withResultErrors(errors(error));
+		return new ApiResponse<Void>().withResultErrors(errors(error));
 	}
 
 	@ResponseBody
 	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ApiResponse queryParamNotValid(ConstraintViolationException ex) {
+	public ApiResponse<Void> queryParamNotValid(ConstraintViolationException ex) {
 		List<ApiError> errors = new ArrayList<>();
 		for (ConstraintViolation violation : ex.getConstraintViolations()) {
 			String path = violation.getPropertyPath().toString();
@@ -77,13 +77,13 @@ public class ApigenControllerAdvice {
 			Object[] args = violation.getExecutableParameters();
 			errors.add(getValidationError(fieldName, code, args));
 		}
-		return new ApiResponse().withResultErrors(errors);
+		return new ApiResponse<Void>().withResultErrors(errors);
 	}
 
 	@ResponseBody
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ApiResponse mismatch(MethodArgumentTypeMismatchException ex) {
+	public ApiResponse<Void> mismatch(MethodArgumentTypeMismatchException ex) {
 		Parameter parameter = ex.getParameter().getParameter();
 		String variableName = parameter.getName();
 		if (parameter.isAnnotationPresent(PathVariable.class)) {
@@ -91,13 +91,13 @@ public class ApigenControllerAdvice {
 			if (!pathVariable.value().trim().equals("")) variableName = pathVariable.value();
 		}
 		ApiError error = errorManager.getError(DefaultApigenError.PATH_VARIABLE_ERROR, variableName);
-		return new ApiResponse().withResultErrors(errors(error));
+		return new ApiResponse<Void>().withResultErrors(errors(error));
 	}
 
 	@ResponseBody
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ApiResponse argumentNotValid(MethodArgumentNotValidException ex) {
+	public ApiResponse<Void> argumentNotValid(MethodArgumentNotValidException ex) {
 		List<ApiError> errors = new ArrayList<>();
 		Object target = ex.getBindingResult().getTarget();
 		Class clazz = target.getClass();
@@ -108,7 +108,7 @@ public class ApigenControllerAdvice {
 			ApiError error = getValidationError(field, code, fieldError.getArguments());
 			errors.add(error);
 		}
-		return new ApiResponse().withResultErrors(errors);
+		return new ApiResponse<Void>().withResultErrors(errors);
 	}
 
 	private ApiError getValidationError(String field, String code, Object[] args) {
@@ -195,7 +195,7 @@ public class ApigenControllerAdvice {
 	@ResponseBody
 	@ExceptionHandler(InvalidPropertyPath.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ApiResponse requiredQueryParamNotFound(InvalidPropertyPath ex) {
+	public ApiResponse<Void> requiredQueryParamNotFound(InvalidPropertyPath ex) {
 		List<ApiError> errors = new ArrayList<>();
 		for (String path : ex.getInvalidSelectPath()) {
 			errors.add(errorManager.getError(DefaultApigenError.BAD_PROPERTY_IN_SELECT, path));
@@ -215,29 +215,29 @@ public class ApigenControllerAdvice {
 		for (String path : ex.getInvalidOrderByToManyPath()) {
 			errors.add(errorManager.getError(DefaultApigenError.PROPERTY_NOT_ALLOWED_IN_ORDER_BY, path));
 		}
-		return new ApiResponse().withResultErrors(errors);
+		return new ApiResponse<Void>().withResultErrors(errors);
 	}
 
 	@ResponseBody
 	@ExceptionHandler(EntityNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public ApiResponse entityNotFound(EntityNotFoundException ex) {
+	public ApiResponse<Void> entityNotFound(EntityNotFoundException ex) {
 		ApiError error = errorManager.getError(DefaultApigenError.ELEMENT_NOT_FOUND, ex.getId().toString(), ex.getClazz().getSimpleName());
-		return new ApiResponse().withResultErrors(errors(error));
+		return new ApiResponse<Void>().withResultErrors(errors(error));
 	}
 	
 	@ResponseBody
 	@ExceptionHandler(EntityIdAlreadyInUseException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ApiResponse existingId(EntityIdAlreadyInUseException ex) {
+	public ApiResponse<Void> existingId(EntityIdAlreadyInUseException ex) {
 		ApiError error = errorManager.getError(DefaultApigenError.EXISTING_ID_ERROR, ex.getId().toString(), ex.getClazz().getSimpleName());
-		return new ApiResponse().withResultErrors(errors(error));
+		return new ApiResponse<Void>().withResultErrors(errors(error));
 	}
 
 	@ResponseBody
 	@ExceptionHandler(RelationalErrorsException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ApiResponse relatedEntitiesNotFound(RelationalErrorsException ex) {
+	public ApiResponse<Void> relatedEntitiesNotFound(RelationalErrorsException ex) {
 		List<ApiError> errors = ex.getRelationalErrors().getErrors().stream()
 				.map(e -> errorManager.getError(
 						DefaultApigenError.RELATED_ELEMENT_NOT_FOUND,
@@ -245,55 +245,55 @@ public class ApigenControllerAdvice {
 						e.getClazz().getSimpleName()
 				))
 				.collect(Collectors.toList());
-		return new ApiResponse().withResultErrors(errors);
+		return new ApiResponse<Void>().withResultErrors(errors);
 	}
 
 	@ResponseBody
 	@ExceptionHandler(CustomApigenException.class)
-	public ResponseEntity<ApiResponse> customException(CustomApigenException ex) {
+	public ResponseEntity<ApiResponse<Void>> customException(CustomApigenException ex) {
 		List<ApiError> errors = ex.getErrors().stream().
 				map(error -> errorManager.getError(error.getKey(), error.getElement(), error.getOtherElements()))
 				.collect(Collectors.toList());
-		ApiResponse response = new ApiResponse().withResultErrors(errors);
+		ApiResponse<Void> response = new ApiResponse<Void>().withResultErrors(errors);
 		return new ResponseEntity<>(response, ex.getHttpStatus());
 	}
 
 	@ResponseBody
 	@ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ApiResponse acceptMediaTypeNotSupported(HttpMediaTypeNotAcceptableException ex) {
+	public ApiResponse<Void> acceptMediaTypeNotSupported(HttpMediaTypeNotAcceptableException ex) {
 		ApiError error = errorManager.getError(DefaultApigenError.UNSUPPORTED_ACCEPT_FORMAT, null, ex.getSupportedMediaTypes());
-		return new ApiResponse().withResultErrors(errors(error));
+		return new ApiResponse<Void>().withResultErrors(errors(error));
 	}
 
 	@ResponseBody
 	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ApiResponse contentTypeMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex) {
+	public ApiResponse<Void> contentTypeMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex) {
 		ApiError error = errorManager.getError(DefaultApigenError.UNSUPPORTED_CONTENT_TYPE_FORMAT, null, ex.getContentType().toString());
-		return new ApiResponse().withResultErrors(errors(error));
+		return new ApiResponse<Void>().withResultErrors(errors(error));
 	}
 
 	@ResponseBody
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ApiResponse requiredBodyNotFound(HttpMessageNotReadableException ex) {
+	public ApiResponse<Void> requiredBodyNotFound(HttpMessageNotReadableException ex) {
 		Throwable cause = ex.getCause();
 		if (cause instanceof InvalidFormatException) {
-			ApiResponse response = getResponseFromInvalidFormatException((InvalidFormatException) cause);
+			ApiResponse<Void> response = getResponseFromInvalidFormatException((InvalidFormatException) cause);
 			if (response != null) return response;
 		}
 		log.error("Body error", ex);
 		ApiError error = errorManager.getError(DefaultApigenError.EMPTY_REQUEST_BODY);
-		return new ApiResponse().withResultErrors(errors(error));
+		return new ApiResponse<Void>().withResultErrors(errors(error));
 	}
 
-	private ApiResponse getResponseFromInvalidFormatException(InvalidFormatException exception) {
+	private ApiResponse<Void> getResponseFromInvalidFormatException(InvalidFormatException exception) {
 		Throwable cause = exception.getCause();
 		if (cause instanceof DateTimeParseException) {
 			DateTimeParseException explicit = (DateTimeParseException) cause;
 			ApiError error = errorManager.getError(DefaultApigenError.ERROR_PARSING_ISO_DATE, explicit.getParsedString());
-			return new ApiResponse().withResultErrors(errors(error));
+			return new ApiResponse<Void>().withResultErrors(errors(error));
 		}
 		String message = exception.getMessage();
 		if (message.contains("Enum class")) {
@@ -303,7 +303,7 @@ public class ApigenControllerAdvice {
 				String values = message.substring(s + 1, e);
 				Object currentValue = exception.getValue();
 				ApiError error = errorManager.getError(DefaultApigenError.UNSUPPORTED_VALUE, currentValue.toString(), values);
-				return new ApiResponse().withResultErrors(errors(error));
+				return new ApiResponse<Void>().withResultErrors(errors(error));
 			}
 		}
 		return null;
@@ -312,33 +312,33 @@ public class ApigenControllerAdvice {
 	@ResponseBody
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 	@ResponseStatus(HttpStatus.NOT_IMPLEMENTED)
-	public ApiResponse methodNotSupported(HttpRequestMethodNotSupportedException ex) {
+	public ApiResponse<Void> methodNotSupported(HttpRequestMethodNotSupportedException ex) {
 		ApiError error = errorManager.getError(DefaultApigenError.METHOD_NOT_IMPLEMENTED, ex.getMethod());
-		return new ApiResponse().withResultErrors(errors(error));
+		return new ApiResponse<Void>().withResultErrors(errors(error));
 	}
 
 	@ResponseBody
 	@ExceptionHandler(NotImplementedException.class)
 	@ResponseStatus(HttpStatus.NOT_IMPLEMENTED)
-	public ApiResponse methodNotImplemented(NotImplementedException ex) {
+	public ApiResponse<Void> methodNotImplemented(NotImplementedException ex) {
 		ApiError error = errorManager.getError(DefaultApigenError.METHOD_NOT_IMPLEMENTED, ex.getMessage());
-		return new ApiResponse().withResultErrors(errors(error));
+		return new ApiResponse<Void>().withResultErrors(errors(error));
 	}
 
 	@ResponseBody
 	@ExceptionHandler(NoHandlerFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public ApiResponse handlerNotFound(NoHandlerFoundException ex) {
+	public ApiResponse<Void> handlerNotFound(NoHandlerFoundException ex) {
 		ApiError error = errorManager.getError(DefaultApigenError.PATH_NOT_IMPLEMENTED, ex.getRequestURL());
-		return new ApiResponse().withResultErrors(errors(error));
+		return new ApiResponse<Void>().withResultErrors(errors(error));
 	}
 
 	@ResponseBody
 	@ExceptionHandler(PatternSyntaxException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ApiResponse handleRegexException(PatternSyntaxException ex) {
+	public ApiResponse<Void> handleRegexException(PatternSyntaxException ex) {
 		ApiError error = errorManager.getError(DefaultApigenError.INVALID_REGEX_EXPRESSION, ex.getPattern());
-		return new ApiResponse().withResultErrors(errors(error));
+		return new ApiResponse<Void>().withResultErrors(errors(error));
 	}
 
 	@ResponseBody
@@ -352,16 +352,16 @@ public class ApigenControllerAdvice {
 		} else {
 			return new ResponseEntity<>(exception(ex), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<>(new ApiResponse().withResultErrors(errors(error)), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(new ApiResponse<Void>().withResultErrors(errors(error)), HttpStatus.BAD_REQUEST);
 	}
 
 	@ResponseBody
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public ApiResponse exception(Exception ex) {
+	public ApiResponse<Void> exception(Exception ex) {
 		log.error("Unexpected error", ex);
 		ApiError error = errorManager.getError(DefaultApigenError.UNEXPECTED_ERROR);
-		return new ApiResponse().withResultErrors(errors(error));
+		return new ApiResponse<Void>().withResultErrors(errors(error));
 	}
 
 	private List<ApiError> errors(ApiError... apiErrors) {

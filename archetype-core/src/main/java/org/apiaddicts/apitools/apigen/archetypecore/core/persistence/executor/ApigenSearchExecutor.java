@@ -24,8 +24,8 @@ import static org.apiaddicts.apitools.apigen.archetypecore.core.persistence.func
 @Slf4j
 public class ApigenSearchExecutor {
 
-	private EntityManager em;
-	private EntityInfo entityData;
+	private final EntityManager em;
+	private final EntityInfo entityData;
 
 	public ApigenSearchExecutor(EntityManager em, EntityInfo entityData) {
 		this.em = em;
@@ -40,7 +40,7 @@ public class ApigenSearchExecutor {
 
 		Root<E> root = query.from(clazz);
 
-		Map<String, Join> joins = join(expand, root);
+		Map<String, Join<?, ?>> joins = join(expand, root);
 		List<String> enhancedFields = getFields(select, exclude, root, joins);
 		List<Selection<?>> selections = select(enhancedFields, root, joins);
 		query.multiselect(selections);
@@ -48,7 +48,7 @@ public class ApigenSearchExecutor {
 		query.orderBy(order);
 
 		String idAttribute = entityData.getIdAttribute(clazz);
-		Expression expression = getPath(idAttribute, root, joins);
+		Expression<?> expression = getPath(idAttribute, root, joins);
 		Predicate predicate = builder.equal(expression, id);
 		Predicate conditionalPredicate = filter(filter, builder, root, joins);
 
@@ -77,7 +77,7 @@ public class ApigenSearchExecutor {
 			orderBy = new LinkedList<>(Collections.singletonList(idAttribute));
 		}
 
-		Map<String, Join> joins = join(expand, root);
+		Map<String, Join<?, ?>> joins = join(expand, root);
 		List<String> enhancedFields = getFields(select, exclude, root, joins);
 		List<Selection<?>> selections = select(enhancedFields, root, joins);
 		query.multiselect(selections);
@@ -95,7 +95,7 @@ public class ApigenSearchExecutor {
 		return new ApigenSearchResult<>(new TupleMapper(enhancedFields, entityData, clazz).map(result), count);
 	}
 
-	public long count(List<String> expand, Filter filter, Class clazz) {
+	public long count(List<String> expand, Filter filter, Class<?> clazz) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		return count(clazz, expand, filter, builder);
 	}
@@ -111,7 +111,7 @@ public class ApigenSearchExecutor {
 	private List<Object> getMatchingIds(List<String> orderBy, List<String> expand, Filter filter, Pagination pagination, Class<?> clazz, CriteriaBuilder builder) {
 		CriteriaQuery<Tuple> query = builder.createTupleQuery();
 		Root<?> root = query.from(clazz);
-		Map<String, Join> joins = join(expand, root);
+		Map<String, Join<?, ?>> joins = join(expand, root);
 		String idAttribute = entityData.getIdAttribute(clazz);
 		List<String> allFields = new LinkedList<>(orderBy);
 		if (!allFields.contains(idAttribute)) allFields.add(idAttribute);
@@ -134,21 +134,21 @@ public class ApigenSearchExecutor {
 	private Long count(Class<?> clazz, List<String> expand, Filter filter, CriteriaBuilder builder) {
 		CriteriaQuery<Long> query = builder.createQuery(Long.class);
 		Root<?> root = query.from(clazz);
-		Map<String, Join> joins = join(expand, root);
+		Map<String, Join<?, ?>> joins = join(expand, root);
 		query.select(builder.countDistinct(root));
 		addPredicate(query, filter, root, joins, builder);
 		return em.createQuery(query).getSingleResult();
 	}
 
-	private Map<String, Join> join(List<String> expand, Root<?> root) {
-		Map<String, Join> joins = new HashMap<>();
+	private Map<String, Join<?, ?>> join(List<String> expand, Root<?> root) {
+		Map<String, Join<?, ?>> joins = new HashMap<>();
 		if (expand == null || expand.isEmpty()) return joins;
 		for (String e : expand) {
 			String[] path = e.split("\\.");
 			String fullPath = path[0];
-			Join join = joins.computeIfAbsent(fullPath, k -> root.join(path[0], JoinType.LEFT));
+			Join<?, ?> join = joins.computeIfAbsent(fullPath, k -> root.join(path[0], JoinType.LEFT));
 			for (int i = 1; i < path.length; i++) {
-				Join parentJoin = join;
+				Join<?, ?> parentJoin = join;
 				fullPath = fullPath.concat(".").concat(path[i]);
 				int finalI = i;
 				join = joins.computeIfAbsent(fullPath, k -> parentJoin.join(path[finalI], JoinType.LEFT));
@@ -157,7 +157,7 @@ public class ApigenSearchExecutor {
 		return joins;
 	}
 
-	private List<String> getFields(List<String> select, List<String> exclude, Root<?> root, Map<String, Join> joins) {
+	private List<String> getFields(List<String> select, List<String> exclude, Root<?> root, Map<String, Join<?, ?>> joins) {
 		if (select == null || select.isEmpty()) {
 			return getFieldsFromExclusion(root.getJavaType(), exclude, joins);
 		} else {
@@ -165,18 +165,18 @@ public class ApigenSearchExecutor {
 		}
 	}
 
-	private List<String> getFieldsFromExclusion(Class clazz, List<String> exclude, Map<String, Join> joins) {
+	private List<String> getFieldsFromExclusion(Class<?> clazz, List<String> exclude, Map<String, Join<?, ?>> joins) {
 		List<String> fields = entityData.getBasicAttributes(clazz);
 		if (joins != null) fields.addAll(getFieldsFromExpands(clazz, joins));
 		if (exclude != null) fields.removeAll(exclude);
 		return fields;
 	}
 
-	private List<String> getFieldsFromExpands(Class clazz, Map<String, Join> joins) {
+	private List<String> getFieldsFromExpands(Class<?> clazz, Map<String, Join<?, ?>> joins) {
 		return joins.keySet().stream().flatMap(field -> entityData.getBasicAttributes(clazz, field).stream()).collect(Collectors.toList());
 	}
 
-	private List<String> getFieldsFromInclusion(List<String> fields, Map<String, Join> joins, Class clazz) {
+	private List<String> getFieldsFromInclusion(List<String> fields, Map<String, Join<?, ?>> joins, Class<?> clazz) {
 		List<String> enhancedFields = new ArrayList<>(fields);
 		String idAttribute = entityData.getIdAttribute(clazz);
 		if (!enhancedFields.contains(idAttribute)) enhancedFields.add(idAttribute);
@@ -184,23 +184,21 @@ public class ApigenSearchExecutor {
 		return enhancedFields;
 	}
 
-	private List<Selection<?>> select(List<String> fields, Root<?> root, Map<String, Join> joins) {
+	private List<Selection<?>> select(List<String> fields, Root<?> root, Map<String, Join<?, ?>> joins) {
 		return fields.stream().map(f -> getPath(f, root, joins)).collect(Collectors.toList());
 	}
 
-	private List<Selection<?>> orderFields(List<String> orderBy, Root<?> root, Map<String, Join> joins) {
+	private List<Selection<?>> orderFields(List<String> orderBy, Root<?> root, Map<String, Join<?, ?>> joins) {
 		if (orderBy == null || orderBy.isEmpty()) return Collections.emptyList();
 		return orderBy.stream().map(o -> {
-			if (o.charAt(0) == '+') {
-				o = o.substring(1);
-			} else if (o.charAt(0) == '-') {
+			if (o.charAt(0) == '+' || o.charAt(0) == '-') {
 				o = o.substring(1);
 			}
 			return getPath(o, root, joins);
 		}).collect(Collectors.toList());
 	}
 
-	private List<Order> order(List<String> orderBy, CriteriaBuilder builder, Root<?> root, Map<String, Join> joins) {
+	private List<Order> order(List<String> orderBy, CriteriaBuilder builder, Root<?> root, Map<String, Join<?, ?>> joins) {
 		if (orderBy == null || orderBy.isEmpty()) return Collections.emptyList();
 		return orderBy.stream().map(o -> {
 			boolean asc = true;
@@ -215,7 +213,7 @@ public class ApigenSearchExecutor {
 		}).collect(Collectors.toList());
 	}
 
-	private Path<?> getPath(String field, Root<?> root, Map<String, Join> joins) {
+	private Path<?> getPath(String field, Root<?> root, Map<String, Join<?, ?>> joins) {
 		int i = field.lastIndexOf('.');
 		if (i > -1) {
 			String base = field.substring(0, i);
@@ -226,12 +224,12 @@ public class ApigenSearchExecutor {
 		}
 	}
 
-	private void addOrder(CriteriaQuery<?> query, List<String> orderBy, Root<?> root, Map<String, Join> joins, CriteriaBuilder builder) {
+	private void addOrder(CriteriaQuery<?> query, List<String> orderBy, Root<?> root, Map<String, Join<?, ?>> joins, CriteriaBuilder builder) {
 		List<Order> order = order(orderBy, builder, root, joins);
 		query.orderBy(order);
 	}
 
-	private void addPredicate(CriteriaQuery<?> query, Filter filter, Root<?> root, Map<String, Join> joins, CriteriaBuilder builder) {
+	private void addPredicate(CriteriaQuery<?> query, Filter filter, Root<?> root, Map<String, Join<?, ?>> joins, CriteriaBuilder builder) {
 		Predicate predicate = filter(filter, builder, root, joins);
 		if (predicate != null) query.where(predicate);
 	}
@@ -253,7 +251,7 @@ public class ApigenSearchExecutor {
 	}
 
 	@SuppressWarnings("unchecked")
-	private Predicate filter(Filter filter, CriteriaBuilder builder, Root<?> root, Map<String, Join> joins) {
+	private Predicate filter(Filter filter, CriteriaBuilder builder, Root<?> root, Map<String, Join<?, ?>> joins) {
 
 		if (filter == null) return null;
 
@@ -275,7 +273,7 @@ public class ApigenSearchExecutor {
 		return operation == AND || operation == OR;
 	}
 
-	private Predicate getPredicateOfConditions(Filter filter, CriteriaBuilder builder, Root<?> root, Map<String, Join> joins) {
+	private Predicate getPredicateOfConditions(Filter filter, CriteriaBuilder builder, Root<?> root, Map<String, Join<?, ?>> joins) {
 		List<Predicate> filters = new ArrayList<>();
 		for (Value v : filter.getValues()) {
 			filters.add(filter(v.getFilter(), builder, root, joins));
