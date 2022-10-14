@@ -12,6 +12,6 @@ insert into entity_nodes_neighbors(source_id, target_id) values (1, 4);
 insert into entity_nodes_neighbors(source_id, target_id) values (1, 5);
 insert into entity_nodes_neighbors(source_id, target_id) values (2, 3);
 
-insert into big_entity(id, b_int, b_dec) values (1, 100, 0.33);
-insert into big_entity(id, b_int, b_dec) values (2, 100, 0.32);
-insert into big_entity(id, b_int, b_dec) values (3, 100, 0.34);
+insert into big_entity(b_int, b_dec) values (100, 0.33);
+insert into big_entity(b_int, b_dec) values (100, 0.32);
+insert into big_entity(b_int, b_dec) values (100, 0.34);

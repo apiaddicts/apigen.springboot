@@ -6,11 +6,11 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter;
 import org.apiaddicts.apitools.apigen.archetypecore.exceptions.InvalidPropertyPath;
-import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.scanners.TypeAnnotationsScanner;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.core.type.filter.AnnotationTypeFilter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -38,8 +38,22 @@ public class ResourceNamingTranslatorByReflection implements ResourceNamingTrans
 	}
 
 	private Set<Class<?>> detectResources(String... packageNames) {
-		return new Reflections(packageNames, new TypeAnnotationsScanner(), new SubTypesScanner())
-				.getTypesAnnotatedWith(ApigenEntityOutResource.class);
+		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
+		scanner.addIncludeFilter(new AnnotationTypeFilter(ApigenEntityOutResource.class));
+
+		Set<Class<?>> classes = new HashSet<>();
+		for (String packageName : packageNames) {
+			scanner.findCandidateComponents(packageName)
+					.stream().map(BeanDefinition::getBeanClassName)
+					.forEach(it -> {
+						try {
+							classes.add(Class.forName(it));
+						} catch (ClassNotFoundException e) {
+							throw new RuntimeException(e);
+						}
+					});
+		}
+		return classes;
 	}
 
 	private void analyzeResource(Class<?> resource, Set<Class<?>> resources) {
