@@ -19,4 +19,6 @@ public class Response {
     private List<Attribute> attributes;
     @JsonProperty("default_status_code")
     private Integer defaultStatusCode;
+    @JsonProperty("mime_type")
+    private String mimeType;
 }

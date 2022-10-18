@@ -2,6 +2,8 @@ package org.apiaddicts.apitools.apigen.generatorcore.config.controller;
 
 import java.util.ArrayList;
 
+import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Constants.JSON_MIME_TYPE;
+
 public class EndpointBaseResponseObjectMother {
 
     private EndpointBaseResponseObjectMother() {
@@ -14,6 +16,7 @@ public class EndpointBaseResponseObjectMother {
         response.setRelatedEntity(entityName);
         response.setAttributes(new ArrayList<>());
         response.setIsCollection(false);
+        response.setMimeType(JSON_MIME_TYPE);
         return response;
     }
 
@@ -28,6 +31,7 @@ public class EndpointBaseResponseObjectMother {
         response.setAttributes(new ArrayList<>());
         response.setIsCollection(true);
         response.setCollectionName(collectionName);
+        response.setMimeType(JSON_MIME_TYPE);
         return response;
     }
 
@@ -38,6 +42,7 @@ public class EndpointBaseResponseObjectMother {
         attribute.setType("string");
         attribute.setName("jsonField");
         response.getAttributes().add(attribute);
+        response.setMimeType(JSON_MIME_TYPE);
         return response;
     }
 
@@ -50,6 +55,7 @@ public class EndpointBaseResponseObjectMother {
         attribute.setRelatedEntity(relatedEntityName);
         attribute.setCollection(false);
         response.getAttributes().add(attribute);
+        response.setMimeType(JSON_MIME_TYPE);
         return response;
     }
 
@@ -62,6 +68,7 @@ public class EndpointBaseResponseObjectMother {
         attribute.setRelatedEntity(relatedEntityName);
         attribute.setCollection(true);
         response.getAttributes().add(attribute);
+        response.setMimeType(JSON_MIME_TYPE);
         return response;
     }
 
@@ -71,6 +78,7 @@ public class EndpointBaseResponseObjectMother {
         response.setAttributes(new ArrayList<>());
         response.setIsCollection(false);
         response.setDefaultStatusCode(responseStatus);
+        response.setMimeType(JSON_MIME_TYPE);
         return response;
     }
 }
