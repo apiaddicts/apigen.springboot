@@ -7,7 +7,6 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 
 import java.util.*;
 
-import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Attribute;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Response;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Constants.JSON_MIME_TYPE;

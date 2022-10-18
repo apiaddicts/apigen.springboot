@@ -5,7 +5,6 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Controller
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.controller.ControllerBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.controller.ControllerBuilderFactory;
-import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.controller.GenericControllerBuilder;
 
 public class ApigenControllerBuilderFactoryImpl<C extends ApigenContext> implements ControllerBuilderFactory<C> {
 
