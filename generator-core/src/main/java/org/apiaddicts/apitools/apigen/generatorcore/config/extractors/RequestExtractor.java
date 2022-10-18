@@ -5,8 +5,10 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Request;
 
+import java.util.LinkedList;
 import java.util.Map;
 
+import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Constants.JSON_MIME_TYPE;
 import static org.apiaddicts.apitools.apigen.generatorcore.spec.components.Extensions.MAPPING;
 import static org.apiaddicts.apitools.apigen.generatorcore.spec.components.Extensions.MAPPING_MODEL;
 
@@ -20,9 +22,14 @@ public class RequestExtractor {
 
     public Request getRequest(Operation operation) {
         RequestBody requestBody = operation.getRequestBody();
-        if (requestBody == null || requestBody.getContent().get("application/json") == null) return null;
-        Schema<?> bodySchema = requestBody.getContent().get("application/json").getSchema();
+        if (requestBody == null) return null;
         Request request = new Request();
+        request.setMimeType(requestBody.getContent().keySet().iterator().next());
+        if (requestBody.getContent().get(JSON_MIME_TYPE) == null) {
+            request.setAttributes(new LinkedList<>());
+            return request;
+        }
+        Schema<?> bodySchema = requestBody.getContent().get(JSON_MIME_TYPE).getSchema();
         request.setAttributes(attributesExtractor.getAttributes(bodySchema));
         request.setRelatedEntity(getMappingEntity(bodySchema));
         return request;

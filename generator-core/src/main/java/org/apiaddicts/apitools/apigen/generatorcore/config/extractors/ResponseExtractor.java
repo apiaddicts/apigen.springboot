@@ -4,15 +4,13 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
-import java.util.Collections;
+
+import java.util.*;
+
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Attribute;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Response;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
+import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Constants.JSON_MIME_TYPE;
 import static org.apiaddicts.apitools.apigen.generatorcore.spec.components.Extensions.*;
 
 public class ResponseExtractor {
@@ -40,21 +38,16 @@ public class ResponseExtractor {
         endpointResponse.setDefaultStatusCode(status == 0 ? 200 : status);
         endpointResponse.setIsStandard(false);
 
-        if (response == null || response.getContent() == null || response.getContent().get("application/json") == null) {
-            if(response != null && response.getContent() != null){
+        if (response == null || response.getContent() == null || response.getContent().get(JSON_MIME_TYPE) == null) {
+            if(response != null && response.getContent() != null) {
                 endpointResponse.setMimeType(response.getContent().keySet().iterator().next());
-                Schema<?> schema = response.getContent().get(endpointResponse.getMimeType()).getSchema();
-                Attribute attribute = new Attribute();
-                attribute.setType(schema.getType());
-                attribute.setFormat(schema.getFormat());
-                attribute.setName("mimeType");
-                List<Attribute> attributes= new ArrayList<>(Arrays.asList(attribute));
-                endpointResponse.setAttributes(attributes);
+                endpointResponse.setAttributes(new LinkedList<>());
             }
             return endpointResponse;
         }
 
-        Schema<?> schema = response.getContent().get("application/json").getSchema();
+        Schema<?> schema = response.getContent().get(JSON_MIME_TYPE).getSchema();
+        endpointResponse.setMimeType(response.getContent().keySet().iterator().next());
 
         if (isStandardResponse(schema)) {
             endpointResponse.setIsStandard(true);
@@ -76,7 +69,7 @@ public class ResponseExtractor {
         } else {
             if (schema instanceof ArraySchema) {
                 endpointResponse.setIsCollection(true);
-                schema = ((ArraySchema) schema).getItems();
+                schema = schema.getItems();
             } else {
                 endpointResponse.setIsCollection(false);
             }

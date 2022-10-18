@@ -133,7 +133,6 @@ public class GenericOutputResourceBuilder<C extends JavaContext> extends OutputR
     }
 
     protected void addAttribute(TypeName type, String name, String jsonName, boolean nested, TypeSpec.Builder builder) {
-        if(name == null) name = jsonName;
         FieldSpec.Builder fieldBuilder = getField(type, name);
         addJsonName(jsonName, fieldBuilder);
         if (nested) fieldBuilder.addAnnotation(Valid.class);

@@ -81,58 +81,6 @@ paths:
         '204':
           description: No content
           
-  /owners/pdf:
-    x-apigen-binding:
-      model: Owner
-    post:
-      operationId: pdfPost
-      parameters:
-        - name: x-trace-id
-          in: header
-          description: Cabecera con la id única de traceo de la petición
-          schema:
-            maxLength: 100
-            type: string
-        - name: uuid_alumno
-          in: path
-          description: Identificador del alumno a obtener (en el path)
-          required: true
-          schema:
-            maxLength: 40
-            type: string
-      responses:
-        "200":
-          description: Archivo PDF firmado con las notas
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
-    get:
-      operationId: pdfGet
-      parameters:
-        - name: x-trace-id
-          in: header
-          description: Cabecera con la id única de traceo de la petición
-          schema:
-            maxLength: 100
-            type: string
-        - name: uuid_alumno
-          in: path
-          description: Identificador del alumno a obtener (en el path)
-          required: true
-          schema:
-            maxLength: 40
-            type: string
-      responses:
-        "200":
-          description: Archivo PDF firmado con las notas
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
-
   /tags:
     x-apigen-binding:
       model: Tag
