@@ -74,6 +74,7 @@
 
     <modules>
         <module>archetype-core</module>
+        <module>archetype-core-persistence</module>
         <module>generator-core</module>
         <module>generator-rest</module>
         <module>archetype-parent-spring-boot</module>
