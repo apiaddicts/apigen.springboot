@@ -39,7 +39,7 @@
 
     <properties>
 
-        <revision>0.3.0-RC4</revision>
+        <revision>0.3.0-RC5</revision>
 
         <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -74,6 +74,7 @@
 
     <modules>
         <module>archetype-core</module>
+        <module>archetype-core-persistence</module>
         <module>generator-core</module>
         <module>generator-rest</module>
         <module>archetype-parent-spring-boot</module>
@@ -84,6 +85,11 @@
             <dependency>
                 <groupId>org.apiaddicts.apitools.apigen</groupId>
                 <artifactId>archetype-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apiaddicts.apitools.apigen</groupId>
+                <artifactId>archetype-core-persistence</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>

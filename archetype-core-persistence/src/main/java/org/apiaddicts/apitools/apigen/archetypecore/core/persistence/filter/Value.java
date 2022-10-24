@@ -1,6 +1,5 @@
 package org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.validation.Valid;
@@ -18,7 +17,6 @@ public class Value {
 	@Valid
 	private Filter filter;
 
-	@JsonIgnore
 	@AssertTrue
 	public boolean isValid() {
 		return isFilter() ^ isExpression(); // ^ -> XOR
