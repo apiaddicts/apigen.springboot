@@ -60,7 +60,7 @@ class AbstractRelationsManagerTest {
     }
 
     @Test
-    void givenNonExistentPersistedSimpleRelation_whenCreate_thenSuccess() {
+    void givenNonExistentPersistedSimpleRelation_whenCreate_thenError() {
         Entity entity = new Entity();
         entity.setOtherEntity(new OtherEntity(1L, null));
         when(otherEntityService.getOne(eq(1L))).thenReturn(Optional.empty());
@@ -95,7 +95,7 @@ class AbstractRelationsManagerTest {
     }
 
     @Test
-    void givenNonExistentPersistedListRelation_whenCreate_thenSuccess() {
+    void givenNonExistentPersistedListRelation_whenCreate_thenError() {
         Entity entity = new Entity();
         entity.setOtherEntityList(new HashSet<>(Arrays.asList(new OtherEntity(1L, null), new OtherEntity(2L, null))));
         when(otherEntityService.getOne(eq(1L))).thenReturn(Optional.empty());
@@ -133,7 +133,7 @@ class AbstractRelationsManagerTest {
     }
 
     @Test
-    void givenNonExistentPersistedSimpleRelation_whenUpdate_thenSuccess() {
+    void givenNonExistentPersistedSimpleRelation_whenUpdate_thenError() {
         Entity entity = new Entity();
         entity.setOtherEntity(new OtherEntity(1L, null));
         Entity persistedEntity = new Entity();
@@ -148,7 +148,38 @@ class AbstractRelationsManagerTest {
         verifyNoMoreInteractions(otherEntityService);
     }
 
-    // TODO add list tests and combination error
+    @Test
+    void givenPersistedListRelation_whenUpdate_thenSuccess() {
+        Entity entity = new Entity();
+        entity.setOtherEntityList(new HashSet<>(Arrays.asList(new OtherEntity(1L, null), new OtherEntity(2L, null))));
+        Entity persistedEntity = new Entity();
+        persistedEntity.setOtherEntityList(new HashSet<>());
+        when(otherEntityService.getOne(eq(1L))).thenReturn(Optional.of(new OtherEntity(1L, "Test")));
+        when(otherEntityService.getOne(eq(2L))).thenReturn(Optional.of(new OtherEntity(2L, "Test 2")));
+        relationsManager.updateRelations(persistedEntity, entity, new HashSet<>(Arrays.asList("otherEntityList")));
+        verify(otherEntityService, times(2)).getOne(any());
+        verifyNoMoreInteractions(otherEntityService);
+    }
+
+    @Test
+    void givenNonExistentPersistedListRelation_whenUpdate_thenError() {
+        Entity entity = new Entity();
+        entity.setOtherEntityList(new HashSet<>(Arrays.asList(new OtherEntity(1L, null), new OtherEntity(2L, null))));
+        Entity persistedEntity = new Entity();
+        persistedEntity.setOtherEntityList(new HashSet<>());
+        when(otherEntityService.getOne(eq(1L))).thenReturn(Optional.empty());
+        when(otherEntityService.getOne(eq(2L))).thenReturn(Optional.empty());
+        RelationalErrorsException exception = assertThrows(RelationalErrorsException.class, () -> {
+            relationsManager.updateRelations(persistedEntity, entity, new HashSet<>(Arrays.asList("otherEntityList")));
+        });
+        assertEquals(2, exception.getRelationalErrors().getErrors().size());
+        assertEquals(OtherEntity.class, exception.getRelationalErrors().getErrors().get(0).getClazz());
+        assertEquals(1L, exception.getRelationalErrors().getErrors().get(0).getId());
+        assertEquals(OtherEntity.class, exception.getRelationalErrors().getErrors().get(1).getClazz());
+        assertEquals(2L, exception.getRelationalErrors().getErrors().get(1).getId());
+        verify(otherEntityService, times(2)).getOne(any());
+        verifyNoMoreInteractions(otherEntityService);
+    }
 
     @AllArgsConstructor
     private static class RelationsManager extends AbstractRelationsManager<Entity> {
@@ -180,7 +211,7 @@ class AbstractRelationsManagerTest {
             if (updateAll || fields.contains("otherEntity")) {
                 updateRelationsOtherEntity(persistedEntity, entity, fields, errors);
             }
-            if (updateAll || fields.contains("owherEntityList")) {
+            if (updateAll || fields.contains("otherEntityList")) {
                 updateRelationsOtherEntityList(persistedEntity, entity, fields, errors);
             }
             if (!errors.isEmpty()) {
