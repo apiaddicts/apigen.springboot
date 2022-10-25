@@ -7,6 +7,7 @@ import com.squareup.javapoet.TypeSpec.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.apiaddicts.apitools.apigen.archetypecore.core.SubEntityToEntitiesData;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Attribute;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
@@ -16,11 +17,10 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.common.ApigenExt2J
 import org.apiaddicts.apitools.apigen.generatorcore.generator.common.Openapi2JavapoetType;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.JavaContext;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 import javax.validation.Valid;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static java.util.Objects.nonNull;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.LITERAL;
@@ -86,6 +86,20 @@ public class GenericInputResourceBuilder<C extends JavaContext> extends InputRes
     }
 
     @Override
+    public List<SubEntityToEntitiesData> subEntityToEntity() {
+        List<SubEntityToEntitiesData> subEntityToEntities = new ArrayList<>();
+        for(Attribute attribute : attributes){
+            if(endpoint.getMethod() == Endpoint.Method.PATCH && attribute.getRelatedEntity() != null){
+                TypeName resourceEntity = ClassName.get(getPackage(entityName, basePackage), getName(rootMapping, endpoint));
+                TypeName entityFieldName = ClassName.get(getPackage(entityName, basePackage), getName(rootMapping, endpoint) + "."
+                        + attribute.getEntityFieldName().substring(0, 1).toUpperCase() + attribute.getEntityFieldName().substring(1));
+                subEntityToEntities.add(new SubEntityToEntitiesData(attribute.getRelatedEntity(), resourceEntity, entityFieldName));
+            }
+        }
+        return subEntityToEntities;
+    }
+
+    @Override
     public String getPackage() {
         if (entityName == null) { // FIXME analyze separation
             return getPackage(rootMapping.toName().toLowerCase(), basePackage);
@@ -110,14 +124,24 @@ public class GenericInputResourceBuilder<C extends JavaContext> extends InputRes
     }
 
     protected void addAttributes(List<Attribute> attributes, Builder builder, TypeName parentType) {
+        addAttributes(attributes, builder, parentType, false);
+    }
+
+    protected void addAttributes(List<Attribute> attributes, Builder builder, TypeName parentType, boolean classParentType) {
         for (Attribute attribute : attributes) {
             boolean requiresNestedObject = requiredNestedObject(attribute);
             String javaName = attribute.getEntityFieldName();
             TypeName type;
             boolean nested = false;
+            boolean patch = endpoint.getMethod() == Endpoint.Method.PATCH;
 
             if (requiresNestedObject) {
-                type = createNestedObject(javaName, attribute.getAttributes(), parentType, builder);
+                if(patch){
+                    type = createNestedObjectPatch(javaName, attribute.getAttributes(), parentType, builder);
+                }
+                else{
+                    type = createNestedObject(javaName, attribute.getAttributes(), parentType, builder);
+                }
                 nested = true;
             } else {
                 if (attribute.getImplementationType() != null) {
@@ -135,6 +159,9 @@ public class GenericInputResourceBuilder<C extends JavaContext> extends InputRes
             if (attribute.isCollection()) {
                 type = ParameterizedTypeName.get(ClassName.get(Set.class), type);
             }
+            if(patch && !classParentType)
+                type = ParameterizedTypeName.get(ClassName.get(JsonNullable.class), type);
+
             addAttribute(type, javaName, attribute.getName(), attribute.getValidations(), nested, builder);
         }
     }
@@ -148,6 +175,23 @@ public class GenericInputResourceBuilder<C extends JavaContext> extends InputRes
         TypeName type = ((ClassName) parentType).nestedClass(nestedName);
         Builder nestedBuilder = getPublicInnerClass(nestedName).addAnnotation(Data.class);
         addAttributes(attributes, nestedBuilder, type);
+        builder.addType(nestedBuilder.build());
+        return type;
+    }
+
+    protected TypeName createNestedObjectPatch(String javaName, List<Attribute> attributes, TypeName parentType, Builder builder) {
+        String nestedName = StringUtils.capitalize(javaName);
+        TypeName type = ((ClassName) parentType).nestedClass(nestedName);
+        TypeName typeAttibute = ApigenExt2JavapoetType.transformSimpleType(attributes.get(0).getType().substring(0, 1).toUpperCase() +
+                attributes.get(0).getType().substring(1));
+        Builder nestedBuilder = getPublicInnerClass(nestedName).addAnnotation(Data.class).addAnnotation(NoArgsConstructor.class);
+        MethodSpec constructor = MethodSpec.constructorBuilder()
+                .addAnnotation(AnnotationSpec.builder(JsonCreator.class).addMember(MODE, LITERAL, "JsonCreator.Mode.DELEGATING").build())
+                .addParameter(typeAttibute, attributes.get(0).getName())
+                .addStatement("this.$1L = $1L", attributes.get(0).getName())
+                .build();
+        nestedBuilder.addMethod(constructor);
+        addAttributes(attributes, nestedBuilder, type, true);
         builder.addType(nestedBuilder.build());
         return type;
     }

@@ -156,8 +156,7 @@ public class ApigenRelationManagerBuilder<C extends ApigenContext> extends Abstr
                     .addParameter(RelationalErrors.class, "errors");
 
             if (attributeData.isCollection()) {
-                fieldMethodBuilder.addStatement("$1L.get$2L().clear()", persistedParamName, capAttribute);
-                fieldMethodBuilder.addStatement("$1L.get$3L().addAll(retrieve($2L.get$3L(), $4L, errors))",
+                fieldMethodBuilder.addStatement("replace($1L.get$3L(), retrieve($2L.get$3L(), $4L, errors)",
                         persistedParamName, paramName, capAttribute, serviceName);
             } else {
                 fieldMethodBuilder.addStatement("$1L.set$3L(retrieve($2L.get$3L(), $4L, errors))", persistedParamName, paramName, capAttribute, serviceName);

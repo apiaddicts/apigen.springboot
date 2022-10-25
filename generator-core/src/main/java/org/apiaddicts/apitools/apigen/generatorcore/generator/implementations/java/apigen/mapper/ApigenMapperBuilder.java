@@ -10,14 +10,14 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import javax.lang.model.element.Modifier;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.LITERAL;
-import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.STRING;
+import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.*;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.*;
 
 public class ApigenMapperBuilder<C extends ApigenContext> extends MapperBuilder<C> {
@@ -45,6 +45,7 @@ public class ApigenMapperBuilder<C extends ApigenContext> extends MapperBuilder<
     protected void initialize() {
         super.initialize();
         addUpdateBasicData();
+        if(patchResource) addPartialUpdate();
     }
 
     @Override
@@ -64,6 +65,18 @@ public class ApigenMapperBuilder<C extends ApigenContext> extends MapperBuilder<
                         .build())
                 .addAnnotations(getMappingsAnnotations())
                 .addParameter(entityType, "source")
+                .addParameter(ParameterSpec.builder(entityType, "target").addAnnotation(MappingTarget.class).build())
+                .build();
+        builder.addMethod(methodSpecBuilder);
+    }
+
+    protected void addPartialUpdate(){
+        MethodSpec methodSpecBuilder = MethodSpec.methodBuilder(PARTIAL_UPDATE)
+                .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+                .addAnnotation(getAnnotation(BeanMapping.class)
+                        .addMember(NULL_VALUE_PROPERTY_MAPPING_STRATEGY, ENUM_VALUE, NullValuePropertyMappingStrategy.class, "IGNORE")
+                        .build())
+                .addParameter(this.subEntityToEntity.get(0).getResourceEntity(), "source")
                 .addParameter(ParameterSpec.builder(entityType, "target").addAnnotation(MappingTarget.class).build())
                 .build();
         builder.addMethod(methodSpecBuilder);

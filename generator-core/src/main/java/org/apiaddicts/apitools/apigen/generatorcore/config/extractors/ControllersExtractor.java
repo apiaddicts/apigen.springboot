@@ -118,6 +118,8 @@ public class ControllersExtractor {
             endpoints.add(getEndpoint(pathItem.getPut(), Endpoint.Method.PUT, idPathPart));
         if (pathItem.getDelete() != null)
             endpoints.add(getEndpoint(pathItem.getDelete(), Endpoint.Method.DELETE, idPathPart));
+        if (pathItem.getPatch() != null)
+            endpoints.add(getEndpoint(pathItem.getPatch(), Endpoint.Method.PATCH, idPathPart));
         return endpoints;
     }
 

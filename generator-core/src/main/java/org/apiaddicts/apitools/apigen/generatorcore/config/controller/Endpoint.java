@@ -23,7 +23,7 @@ public class Endpoint {
     private String relatedEntity;
 
     public enum Method {
-        GET("Find"), POST("Create"), PUT("Update"), DELETE("Delete");
+        GET("Find"), POST("Create"), PATCH("PartialUpdate"), PUT("Update"), DELETE("Delete");
         public final String prefix;
 
         Method(String prefix) {

@@ -57,7 +57,17 @@ public class EndpointObjectMother {
         endpoint.setRequest(EndpointRequestObjectMother.requestWithoutAttributes(entityName));
         endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
         endpoint.setRelatedEntity(entityName);
-        ;
+        return endpoint;
+    }
+
+    public static Endpoint standardPatch(String endpointName, String entityName) {
+        List<Parameter> parameters = new ArrayList<>();
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("id", "integer");
+        parameters.add(parameter);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.PATCH, "/{id}", parameters);
+        endpoint.setRequest(EndpointRequestObjectMother.requestWithoutAttributes(entityName));
+        endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
+        endpoint.setRelatedEntity(entityName);
         return endpoint;
     }
 

@@ -33,6 +33,7 @@ public class Members {
     public static final String INVERSE_JOIN_COLUMNS = "inverseJoinColumns";
     public static final String UNIQUE_CONSTRAINTS = "uniqueConstraints";
     public static final String REFERENCED_COLUMN_NAME = "referencedColumnName";
+    public static final String NULL_VALUE_PROPERTY_MAPPING_STRATEGY = "nullValuePropertyMappingStrategy";    
     private Members() {
         // Intentional blank
     }

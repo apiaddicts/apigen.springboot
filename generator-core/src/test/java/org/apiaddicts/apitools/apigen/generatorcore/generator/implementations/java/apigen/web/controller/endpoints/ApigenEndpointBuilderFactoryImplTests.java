@@ -76,6 +76,14 @@ class ApigenEndpointBuilderFactoryImplTests {
     }
 
     @Test
+    void givenPatchEndpoint_whenAskForBuilder_thenCorrectBuilderIsReturned() {
+        Endpoint endpoint = EndpointObjectMother.standardPatch("patchEndpoint", ENTITY_NAME);
+        EndpointBuilder<ApigenContext> endpointBuilder = FACTORY.create(ROOT_MAPPING, endpoint, CTX, CFG);
+
+        assertTrue(endpointBuilder instanceof PatchEndpointBuilder, "Expected PatchEndpointBuilder");
+    }
+
+    @Test
     void givenDeleteEndpoint_whenAskForBuilder_thenCorrectBuilderIsReturned() {
         Endpoint endpoint = EndpointObjectMother.standardDelete("deleteEndpoint", ENTITY_NAME);
         EndpointBuilder<ApigenContext> endpointBuilder = FACTORY.create(ROOT_MAPPING, endpoint, CTX, CFG);

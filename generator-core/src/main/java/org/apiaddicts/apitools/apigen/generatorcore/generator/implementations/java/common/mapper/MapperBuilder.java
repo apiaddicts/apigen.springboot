@@ -1,7 +1,11 @@
 package org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.mapper;
 
 import com.squareup.javapoet.*;
+import org.apiaddicts.apitools.apigen.archetypecore.core.JsonNullableMapper;
+import org.apiaddicts.apitools.apigen.archetypecore.core.SubEntityToEntitiesData;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
+import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Controller;
+import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
 import org.apiaddicts.apitools.apigen.generatorcore.config.entity.Entity;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.components.java.AbstractJavaClassBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.JavaContext;
@@ -10,7 +14,11 @@ import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 
 import javax.lang.model.element.Modifier;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.LITERAL;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.STRING;
@@ -21,6 +29,8 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
     protected static final String TO_RESOURCE = "toResource";
     protected static final String TO_ENTITY = "toEntity";
     protected static final String UPDATE_BASIC_DATA = "updateBasicData";
+    protected static final String PARTIAL_UPDATE = "partialUpdate";
+    protected static final String MAP = "map";
 
     protected final String basePackage;
     protected final String entityName;
@@ -28,9 +38,12 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
     protected final Set<String> relatedEntitiesName;
     protected final Set<TypeName> resourcesToEntity;
     protected final Set<TypeName> entityToResources;
+    protected final List<SubEntityToEntitiesData> subEntityToEntity;
 
     protected final TypeName entityType;
     protected final TypeName idType;
+
+    protected boolean patchResource;
 
     public MapperBuilder(Entity entity, C ctx, Configuration cfg) {
         super(ctx, cfg);
@@ -40,6 +53,7 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
         this.basicAttributes = ctx.getEntitiesData().getBasicAttributes(entityName);
         this.resourcesToEntity = ctx.getResourcesData().getInputResources(entityName);
         this.entityToResources = ctx.getResourcesData().getOutputResources(entityName);
+        this.subEntityToEntity = ctx.getResourcesData().getSubEntityToEntity(entityName);
         this.entityType = EntityBuilder.getTypeName(entityName, basePackage);
         this.idType = ctx.getEntitiesData().getIDType(entityName);
     }
@@ -64,9 +78,11 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
     @Override
     protected void initialize() {
         initializeBuilder();
+        checkPartialUpdate();
         addMapperAnnotation();
         addResourcesToEntity();
         addEntityToResources();
+        addSubEntityToEntity();
         addComposedIDMapping();
         addIdToEntityMapping();
     }
@@ -77,17 +93,26 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
     }
 
     protected void addMapperAnnotation() {
+        List<TypeName> relatedEntities = getRelatedEntities();
+        if(patchResource)
+            relatedEntities.add(TypeName.get(JsonNullableMapper.class));
+
         AnnotationSpec annotationSpec = AnnotationSpec.builder(Mapper.class)
                 .addMember(COMPONENT_MODEL, STRING, "spring")
-                .addMember(USES, LITERAL, getRelatedEntitiesCodeBlock())
+                .addMember(USES, LITERAL, getRelatedEntitiesCodeBlock(relatedEntities))
                 .build();
         builder.addAnnotation(annotationSpec);
     }
 
-    protected CodeBlock getRelatedEntitiesCodeBlock() {
-        return relatedEntitiesName.stream()
+    protected  List<TypeName> getRelatedEntities() {
+         return relatedEntitiesName.stream()
                 .sorted()
-                .map(name -> MapperBuilder.getTypeName(name, basePackage))
+                .map(name -> MapperBuilder.getTypeName(name, basePackage)).collect(Collectors.toList());
+    }
+
+    protected CodeBlock getRelatedEntitiesCodeBlock(List<TypeName> relatedEntities) {
+        return relatedEntities.stream()
+                .sorted()
                 .map(type -> CodeBlock.of("$T.class", type))
                 .collect(CodeBlock.joining(",", "{", "}"));
     }
@@ -116,6 +141,20 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
                             .build())
                     .addParameter(entityType, "entity")
                     .returns(type)
+                    .build();
+            builder.addMethod(methodSpec);
+        }
+    }
+
+    protected void addSubEntityToEntity(){
+        for (SubEntityToEntitiesData subEntityToEntitiesData : subEntityToEntity) {
+            TypeName entityTypeName = ClassName.get(getPackage(entityName, basePackage), subEntityToEntitiesData.getRelatedEntity());
+            MethodSpec methodSpec = MethodSpec.methodBuilder(MAP)
+                    .addModifiers(Modifier.PUBLIC)
+                    .addParameter(subEntityToEntitiesData.getEntityFieldName(), "res")
+                    .returns(entityTypeName)
+                    .addStatement("if (res == null || res.getId() == null) return null")
+                    .addStatement("return new $T(res.getId())", entityTypeName)
                     .build();
             builder.addMethod(methodSpec);
         }
@@ -160,5 +199,12 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
 
     protected boolean isComposed(TypeName type) {
         return type != null && !type.toString().startsWith("java");
+    }
+
+    private void checkPartialUpdate(){
+        if(this.cfg.getControllers() != null && this.cfg.getControllers().size() > 0){
+            Controller controller = this.cfg.getControllers().stream().filter(x -> x.getEntity().equals(this.entityName)).findAny().get();
+            this.patchResource = controller.getEndpoints().stream().anyMatch(x -> x.getMethod() == Endpoint.Method.PATCH);
+        }
     }
 }
