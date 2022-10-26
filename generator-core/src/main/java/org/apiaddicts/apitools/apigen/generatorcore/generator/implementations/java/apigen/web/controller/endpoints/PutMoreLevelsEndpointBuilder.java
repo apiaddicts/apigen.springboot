@@ -57,7 +57,7 @@ public class PutMoreLevelsEndpointBuilder<C extends ApigenContext> extends Apige
         TypeName resourceType = ApigenEntityOutputResourceBuilder.getTypeName(entityName, cfg.getBasePackage());
         TypeName responseType = EntitySimpleResponseBuilder.getTypeName(entityName, cfg.getBasePackage());
         builder.addStatement("$T filter = getParentFilter($L, $L, \"$L\")", filterType, pathParams.get(0), null, endpoint.getChildParentRelationProperty());
-        builder.addStatement("List<String> expand = getparentExpand(null, \"$L\")", endpoint.getParentEntity());
+        builder.addStatement("List<String> expand = getParentExpand(null, \"$L\")", endpoint.getParentEntity());
         builder.addStatement("$L.search(Long.valueOf($L), null, null, $L, $L)", SERVICE_NAME, pathParams.get(1), "expand", "filter");
         builder.addStatement("$T updateRequest = $L.toEntity(body)", entityType, MAPPER_NAME);
         builder.addStatement("$L.update(Long.valueOf($L), updateRequest, updatedFields)", SERVICE_NAME, pathParams.get(1));

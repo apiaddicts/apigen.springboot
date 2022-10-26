@@ -116,7 +116,7 @@ class ApigenRepositoryTest {
 	@Test
 	void givenPersistedRecords_whenExpand_thenSuccess() {
 		List<String> expand = Arrays.asList("children", "children.children");
-		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, expand, null);
+		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, expand);
 		FakeEntityNode center = nodeRepository.searchById(CENTER_NODE_ENTITY_ID, search).orElse(null);
 		assertNotNull(center);
 		assertNotNull(center.getChildren());
@@ -131,7 +131,7 @@ class ApigenRepositoryTest {
 	void givenPersistedRecords_whenExpandAndSelect_thenSuccess() {
 		List<String> expand = Arrays.asList("children", "children.children");
 		List<String> select = Arrays.asList("id", "children.id", "children.children.id");
-		ApigenSearch search = new ApigenSearch(select, EMPTY, expand, null);
+		ApigenSearch search = new ApigenSearch(select, EMPTY, expand);
 		FakeEntityNode center = nodeRepository.searchById(CENTER_NODE_ENTITY_ID, search).orElse(null);
 		assertNotNull(center);
 		assertNotNull(center.getChildren());

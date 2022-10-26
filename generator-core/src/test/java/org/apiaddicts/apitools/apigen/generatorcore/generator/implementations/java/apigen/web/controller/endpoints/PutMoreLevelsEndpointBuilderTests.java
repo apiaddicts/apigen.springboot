@@ -103,7 +103,7 @@ class PutMoreLevelsEndpointBuilderTests {
         assertEquals("body", parameterSpec.name);
 
         assertEquals("org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(idelement, null, \"null\");\n" +
-                "List<String> expand = getparentExpand(null, \"main\");\n" +
+                "List<String> expand = getParentExpand(null, \"main\");\n" +
                 "service.search(Long.valueOf(id), null, null, expand, filter);\n" +
                 "the.group.artifact.entityname.EntityName updateRequest = mapper.toEntity(body);\n" +
                 "service.update(Long.valueOf(id), updateRequest, updatedFields);\n" +

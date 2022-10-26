@@ -111,7 +111,7 @@ class GetByIdMoreLevelsEndpointBuilderTest {
 
         assertEquals("namingTranslator.translate(select, exclude, expand, the.group.artifact.entityname.web.EntityNameOutResource.class);\n" +
                 "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(idelement, null, \"null\");\n" +
-                "expand = getparentExpand(expand, \"main\");\n" +
+                "expand = getParentExpand(expand, \"main\");\n" +
                 "the.group.artifact.entityname.EntityName searchResult = service.search(Long.valueOf(id), select, exclude, expand, filter);\n" +
                 "the.group.artifact.entityname.web.EntityNameOutResource result = mapper.toResource(searchResult);\n" +
                 "return new the.group.artifact.entityname.web.EntityNameResponse(result);\n", methodSpec.code.toString());

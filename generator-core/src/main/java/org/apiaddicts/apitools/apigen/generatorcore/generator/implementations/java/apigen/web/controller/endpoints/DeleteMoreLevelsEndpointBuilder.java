@@ -32,7 +32,7 @@ public class DeleteMoreLevelsEndpointBuilder<C extends ApigenContext> extends Ap
     protected void addStatements() {
         TypeName filterType = ClassName.get(Filter.class);
         builder.addStatement("$T filter = getParentFilter($L, $L, \"$L\")", filterType, pathParams.get(0), null, endpoint.getChildParentRelationProperty());
-        builder.addStatement("List<String> expand = getparentExpand(null, \"$L\")", endpoint.getParentEntity());
+        builder.addStatement("List<String> expand = getParentExpand(null, \"$L\")", endpoint.getParentEntity());
         builder.addStatement("$L.search(Long.valueOf($L), null, null, $L, $L)", SERVICE_NAME, pathParams.get(1), "expand", "filter");
         builder.addStatement("$L.delete(Long.valueOf($L))", SERVICE_NAME, pathParams.get(1));
     }

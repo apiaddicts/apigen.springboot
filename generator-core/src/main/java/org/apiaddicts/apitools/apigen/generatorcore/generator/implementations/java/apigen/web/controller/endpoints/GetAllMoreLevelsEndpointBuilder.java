@@ -61,7 +61,7 @@ public class GetAllMoreLevelsEndpointBuilder<C extends ApigenContext> extends Ap
         }
         builder.addStatement("$L.translate($L, $T.class)", NAMING_TRANSLATOR_NAME, translatorParams, resourceType);
         builder.addStatement("$T filter = getParentFilter($L, $L, \"$L\")", filterType, pathParams.get(0), null, endpoint.getChildParentRelationProperty());
-        builder.addStatement("expand = getparentExpand(expand, \"$L\")", endpoint.getParentEntity());
+        builder.addStatement("expand = getParentExpand(expand, \"$L\")", endpoint.getParentEntity());
         builder.addStatement("$T searchResult = $L.search($L)", searchResultType, SERVICE_NAME, params);
         builder.addStatement("$T result = $L.toResource(searchResult.getSearchResult())", listResourceType, MAPPER_NAME);
         TypeName responseTypeMoreLevel = EntityListResponseBuilder.getTypeName(endpoint.getResponse().getRelatedEntity(), cfg.getBasePackage());

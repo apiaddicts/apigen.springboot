@@ -94,7 +94,7 @@ class DeleteMoreLevelsEndpointBuilderTests {
         assertEquals("id", methodSpec.parameters.get(1).name);
 
         assertEquals("org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(idelement, null, \"null\");\n" +
-                "List<String> expand = getparentExpand(null, \"main\");\n" +
+                "List<String> expand = getParentExpand(null, \"main\");\n" +
                 "service.search(Long.valueOf(id), null, null, expand, filter);\n" +
                 "service.delete(Long.valueOf(id));\n", methodSpec.code.toString());
     }

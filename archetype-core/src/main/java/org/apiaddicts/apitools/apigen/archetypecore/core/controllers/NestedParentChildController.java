@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class MoreLevelsPathController {
+public abstract class NestedParentChildController {
 
     protected Filter getParentFilter(String id, Filter originalFilter, String childParentRelationProperty) {
         Value value = new Value();
@@ -26,7 +26,7 @@ public abstract class MoreLevelsPathController {
         }
     }
 
-    protected List<String> getparentExpand(List<String> expand, String parentEntity) {
+    protected List<String> getParentExpand(List<String> expand, String parentEntity) {
         if (expand == null) expand = new LinkedList<>();
         if (!expand.contains(parentEntity.toLowerCase())) expand.add(parentEntity.toLowerCase());
         return expand;

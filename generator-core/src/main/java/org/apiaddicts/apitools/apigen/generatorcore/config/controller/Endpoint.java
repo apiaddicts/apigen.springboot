@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
 public class Endpoint {
@@ -22,10 +21,10 @@ public class Endpoint {
     private Request request;
     @JsonProperty("related_entity")
     private String relatedEntity;
-    @JsonProperty("parent-entity")
-    private String ParentEntity;
-    @JsonProperty("child-parent-relation-property")
-    private String ChildParentRelationProperty;
+    @JsonProperty("parent_entity")
+    private String parentEntity;
+    @JsonProperty("child_parent_relation_property")
+    private String childParentRelationProperty;
 
     public enum Method {
         GET("Find"), POST("Create"), PUT("Update"), DELETE("Delete");

@@ -130,7 +130,7 @@ class PostSearchMoreLevelsEndpointBuilderTests {
         assertEquals("orderby", parameterSpec.name);
 
         assertEquals("org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(id, null, \"null\");\n" +
-                "expand = getparentExpand(expand, \"main\");\n" +
+                "expand = getParentExpand(expand, \"main\");\n" +
                 "namingTranslator.translate(select, exclude, expand, orderby, the.group.artifact.entityname.web.EntityNameOutResource.class);\n" +
                 "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenSearchResult<the.group.artifact.entityname.EntityName> searchResult = service.search(select, exclude, expand, filter, orderby, init, limit, total);\n" +
                 "java.util.List<the.group.artifact.entityname.web.EntityNameOutResource> result = mapper.toResource(searchResult.getSearchResult());\n" +
@@ -192,7 +192,7 @@ class PostSearchMoreLevelsEndpointBuilderTests {
         assertEquals("orderby", parameterSpec.name);
 
         assertEquals("org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(id, null, \"null\");\n" +
-                "expand = getparentExpand(expand, \"main\");\n" +
+                "expand = getParentExpand(expand, \"main\");\n" +
                 "namingTranslator.translate(select, exclude, expand, orderby, the.group.artifact.entityname.web.EntityNameOutResource.class);\n" +
                 "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenSearchResult<the.group.artifact.entityname.EntityName> searchResult = service.search(select, exclude, expand, filter, orderby, null, null, null);\n" +
                 "java.util.List<the.group.artifact.entityname.web.EntityNameOutResource> result = mapper.toResource(searchResult.getSearchResult());\n" +

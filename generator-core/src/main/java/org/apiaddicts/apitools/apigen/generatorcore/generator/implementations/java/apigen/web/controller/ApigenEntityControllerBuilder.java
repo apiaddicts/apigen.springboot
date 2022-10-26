@@ -3,7 +3,7 @@ package org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.j
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.TypeName;
-import org.apiaddicts.apitools.apigen.archetypecore.core.controllers.MoreLevelsPathController;
+import org.apiaddicts.apitools.apigen.archetypecore.core.controllers.NestedParentChildController;
 import org.apiaddicts.apitools.apigen.archetypecore.core.resource.ResourceNamingTranslator;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Controller;
@@ -15,8 +15,6 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.lang.model.element.Modifier;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class ApigenEntityControllerBuilder<C extends ApigenContext> extends ControllerBuilder<C> {
 
@@ -61,7 +59,7 @@ public class ApigenEntityControllerBuilder<C extends ApigenContext> extends Cont
     protected void initializeBuilder(){
         super.initializeBuilder();
         if(this.endpoints.get(0).getParentEntity() != null){
-            this.builder.superclass(MoreLevelsPathController.class);
+            this.builder.superclass(NestedParentChildController.class);
         }
     }
 
