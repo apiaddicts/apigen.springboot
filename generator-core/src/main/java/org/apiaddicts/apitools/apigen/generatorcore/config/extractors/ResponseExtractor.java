@@ -4,17 +4,19 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
+
+import java.util.*;
+
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Response;
 
-import java.util.Map;
-
+import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Constants.JSON_MIME_TYPE;
 import static org.apiaddicts.apitools.apigen.generatorcore.spec.components.Extensions.*;
 
 public class ResponseExtractor {
 
     private final AttributesExtractor attributesExtractor;
 
-    public ResponseExtractor(Map<String, Schema> schemas) {
+    public ResponseExtractor(Map<String, Schema<?>> schemas) {
         this.attributesExtractor = new AttributesExtractor(schemas);
     }
 
@@ -35,11 +37,16 @@ public class ResponseExtractor {
         endpointResponse.setDefaultStatusCode(status == 0 ? 200 : status);
         endpointResponse.setIsStandard(false);
 
-        if (response == null || response.getContent() == null || response.getContent().get("application/json") == null) {
+        if (response == null || response.getContent() == null || response.getContent().get(JSON_MIME_TYPE) == null) {
+            if(response != null && response.getContent() != null) {
+                endpointResponse.setMimeType(response.getContent().keySet().iterator().next());
+                endpointResponse.setAttributes(new LinkedList<>());
+            }
             return endpointResponse;
         }
 
-        Schema<?> schema = response.getContent().get("application/json").getSchema();
+        Schema<?> schema = response.getContent().get(JSON_MIME_TYPE).getSchema();
+        endpointResponse.setMimeType(response.getContent().keySet().iterator().next());
 
         if (isStandardResponse(schema)) {
             endpointResponse.setIsStandard(true);
@@ -61,7 +68,7 @@ public class ResponseExtractor {
         } else {
             if (schema instanceof ArraySchema) {
                 endpointResponse.setIsCollection(true);
-                schema = ((ArraySchema) schema).getItems();
+                schema = schema.getItems();
             } else {
                 endpointResponse.setIsCollection(false);
             }
@@ -70,7 +77,7 @@ public class ResponseExtractor {
         return endpointResponse;
     }
 
-    private boolean isStandardResponse(Schema schema) {
+    private boolean isStandardResponse(Schema<?> schema) {
         if (schema.getExtensions() != null && schema.getExtensions().containsKey(RESPONSE)) {
             Map<String, Object> apigenResponse = (Map<String, Object>) schema.getExtensions().get(RESPONSE);
             if (apigenResponse != null && apigenResponse.containsKey(RESPONSE_STANDARD)
@@ -102,26 +109,25 @@ public class ResponseExtractor {
         return dataProperty;
     }
 
-    private boolean isNamedCollectionSchema(Schema dataSchema) {
+    private boolean isNamedCollectionSchema(Schema<?> dataSchema) {
         if (dataSchema.getProperties().size() != 1) return false;
         String key = getNamedCollectionName(dataSchema);
         return dataSchema.getProperties().get(key) instanceof ArraySchema;
     }
 
-    private String getNamedCollectionName(Schema dataSchema) {
-        return (String) dataSchema.getProperties().keySet().iterator().next();
+    private String getNamedCollectionName(Schema<?> dataSchema) {
+        return dataSchema.getProperties().keySet().iterator().next();
     }
 
-    private String getMappingEntity(Schema schema) {
+    private String getMappingEntity(Schema<?> schema) {
         Map<String, Object> apigenExtension = getMappingExtension(schema);
-        if (apigenExtension == null) return null;
         return (String) apigenExtension.get(MAPPING_MODEL);
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, Object> getMappingExtension(Schema schema) {
+    private Map<String, Object> getMappingExtension(Schema<?> schema) {
         Map<String, Object> extensions = schema.getExtensions();
-        if (extensions == null) return null;
+        if (extensions == null) return Collections.emptyMap();
         return (Map<String, Object>) extensions.get(MAPPING);
     }
 }

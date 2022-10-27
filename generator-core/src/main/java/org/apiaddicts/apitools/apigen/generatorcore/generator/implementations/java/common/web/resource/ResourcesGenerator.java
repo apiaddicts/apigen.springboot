@@ -18,6 +18,8 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Constants.JSON_MIME_TYPE;
+
 @Slf4j
 public class ResourcesGenerator<C extends JavaContext> extends AbstractJavaGenerator<C> {
 
@@ -50,13 +52,15 @@ public class ResourcesGenerator<C extends JavaContext> extends AbstractJavaGener
 
     private void processRequest(Controller controller, Endpoint endpoint) {
         Request request = endpoint.getRequest();
-        if (request == null) return;
+        if (request == null || request.getAttributes() == null) return;
+        if (!JSON_MIME_TYPE.equals(request.getMimeType())) return;
         inputBuilders.add(inputFactory.create(controller, endpoint, ctx, cfg));
     }
 
     private void processResponse(Controller controller, Endpoint endpoint) {
         Response response = endpoint.getResponse();
         if (response == null || response.getAttributes() == null) return;
+        if (!JSON_MIME_TYPE.equals(response.getMimeType())) return;
         outputBuilders.add(outputFactory.create(controller, endpoint, ctx, cfg));
     }
 

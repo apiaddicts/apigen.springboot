@@ -1,0 +1,238 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Apigen Mime Type Example
+
+paths:
+  /owners/pdf:
+    x-apigen-binding:
+      model: Owner
+    post:
+      operationId: pdfPost
+      requestBody:
+        content:
+          application/pdf:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "200":
+          description: PDF File
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+    get:
+      operationId: pdfGet
+      responses:
+        "200":
+          description: PDF file
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+
+components:
+  parameters:
+    integer_id_param:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+        format: int64
+    string_id_param:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+    init_param:
+      in: query
+      name: $init
+      required: true
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        default: 0
+    limit_param:
+      in: query
+      name: $limit
+      required: true
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 25
+    total_param:
+      in: query
+      name: $total
+      required: true
+      schema:
+        type: boolean
+        default: false
+    select_param:
+      in: query
+      name: $select
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+        maxItems: 100
+    exclude_param:
+      in: query
+      name: $exclude
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+        maxItems: 100
+    expand_param:
+      in: query
+      name: $expand
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+        maxItems: 100
+    order_by_param:
+      in: query
+      name: $orderby
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+        maxItems: 100
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        default: 23
+  schemas:
+    statusResponse:
+      type: object
+      properties:
+        value:
+          type: string
+    configRequest:
+      type: object
+      properties:
+        general:
+          type: object
+          properties:
+            name:
+              type: string
+            timeout:
+              type: integer
+        custom:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+    configResponse:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              status:
+                type: boolean
+    standard_response_result:
+      properties:
+        result:
+          type: object
+          properties:
+            status:
+              type: boolean
+            http_code:
+              type: integer
+            errors:
+              type: array
+              items:
+                $ref: '#/components/schemas/standard_error'
+            info:
+              type: string
+            trace_id:
+              type: string
+            num_elements:
+              type: integer
+          required:
+            - status
+            - http_code
+            - trace_id
+    standard_error:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+    standard_search:
+      type: object
+      properties:
+        operation:
+          type: string
+          enum: [AND, OR, GT, LT, GTEQ, LTEQ, EQ, NEQ, IN, BETWEEN, SUBSTRING, LIKE, ILIKE, NLIKE, REGEXP]
+        values:
+          type: array
+          items:
+            type: object
+            properties:
+              property:
+                type: string
+              type:
+                type: string
+                enum: [STRING, INTEGER, FLOAT, DATE, DATETIME, BOOLEAN]
+              value:
+                type: string
+              values:
+                type: array
+                items:
+                  type: string
+              filter:
+                $ref: '#/components/schemas/standard_search'
+
+  # -------------------------------------------------
+
+  x-apigen-models:
+    Owner:
+      relational-persistence:
+        table: owners
+      attributes:
+        - name: id
+          type: String
+          relational-persistence:
+            column: id
+            primary-key: true
+            autogenerated: true
+        - name: name
+          type: String
+          relational-persistence:
+            column: name
+
+x-apigen-project:
+  name: name
+  description: description
+  version: 1.0.0
+  java-properties:
+    group-id: the.group
+    artifact-id: app

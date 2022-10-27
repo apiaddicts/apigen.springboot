@@ -9,7 +9,6 @@ import javax.persistence.ManyToOne;
 import java.util.List;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.ENUM_VALUE;
-import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.LITERAL;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.FETCH;
 
 @Slf4j
