@@ -12,8 +12,6 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.web.response.builders.EntityListResponseBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.persistence.EntityBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Arrays;
 import java.util.List;

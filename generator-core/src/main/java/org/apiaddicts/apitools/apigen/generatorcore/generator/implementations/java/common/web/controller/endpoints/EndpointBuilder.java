@@ -6,7 +6,6 @@ import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeName;
 import lombok.extern.slf4j.Slf4j;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
-import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Controller;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Parameter;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.components.java.AbstractJavaMethodBuilder;
@@ -21,10 +20,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.lang.model.element.Modifier;
 import javax.validation.Valid;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Constants.JSON_MIME_TYPE;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.ENUM_VALUE;
