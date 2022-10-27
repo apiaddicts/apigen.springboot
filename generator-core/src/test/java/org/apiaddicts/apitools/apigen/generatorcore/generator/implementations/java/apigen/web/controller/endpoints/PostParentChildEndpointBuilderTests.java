@@ -2,12 +2,12 @@ package org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.j
 
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
 import org.apiaddicts.apitools.apigen.generatorcore.config.ConfigurationObjectMother;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContextObjectMother;
-import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.web.controller.endpoints.PostEndpointBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.persistence.JavaEntitiesData;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.web.controller.endpoints.EndpointObjectMother;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
@@ -18,27 +18,27 @@ import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-class PostMoreLevelsEndpointBuilderTests {
+class PostParentChildEndpointBuilderTests {
 
     static TypeSpec typeSpec;
 
     @BeforeAll
     static void init() {
-        Endpoint endPoint = EndpointObjectMother.standardPostMoreLevels("postMoreLevels", "EntityName");
+        Endpoint endPoint = EndpointObjectMother.standardParentChildPost("postParentChild", "Child");
         JavaEntitiesData entitiesData = Mockito.mock(JavaEntitiesData.class);
         ApigenContext ctx = ApigenContextObjectMother.create();
         ctx.setEntitiesData(entitiesData);
-        PostMoreLevelsEndpointBuilder<ApigenContext>
-                builderEndpoint = new PostMoreLevelsEndpointBuilder<>(new Mapping("/entities"), endPoint, ctx,
+        PostParentChildEndpointBuilder<ApigenContext>
+                builderEndpoint = new PostParentChildEndpointBuilder<>(new Mapping("/parents/{id}/children"), endPoint, ctx,
                 ConfigurationObjectMother.create());
-        TypeSpec.Builder builder = TypeSpec.classBuilder("PostEndpointMoreLevels");
+        TypeSpec.Builder builder = TypeSpec.classBuilder("PostEndpointParentChild");
         builderEndpoint.apply(builder);
         typeSpec = builder.build();
     }
 
     @Test
     void givenPostEndpointBuilder_whenBuild_thenNameCorrect() {
-        assertEquals("PostEndpointMoreLevels", typeSpec.name);
+        assertEquals("PostEndpointParentChild", typeSpec.name);
     }
 
     @Test
@@ -70,26 +70,32 @@ class PostMoreLevelsEndpointBuilderTests {
     void givenPostEndpointBuilder_whenBuild_thenHaveMethodSpecIsCorrect() {
         MethodSpec methodSpec = typeSpec.methodSpecs.get(0);
         assertFalse(methodSpec.isConstructor());
-        assertEquals("postMoreLevels", methodSpec.name);
+        assertEquals("postParentChild", methodSpec.name);
         assertEquals(2, methodSpec.annotations.size());
 
         AnnotationSpec annotationSpec = methodSpec.annotations.get(0);
-        assertEquals("@org.springframework.web.bind.annotation.PostMapping(\"/{id}/elements\")", annotationSpec.toString());
+        assertEquals("@org.springframework.web.bind.annotation.PostMapping", annotationSpec.toString());
         annotationSpec = methodSpec.annotations.get(1);
         assertEquals("@org.springframework.web.bind.annotation.ResponseStatus(code = org.springframework.http.HttpStatus.CREATED)", annotationSpec.toString());
 
         assertEquals(1, methodSpec.modifiers.size());
         assertEquals("[public]", methodSpec.modifiers.toString());
 
-        assertEquals("[@org.springframework.web.bind.annotation.PathVariable(\"id\")]", methodSpec.parameters.get(0).annotations.toString());
-        assertEquals("java.lang.Long", methodSpec.parameters.get(0).type.toString());
-        assertEquals("id", methodSpec.parameters.get(0).name);
+        ParameterSpec parameterSpec = methodSpec.parameters.get(0);
+        assertEquals("[@org.springframework.web.bind.annotation.PathVariable(\"parent_id\")]", parameterSpec.annotations.toString());
+        assertEquals("java.lang.Long", parameterSpec.type.toString());
+        assertEquals("parentId", parameterSpec.name);
 
-        assertEquals("the.group.artifact.entityname.EntityName createRequest = mapper.toEntity(body);\n" +
-                "createRequest.setmain(new the.group.artifact.main.main(id));\n" +
+        parameterSpec = methodSpec.parameters.get(1);
+        assertEquals("[@org.springframework.web.bind.annotation.RequestBody, @javax.validation.Valid]", parameterSpec.annotations.toString());
+        assertEquals("the.group.artifact.child.web.CreateChildResource", parameterSpec.type.toString());
+        assertEquals("body", parameterSpec.name);
+
+        assertEquals("the.group.artifact.child.Child createRequest = mapper.toEntity(body);\n" +
+                "createRequest.setParent(new the.group.artifact.parent.Parent(parentId));\n" +
                 "service.create(createRequest);\n" +
-                "the.group.artifact.entityname.EntityName createResult = service.search(createRequest.getId(), null, null, null);\n" +
-                "the.group.artifact.entityname.web.EntityNameOutResource result = mapper.toResource(createResult);\n" +
-                "return new the.group.artifact.entityname.web.EntityNameResponse(result);\n", methodSpec.code.toString());
+                "the.group.artifact.child.Child createResult = service.search(createRequest.getId(), null, null, null);\n" +
+                "the.group.artifact.child.web.ChildOutResource result = mapper.toResource(createResult);\n" +
+                "return new the.group.artifact.child.web.ChildResponse(result);\n", methodSpec.code.toString());
     }
 }

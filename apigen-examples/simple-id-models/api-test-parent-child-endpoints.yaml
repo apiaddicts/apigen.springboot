@@ -25,7 +25,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/standard_response_owners"
 
-  /owners/{id}:
+  /owners/{owner_id}:
     x-apigen-binding:
       model: Owner
     get:
@@ -43,7 +43,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/standard_response_owner"
 
-  /owners/{ownerId}/pets:
+  /owners/{owner_id}/pets:
     x-apigen-binding:
       model: Owner
       child-model: Pet
@@ -58,7 +58,7 @@ paths:
         - $ref: "#/components/parameters/exclude_param"
         - $ref: "#/components/parameters/expand_param"
         - $ref: "#/components/parameters/order_by_param"
-        - $ref: "#/components/parameters/string_owner_id_param"
+        - $ref: "#/components/parameters/owner_id_param"
       responses:
         '200':
           description: Ok
@@ -70,7 +70,7 @@ paths:
     post:
       operationId: postOwnerPet
       parameters:
-        - $ref: "#/components/parameters/string_owner_id_param"
+        - $ref: "#/components/parameters/owner_id_param"
       requestBody:
         content:
           application/json:
@@ -84,7 +84,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/standard_response_pets"
 
-  /owners/{ownerId}/pets/search:
+  /owners/{owner_id}/pets/search:
     x-apigen-binding:
       model: Owner
       child-model: Pet
@@ -99,7 +99,7 @@ paths:
         - $ref: "#/components/parameters/exclude_param"
         - $ref: "#/components/parameters/expand_param"
         - $ref: "#/components/parameters/order_by_param"
-        - $ref: "#/components/parameters/string_owner_id_param"
+        - $ref: "#/components/parameters/owner_id_param"
       requestBody:
         content:
           application/json:
@@ -113,7 +113,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/standard_response_pet"
 
-  /owners/{ownerId}/pets/{petId}:
+  /owners/{owner_id}/pets/{pet_id}:
     x-apigen-binding:
       model: Owner
       child-model: Pet
@@ -121,8 +121,8 @@ paths:
     get:
       operationId: getOwnerPet
       parameters:
-        - $ref: "#/components/parameters/string_owner_id_param"
-        - $ref: "#/components/parameters/string_pet_id_param"
+        - $ref: "#/components/parameters/owner_id_param"
+        - $ref: "#/components/parameters/pet_id_param"
         - $ref: "#/components/parameters/select_param"
         - $ref: "#/components/parameters/exclude_param"
         - $ref: "#/components/parameters/expand_param"
@@ -139,8 +139,8 @@ paths:
     put:
       operationId: putOwnerPet
       parameters:
-        - $ref: "#/components/parameters/string_owner_id_param"
-        - $ref: "#/components/parameters/string_pet_id_param"
+        - $ref: "#/components/parameters/owner_id_param"
+        - $ref: "#/components/parameters/pet_id_param"
       requestBody:
         content:
           application/json:
@@ -156,8 +156,8 @@ paths:
     delete:
       operationId: deleteOwnerPet
       parameters:
-        - $ref: "#/components/parameters/string_owner_id_param"
-        - $ref: "#/components/parameters/string_pet_id_param"
+        - $ref: "#/components/parameters/owner_id_param"
+        - $ref: "#/components/parameters/pet_id_param"
       responses:
         '200':
           description: Ok
@@ -174,18 +174,19 @@ components:
       required: true
       schema:
         type: string
-    string_owner_id_param:
+    owner_id_param:
       in: path
-      name: ownerId
+      name: owner_id
       required: true
       schema:
         type: string
-    string_pet_id_param:
+    pet_id_param:
       in: path
-      name: petId
+      name: pet_id
       required: true
       schema:
-        type: string
+        type: integer
+        format: int64
     init_param:
       in: query
       name: $init

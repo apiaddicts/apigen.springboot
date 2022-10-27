@@ -24,36 +24,24 @@ public class Mapping {
         return parts.length;
     }
 
+    private boolean hasSize(int num) {
+        return size() == num;
+    }
+
     public boolean isEmpty() {
-        return size() == 0;
+        return hasSize(0);
     }
 
     public boolean isFirstVariable() {
         return isVariable(0);
     }
 
-    public boolean isLastVariable(int lastElement) {
-        return isVariable(lastElement);
-    }
-
-    public boolean hasMoreLevels(int maxSize) {
-        return parts != null && size() > 2 && size() <= maxSize;
-    }
-
-    public boolean isNotByIdMoreLevels(int maxSize) {
-        return hasMoreLevels(maxSize) && !isLastVariable(parts.length - 1);
-    }
-
     public boolean isSearch() {
-        return parts.length > 0 ? parts[parts.length - 1].equals("search") : false;
+        return hasSize(1) && parts[0].equals("search");
     }
 
     public boolean isById() {
-        return size() == 1 && isFirstVariable();
-    }
-
-    public boolean isByIdMoreLevels() {
-        return hasMoreLevels(4) && isLastVariable(parts.length - 1);
+        return hasSize(1) && isFirstVariable();
     }
 
     public String getValue() {

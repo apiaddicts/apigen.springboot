@@ -5,7 +5,6 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.ConfigurationObjectMo
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContextObjectMother;
-import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.web.controller.endpoints.*;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.persistence.JavaEntitiesData;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.controller.endpoints.EndpointBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.controller.endpoints.EndpointBuilderFactory;
@@ -19,9 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ApigenEndpointBuilderFactoryImplTests {
 
-    private final String PACKAGE = "the.base.package";
     private final String ENTITY_NAME = "EntityName";
     private final Mapping ROOT_MAPPING = new Mapping("/entities");
+    private final Mapping CHILD_ROOT_MAPPING = new Mapping("/entities/{id}/subentities");
     private final JavaEntitiesData ENTITIES_DATA = Mockito.mock(JavaEntitiesData.class);
     
     private final EndpointBuilderFactory<ApigenContext> FACTORY = new ApigenEndpointBuilderFactoryImpl<>();
@@ -60,11 +59,11 @@ class ApigenEndpointBuilderFactoryImplTests {
     }
 
     @Test
-    void givenGetAllMoreLevelsEndpoint_whenAskForBuilder_thenCorrectBuilderIsReturned() {
-        Endpoint endpoint = EndpointObjectMother.standardGetAlMoreLevels("getAllMoreLevelsEndpoint", ENTITY_NAME);
-        EndpointBuilder<ApigenContext> endpointBuilder = FACTORY.create(ROOT_MAPPING, endpoint, CTX, CFG);
+    void givenGetAllParentChildEndpoint_whenAskForBuilder_thenCorrectBuilderIsReturned() {
+        Endpoint endpoint = EndpointObjectMother.standardParentChildGetAll("getAllParentChildEndpoint", ENTITY_NAME);
+        EndpointBuilder<ApigenContext> endpointBuilder = FACTORY.create(CHILD_ROOT_MAPPING, endpoint, CTX, CFG);
 
-        assertTrue(endpointBuilder instanceof GetAllMoreLevelsEndpointBuilder, "Expected GetAllMoreLevelsEndpointBuilder");
+        assertTrue(endpointBuilder instanceof GetAllParentChildEndpointBuilder, "Expected GetAllParentChildEndpointBuilder");
     }
 
     @Test
@@ -76,11 +75,11 @@ class ApigenEndpointBuilderFactoryImplTests {
     }
 
     @Test
-    void givenGetByIdMoreLevelsEndpoint_whenAskForBuilder_thenCorrectBuilderIsReturned() {
-        Endpoint endpoint = EndpointObjectMother.standardGetAlMoreLevels("getByIdMoreLevelsEndpoint", ENTITY_NAME);
-        EndpointBuilder<ApigenContext> endpointBuilder = FACTORY.create(ROOT_MAPPING, endpoint, CTX, CFG);
+    void givenGetByIdParentChildEndpoint_whenAskForBuilder_thenCorrectBuilderIsReturned() {
+        Endpoint endpoint = EndpointObjectMother.standardParentChildGetAll("getByIdParentChildEndpoint", ENTITY_NAME);
+        EndpointBuilder<ApigenContext> endpointBuilder = FACTORY.create(CHILD_ROOT_MAPPING, endpoint, CTX, CFG);
 
-        assertTrue(endpointBuilder instanceof GetAllMoreLevelsEndpointBuilder, "Expected GetByIdMoreLevelsEndpointBuilder");
+        assertTrue(endpointBuilder instanceof GetAllParentChildEndpointBuilder, "Expected GetByIdParentChildEndpointBuilder");
     }
 
     @Test
@@ -92,11 +91,11 @@ class ApigenEndpointBuilderFactoryImplTests {
     }
 
     @Test
-    void givenPutMoreLevelsEndpoint_whenAskForBuilder_thenCorrectBuilderIsReturned() {
-        Endpoint endpoint = EndpointObjectMother.standardPutMoreLevels("putMoreLevelsEndpoint", ENTITY_NAME);
-        EndpointBuilder<ApigenContext> endpointBuilder = FACTORY.create(ROOT_MAPPING, endpoint, CTX, CFG);
+    void givenPutParentChildEndpoint_whenAskForBuilder_thenCorrectBuilderIsReturned() {
+        Endpoint endpoint = EndpointObjectMother.standardParentChildPut("putParentChildEndpoint", ENTITY_NAME);
+        EndpointBuilder<ApigenContext> endpointBuilder = FACTORY.create(CHILD_ROOT_MAPPING, endpoint, CTX, CFG);
 
-        assertTrue(endpointBuilder instanceof PutMoreLevelsEndpointBuilder, "Expected PutMoreLevelsEndpointBuilder");
+        assertTrue(endpointBuilder instanceof PutParentChildEndpointBuilder, "Expected PutParentChildEndpointBuilder");
     }
 
     @Test

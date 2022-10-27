@@ -8,7 +8,6 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.ConfigurationObjectMo
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContextObjectMother;
-import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.web.controller.endpoints.GetByIdMoreLevelsEndpointBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.persistence.JavaEntitiesData;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.web.controller.endpoints.EndpointObjectMother;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
@@ -19,67 +18,68 @@ import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-class GetByIdMoreLevelsEndpointBuilderTest {
+class GetByIdParentChildEndpointBuilderTest {
 
     private static TypeSpec typeSpec;
 
     @BeforeAll
     static void init() {
-        Endpoint endPoint = EndpointObjectMother.standardGetByIdMoreLevels("getByIdMoreLevels", "EntityName");
+        Endpoint endPoint = EndpointObjectMother.standardParentChildGetById("getByIdParentChild", "Child");
         JavaEntitiesData entitiesData = Mockito.mock(JavaEntitiesData.class);
         ApigenContext ctx = ApigenContextObjectMother.create();
         ctx.setEntitiesData(entitiesData);
-        GetByIdMoreLevelsEndpointBuilder<ApigenContext> builderEndpoint = new GetByIdMoreLevelsEndpointBuilder<>(new Mapping("/entities"), endPoint, ctx,
+        GetByIdParentChildEndpointBuilder<ApigenContext>
+                builderEndpoint = new GetByIdParentChildEndpointBuilder<>(new Mapping("/parents/{id}/children"), endPoint, ctx,
                 ConfigurationObjectMother.create());
-        TypeSpec.Builder builder = TypeSpec.classBuilder("GetByIdMoreLevelsEndpoint");
+        TypeSpec.Builder builder = TypeSpec.classBuilder("GetByIdParentChildEndpoint");
         builderEndpoint.apply(builder);
         typeSpec = builder.build();
     }
 
     @Test
-    void givenGetByIdMoreLevelsEndpointBuilder_whenBuild_thenNameCorrect() {
-        assertEquals("GetByIdMoreLevelsEndpoint", typeSpec.name);
+    void givenGetByIdParentChildEndpointBuilder_whenBuild_thenNameCorrect() {
+        assertEquals("GetByIdParentChildEndpoint", typeSpec.name);
     }
 
     @Test
-    void givenGetByIdMoreLevelsEndpointBuilder_whenBuild_thenModifierIsPublic() {
+    void givenGetByIdParentChildEndpointBuilder_whenBuild_thenModifierIsPublic() {
         assertEquals(0, typeSpec.modifiers.size());
     }
 
     @Test
-    void givenGetByIdMoreLevelsEndpointBuilder_whenBuild_thenKindIsClass() {
+    void givenGetByIdParentChildEndpointBuilder_whenBuild_thenKindIsClass() {
         assertEquals("CLASS", typeSpec.kind.toString());
     }
 
     @Test
-    void givenGetByIdMoreLevelsEndpointBuilder_whenBuild_thenNoHaveAnnotation() {
+    void givenGetByIdParentChildEndpointBuilder_whenBuild_thenNoHaveAnnotation() {
         assertEquals(0, typeSpec.annotations.size());
     }
 
     @Test
-    void givenGetByIdMoreLevelsEndpointBuilder_whenBuild_thenNoHaveModifier() {
+    void givenGetByIdParentChildEndpointBuilder_whenBuild_thenNoHaveModifier() {
         assertEquals(0, typeSpec.modifiers.size());
     }
 
     @Test
-    void givenGetByIdMoreLevelsEndpointBuilder_whenBuild_thenNoHaveFieldsSpecs() {
+    void givenGetByIdParentChildEndpointBuilder_whenBuild_thenNoHaveFieldsSpecs() {
         assertEquals(0, typeSpec.fieldSpecs.size());
     }
 
     @Test
-    void givenGetByIdMoreLevelsEndpointBuilder_whenBuild_thenHaveSuperClassAndIsCorrect() {
+    void givenGetByIdParentChildEndpointBuilder_whenBuild_thenHaveSuperClassAndIsCorrect() {
         assertEquals("java.lang.Object", typeSpec.superclass.toString());
     }
 
     @Test
-    void givenGetByIdMoreLevelsEndpointBuilder_whenBuild_thenHaveMethodSpecIsCorrect() {
+    void givenGetByIdParentChildEndpointBuilder_whenBuild_thenHaveMethodSpecIsCorrect() {
         MethodSpec methodSpec = typeSpec.methodSpecs.get(0);
         assertFalse(methodSpec.isConstructor());
-        assertEquals("getByIdMoreLevels", methodSpec.name);
+        assertEquals("getByIdParentChild", methodSpec.name);
 
         assertEquals(2, methodSpec.annotations.size());
         AnnotationSpec annotationSpec = methodSpec.annotations.get(0);
-        assertEquals("@org.springframework.web.bind.annotation.GetMapping(\"/{id}/elements/{idElement}\")", annotationSpec.toString());
+        assertEquals("@org.springframework.web.bind.annotation.GetMapping(\"/{child_id}\")", annotationSpec.toString());
         annotationSpec = methodSpec.annotations.get(1);
         assertEquals("@org.springframework.web.bind.annotation.ResponseStatus(code = org.springframework.http.HttpStatus.OK)", annotationSpec.toString());
 
@@ -88,16 +88,14 @@ class GetByIdMoreLevelsEndpointBuilderTest {
 
         assertEquals(5, methodSpec.parameters.size());
         ParameterSpec parameterSpec = methodSpec.parameters.get(0);
-        assertEquals("[@org.springframework.web.bind.annotation.PathVariable(\"idElement\")]", parameterSpec.annotations.toString());
+        assertEquals("[@org.springframework.web.bind.annotation.PathVariable(\"parent_id\")]", parameterSpec.annotations.toString());
         assertEquals("java.lang.Long", parameterSpec.type.toString());
-        assertEquals("idelement", parameterSpec.name);
+        assertEquals("parentId", parameterSpec.name);
 
-
-        //assertEquals("[@org.springframework.web.bind.annotation.RequestParam(value = \"$select\", required = false)]", parameterSpec.annotations.toString());
         parameterSpec = methodSpec.parameters.get(1);
-        assertEquals("[@org.springframework.web.bind.annotation.PathVariable(\"id\")]", parameterSpec.annotations.toString());
+        assertEquals("[@org.springframework.web.bind.annotation.PathVariable(\"child_id\")]", parameterSpec.annotations.toString());
         assertEquals("java.lang.Long", parameterSpec.type.toString());
-        assertEquals("id", parameterSpec.name);
+        assertEquals("childId", parameterSpec.name);
 
         parameterSpec = methodSpec.parameters.get(2);
         assertEquals("[@org.springframework.web.bind.annotation.RequestParam(value = \"$select\", required = false)]", parameterSpec.annotations.toString());
@@ -109,11 +107,12 @@ class GetByIdMoreLevelsEndpointBuilderTest {
         assertEquals("java.util.List<java.lang.String>", parameterSpec.type.toString());
         assertEquals("exclude", parameterSpec.name);
 
-        assertEquals("namingTranslator.translate(select, exclude, expand, the.group.artifact.entityname.web.EntityNameOutResource.class);\n" +
-                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(idelement, null, \"null\");\n" +
-                "expand = getParentExpand(expand, \"main\");\n" +
-                "the.group.artifact.entityname.EntityName searchResult = service.search(Long.valueOf(id), select, exclude, expand, filter);\n" +
-                "the.group.artifact.entityname.web.EntityNameOutResource result = mapper.toResource(searchResult);\n" +
-                "return new the.group.artifact.entityname.web.EntityNameResponse(result);\n", methodSpec.code.toString());
+        assertEquals("" +
+                "namingTranslator.translate(select, exclude, expand, the.group.artifact.child.web.ChildOutResource.class);\n" +
+                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(parentId, null, \"parent.id\");\n" +
+                "expand = getParentExpand(expand, \"parent\");\n" +
+                "the.group.artifact.child.Child searchResult = service.search(childId, select, exclude, expand, filter);\n" +
+                "the.group.artifact.child.web.ChildOutResource result = mapper.toResource(searchResult);\n" +
+                "return new the.group.artifact.child.web.ChildResponse(result);\n", methodSpec.code.toString());
     }
 }

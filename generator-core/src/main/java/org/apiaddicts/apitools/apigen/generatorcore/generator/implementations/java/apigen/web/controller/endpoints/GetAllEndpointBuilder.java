@@ -33,7 +33,7 @@ public class GetAllEndpointBuilder<C extends ApigenContext> extends ApigenAbstra
     @Override
     protected HttpStatus getResponseStatus() {
         HttpStatus status = HttpStatus.OK;
-        if(null != this.endpoint.getResponse().getDefaultStatusCode() && this.endpoint.getResponse().getDefaultStatusCode() == 206){
+        if(null != this.endpoint.getResponse().getDefaultStatusCode() && this.endpoint.getResponse().getDefaultStatusCode() == 206) {
             return HttpStatus.PARTIAL_CONTENT;
         }
         return status;

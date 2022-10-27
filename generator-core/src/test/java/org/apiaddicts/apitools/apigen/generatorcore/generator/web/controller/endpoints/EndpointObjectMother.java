@@ -7,6 +7,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Parameter;
 import org.apiaddicts.apitools.apigen.generatorcore.config.parameter.ParameterObjectMother;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class EndpointObjectMother {
@@ -23,15 +24,16 @@ public class EndpointObjectMother {
         return endpoint;
     }
 
-    public static Endpoint standardPostMoreLevels(String endpointName, String entityName) {
-        List<Parameter> parameters = ParameterObjectMother.createGetAllStandardParameters();
-        Parameter parameter = ParameterObjectMother.getBasicPathParameter("id", "integer");
-        parameters.add(0, parameter);
-        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.POST, "/{id}/elements", parameters);
+    public static Endpoint standardParentChildPost(String endpointName, String entityName) {
+        List<Parameter> parameters = new LinkedList<>();
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("parent_id", "integer");
+        parameters.add(parameter);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.POST, null, parameters);
         endpoint.setRequest(EndpointRequestObjectMother.requestWithoutAttributes(entityName));
         endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
         endpoint.setRelatedEntity(entityName);
-        endpoint.setParentEntity("main");
+        endpoint.setParentEntity("Parent");
+        endpoint.setChildParentRelationProperty("parent.id");
         return endpoint;
     }
 
@@ -43,14 +45,15 @@ public class EndpointObjectMother {
         return endpoint;
     }
 
-    public static Endpoint standardSearchMoreLevels(String endpointName, String entityName) {
+    public static Endpoint standardParentChildSearch(String endpointName, String entityName) {
         List<Parameter> parameters = ParameterObjectMother.createGetAllStandardParameters();
-        Parameter parameter = ParameterObjectMother.getBasicPathParameter("id", "integer");
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("parent_id", "integer");
         parameters.add(0, parameter);
-        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.POST, "/{id}/elements/search", parameters);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.POST, "/search", parameters);
         endpoint.setResponse(EndpointBaseResponseObjectMother.listResponseWithoutAttributesAndCollectionNameEqualsEntityName(entityName));
         endpoint.setRelatedEntity(entityName);
-        endpoint.setParentEntity("main");
+        endpoint.setParentEntity("Parent");
+        endpoint.setChildParentRelationProperty("parent.id");
         return endpoint;
     }
 
@@ -62,14 +65,15 @@ public class EndpointObjectMother {
         return endpoint;
     }
 
-    public static Endpoint standardGetAlMoreLevels(String endpointName, String entityName) {
+    public static Endpoint standardParentChildGetAll(String endpointName, String entityName) {
         List<Parameter> parameters = ParameterObjectMother.createGetAllStandardParameters();
-        Parameter parameter = ParameterObjectMother.getBasicPathParameter("id", "integer");
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("parent_id", "integer");
         parameters.add(0, parameter);
-        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.GET, "/{id}/elements", parameters);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.GET, null, parameters);
         endpoint.setResponse(EndpointBaseResponseObjectMother.listResponseWithoutAttributesAndCollectionNameEqualsEntityName(entityName));
         endpoint.setRelatedEntity(entityName);
-        endpoint.setParentEntity("main");
+        endpoint.setParentEntity("Parent");
+        endpoint.setChildParentRelationProperty("parent.id");
         return endpoint;
     }
 
@@ -83,16 +87,17 @@ public class EndpointObjectMother {
         return endpoint;
     }
 
-    public static Endpoint standardGetByIdMoreLevels(String endpointName, String entityName) {
+    public static Endpoint standardParentChildGetById(String endpointName, String entityName) {
         List<Parameter> parameters = ParameterObjectMother.createGetByIdStandardParameters();
-        Parameter parameter = ParameterObjectMother.getBasicPathParameter("id", "integer");
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("parent_id", "integer");
         parameters.add(0, parameter);
-        parameter = ParameterObjectMother.getBasicPathParameter("idElement", "integer");
-        parameters.add(0, parameter);
-        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.GET, "/{id}/elements/{idElement}", parameters);
+        parameter = ParameterObjectMother.getBasicPathParameter("child_id", "integer");
+        parameters.add(1, parameter);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.GET, "/{child_id}", parameters);
         endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
         endpoint.setRelatedEntity(entityName);
-        endpoint.setParentEntity("main");
+        endpoint.setParentEntity("Parent");
+        endpoint.setChildParentRelationProperty("parent.id");
         return endpoint;
     }
 
@@ -107,17 +112,18 @@ public class EndpointObjectMother {
         return endpoint;
     }
 
-    public static Endpoint standardPutMoreLevels(String endpointName, String entityName) {
+    public static Endpoint standardParentChildPut(String endpointName, String entityName) {
         List<Parameter> parameters = new ArrayList<>();
-        Parameter parameter = ParameterObjectMother.getBasicPathParameter("id", "integer");
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("parent_id", "integer");
         parameters.add(parameter);
-        parameter = ParameterObjectMother.getBasicPathParameter("idElement", "integer");
-        parameters.add(0, parameter);
-        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.PUT, "/{id}/elements/{idElement}", parameters);
+        parameter = ParameterObjectMother.getBasicPathParameter("child_id", "integer");
+        parameters.add(parameter);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.PUT, "/{child_id}", parameters);
         endpoint.setRequest(EndpointRequestObjectMother.requestWithoutAttributes(entityName));
         endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
         endpoint.setRelatedEntity(entityName);
-        endpoint.setParentEntity("main");
+        endpoint.setParentEntity("Parent");
+        endpoint.setChildParentRelationProperty("parent.id");
         return endpoint;
     }
 
@@ -131,16 +137,17 @@ public class EndpointObjectMother {
         return endpoint;
     }
 
-    public static Endpoint standardDeleteMoreLevels(String endpointName, String entityName) {
+    public static Endpoint standardParentChildDelete(String endpointName, String entityName) {
         List<Parameter> parameters = new ArrayList<>();
-        Parameter parameter = ParameterObjectMother.getBasicPathParameter("id", "integer");
-        parameters.add(0, parameter);
-        parameter = ParameterObjectMother.getBasicPathParameter("idElement", "integer");
-        parameters.add(0, parameter);
-        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.DELETE, "/{id}/elements/{idElement}", parameters);
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("parent_id", "integer");
+        parameters.add(parameter);
+        parameter = ParameterObjectMother.getBasicPathParameter("child_id", "integer");
+        parameters.add(parameter);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.DELETE, "/{child_id}", parameters);
         endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
         endpoint.setRelatedEntity(entityName);
-        endpoint.setParentEntity("main");
+        endpoint.setParentEntity("Parent");
+        endpoint.setChildParentRelationProperty("parent.id");
         return endpoint;
     }
 

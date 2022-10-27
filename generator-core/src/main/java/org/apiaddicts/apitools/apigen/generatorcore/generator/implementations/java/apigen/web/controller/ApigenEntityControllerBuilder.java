@@ -58,7 +58,7 @@ public class ApigenEntityControllerBuilder<C extends ApigenContext> extends Cont
     @Override
     protected void initializeBuilder(){
         super.initializeBuilder();
-        if(this.endpoints.get(0).getParentEntity() != null){
+        if(this.endpoints.get(0).getParentEntity() != null) {
             this.builder.superclass(NestedParentChildController.class);
         }
     }

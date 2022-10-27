@@ -10,10 +10,14 @@ import java.util.stream.Collectors;
 
 public abstract class NestedParentChildController {
 
-    protected Filter getParentFilter(String id, Filter originalFilter, String childParentRelationProperty) {
+    protected Filter getParentFilter(Object parentId, Filter originalFilter, String childParentIdField) {
+        return getParentFilter(parentId.toString(), originalFilter, childParentIdField);
+    }
+
+    protected Filter getParentFilter(String parentId, Filter originalFilter, String childParentIdField) {
         Value value = new Value();
-        value.setProperty(childParentRelationProperty);
-        value.setValue(id);
+        value.setProperty(childParentIdField);
+        value.setValue(parentId);
 
         Filter sf = filter(FilterOperation.EQ, value);
         Value sfv = value(sf);
@@ -26,9 +30,9 @@ public abstract class NestedParentChildController {
         }
     }
 
-    protected List<String> getParentExpand(List<String> expand, String parentEntity) {
+    protected List<String> getParentExpand(List<String> expand, String parentExpandProperty) {
         if (expand == null) expand = new LinkedList<>();
-        if (!expand.contains(parentEntity.toLowerCase())) expand.add(parentEntity.toLowerCase());
+        if (!expand.contains(parentExpandProperty)) expand.add(parentExpandProperty);
         return expand;
     }
 

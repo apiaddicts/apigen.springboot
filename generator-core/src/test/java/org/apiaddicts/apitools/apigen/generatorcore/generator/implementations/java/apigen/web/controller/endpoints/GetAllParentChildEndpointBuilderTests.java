@@ -8,7 +8,6 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.ConfigurationObjectMo
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContextObjectMother;
-import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.web.controller.endpoints.GetAllMoreLevelsEndpointBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.persistence.JavaEntitiesData;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.web.controller.endpoints.EndpointObjectMother;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
@@ -19,71 +18,71 @@ import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-class GetAllMoreLevelsEndpointBuilderTests {
+class GetAllParentChildEndpointBuilderTests {
 
     static TypeSpec typeSpec;
 
     @BeforeAll
     static void init() {
-        Endpoint endPointWithPagination = EndpointObjectMother.standardGetAlMoreLevels("getAllMoreLevels", "EntityName");
+        Endpoint endPointWithPagination = EndpointObjectMother.standardParentChildGetAll("getAllParentChild", "Child");
         endPointWithPagination.getResponse().setDefaultStatusCode(206);
         JavaEntitiesData entitiesData = Mockito.mock(JavaEntitiesData.class);
         ApigenContext ctx = ApigenContextObjectMother.create();
         ctx.setEntitiesData(entitiesData);
-        GetAllMoreLevelsEndpointBuilder<ApigenContext>
-                builderEndpointWithPagination = new GetAllMoreLevelsEndpointBuilder<>(new Mapping("/entities"), endPointWithPagination, ctx,
+        GetAllParentChildEndpointBuilder<ApigenContext>
+                builderEndpointWithPagination = new GetAllParentChildEndpointBuilder<>(new Mapping("/parents/{id}/children"), endPointWithPagination, ctx,
                 ConfigurationObjectMother.create());
-        TypeSpec.Builder builder = TypeSpec.classBuilder("GetAllMoreLevelsEndpoint");
+        TypeSpec.Builder builder = TypeSpec.classBuilder("GetAllParentChildEndpoint");
         builderEndpointWithPagination.apply(builder);
 
-        Endpoint endPointWithoutPagination = EndpointObjectMother.standardGetAlMoreLevels("getAllMoreLevels", "EntityName");
+        Endpoint endPointWithoutPagination = EndpointObjectMother.standardParentChildGetAll("getAllParentChild", "Child");
         endPointWithoutPagination.getResponse().setDefaultStatusCode(200);
-        GetAllMoreLevelsEndpointBuilder<ApigenContext>
-                builderEndpointWithoutPagination = new GetAllMoreLevelsEndpointBuilder<>(new Mapping("/entities"), endPointWithoutPagination, ctx,
+        GetAllParentChildEndpointBuilder<ApigenContext>
+                builderEndpointWithoutPagination = new GetAllParentChildEndpointBuilder<>(new Mapping("/entities"), endPointWithoutPagination, ctx,
                 ConfigurationObjectMother.create());
         builderEndpointWithoutPagination.apply(builder);
         typeSpec = builder.build();
     }
 
     @Test
-    void givenGetAllMoreLevelsEndpointBuilder_whenBuild_thenNameCorrect() {
-        assertEquals("GetAllMoreLevelsEndpoint", typeSpec.name);
+    void givenGetAllParentChildEndpointBuilder_whenBuild_thenNameCorrect() {
+        assertEquals("GetAllParentChildEndpoint", typeSpec.name);
     }
 
     @Test
-    void givenGetAllMoreLevelsEndpointBuilder_whenBuild_thenNoHaveModifier() {
+    void givenGetAllParentChildEndpointBuilder_whenBuild_thenNoHaveModifier() {
         assertEquals(0, typeSpec.modifiers.size());
     }
 
     @Test
-    void givenGetAllMoreLevelsEndpointBuilder_whenBuild_thenKindIsClass() {
+    void givenGetAllParentChildEndpointBuilder_whenBuild_thenKindIsClass() {
         assertEquals("CLASS", typeSpec.kind.toString());
     }
 
     @Test
-    void givenGetAllMoreLevelsEndpointBuilder_whenBuild_thenNoHaveAnnotation() {
+    void givenGetAllParentChildEndpointBuilder_whenBuild_thenNoHaveAnnotation() {
         assertEquals(0, typeSpec.annotations.size());
     }
 
     @Test
-    void givenGetAllMoreLevelsEndpointBuilder_whenBuild_thenNoHaveFieldsSpecs() {
+    void givenGetAllParentChildEndpointBuilder_whenBuild_thenNoHaveFieldsSpecs() {
         assertEquals(0, typeSpec.fieldSpecs.size());
     }
 
     @Test
-    void givenGetAllMoreLevelsEndpointBuilder_whenBuild_thenHaveSuperClassAndIsCorrect() {
+    void givenGetAllParentChildEndpointBuilder_whenBuild_thenHaveSuperClassAndIsCorrect() {
         assertEquals("java.lang.Object", typeSpec.superclass.toString());
     }
 
     @Test
-    void givenGetAllMoreLevelsEndpointBuilderWithPagination_whenBuild_thenHaveMethodSpecIsCorrect() {
+    void givenGetAllParentChildEndpointBuilderWithPagination_whenBuild_thenHaveMethodSpecIsCorrect() {
         MethodSpec methodSpec = typeSpec.methodSpecs.get(0);
         assertFalse(methodSpec.isConstructor());
-        assertEquals("getAllMoreLevels", methodSpec.name);
+        assertEquals("getAllParentChild", methodSpec.name);
 
         assertEquals(2, methodSpec.annotations.size());
         AnnotationSpec annotationSpec = methodSpec.annotations.get(0);
-        assertEquals("@org.springframework.web.bind.annotation.GetMapping(\"/{id}/elements\")", annotationSpec.toString());
+        assertEquals("@org.springframework.web.bind.annotation.GetMapping", annotationSpec.toString());
         annotationSpec = methodSpec.annotations.get(1);
         assertEquals("@org.springframework.web.bind.annotation.ResponseStatus(code = org.springframework.http.HttpStatus.PARTIAL_CONTENT)", annotationSpec.toString());
 
@@ -92,9 +91,9 @@ class GetAllMoreLevelsEndpointBuilderTests {
 
         assertEquals(8, methodSpec.parameters.size());
         ParameterSpec parameterSpec = methodSpec.parameters.get(0);
-        assertEquals("[@org.springframework.web.bind.annotation.PathVariable(\"id\")]", parameterSpec.annotations.toString());
+        assertEquals("[@org.springframework.web.bind.annotation.PathVariable(\"parent_id\")]", parameterSpec.annotations.toString());
         assertEquals("java.lang.Long", parameterSpec.type.toString());
-        assertEquals("id", parameterSpec.name);
+        assertEquals("parentId", parameterSpec.name);
 
         parameterSpec = methodSpec.parameters.get(1);
         assertEquals("[@org.springframework.web.bind.annotation.RequestParam(value = \"$init\", required = true, defaultValue = \"0\")]", parameterSpec.annotations.toString());
@@ -126,23 +125,24 @@ class GetAllMoreLevelsEndpointBuilderTests {
         assertEquals("java.util.List<java.lang.String>", parameterSpec.type.toString());
         assertEquals("expand", parameterSpec.name);
 
-        assertEquals("namingTranslator.translate(select, exclude, expand, orderby, the.group.artifact.entityname.web.EntityNameOutResource.class);\n" +
-                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(id, null, \"null\");\n" +
-                "expand = getParentExpand(expand, \"main\");\n" +
-                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenSearchResult<the.group.artifact.entityname.EntityName> searchResult = service.search(select, exclude, expand, filter, orderby, init, limit, total);\n" +
-                "java.util.List<the.group.artifact.entityname.web.EntityNameOutResource> result = mapper.toResource(searchResult.getSearchResult());\n" +
-                "return new the.group.artifact.entityname.web.EntityNameListResponse(result).withMetadataPagination(init, limit, searchResult.getTotal());\n", methodSpec.code.toString());
+        assertEquals("" +
+                "namingTranslator.translate(select, exclude, expand, orderby, the.group.artifact.child.web.ChildOutResource.class);\n" +
+                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(parentId, null, \"parent.id\");\n" +
+                "expand = getParentExpand(expand, \"parent\");\n" +
+                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenSearchResult<the.group.artifact.child.Child> searchResult = service.search(select, exclude, expand, filter, orderby, init, limit, total);\n" +
+                "java.util.List<the.group.artifact.child.web.ChildOutResource> result = mapper.toResource(searchResult.getSearchResult());\n" +
+                "return new the.group.artifact.child.web.ChildListResponse(result).withMetadataPagination(init, limit, searchResult.getTotal());\n", methodSpec.code.toString());
     }
 
     @Test
-    void givenGetAllMoreLevelsEndpointBuilderWithoutPagination_whenBuild_thenHaveMethodSpecIsCorrect() {
+    void givenGetAllParentChildEndpointBuilderWithoutPagination_whenBuild_thenHaveMethodSpecIsCorrect() {
         MethodSpec methodSpec = typeSpec.methodSpecs.get(1);
         assertFalse(methodSpec.isConstructor());
-        assertEquals("getAllMoreLevels", methodSpec.name);
+        assertEquals("getAllParentChild", methodSpec.name);
 
         assertEquals(2, methodSpec.annotations.size());
         AnnotationSpec annotationSpec = methodSpec.annotations.get(0);
-        assertEquals("@org.springframework.web.bind.annotation.GetMapping(\"/{id}/elements\")", annotationSpec.toString());
+        assertEquals("@org.springframework.web.bind.annotation.GetMapping", annotationSpec.toString());
         annotationSpec = methodSpec.annotations.get(1);
         assertEquals("@org.springframework.web.bind.annotation.ResponseStatus(code = org.springframework.http.HttpStatus.OK)", annotationSpec.toString());
 
@@ -151,9 +151,9 @@ class GetAllMoreLevelsEndpointBuilderTests {
 
         assertEquals(8, methodSpec.parameters.size());
         ParameterSpec parameterSpec = methodSpec.parameters.get(0);
-        assertEquals("[@org.springframework.web.bind.annotation.PathVariable(\"id\")]", parameterSpec.annotations.toString());
+        assertEquals("[@org.springframework.web.bind.annotation.PathVariable(\"parent_id\")]", parameterSpec.annotations.toString());
         assertEquals("java.lang.Long", parameterSpec.type.toString());
-        assertEquals("id", parameterSpec.name);
+        assertEquals("parentId", parameterSpec.name);
 
         parameterSpec = methodSpec.parameters.get(1);
         assertEquals("[@org.springframework.web.bind.annotation.RequestParam(value = \"$init\", required = true, defaultValue = \"0\")]", parameterSpec.annotations.toString());
@@ -185,12 +185,13 @@ class GetAllMoreLevelsEndpointBuilderTests {
         assertEquals("java.util.List<java.lang.String>", parameterSpec.type.toString());
         assertEquals("expand", parameterSpec.name);
 
-        assertEquals("namingTranslator.translate(select, exclude, expand, orderby, the.group.artifact.entityname.web.EntityNameOutResource.class);\n" +
-                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(id, null, \"null\");\n" +
-                "expand = getParentExpand(expand, \"main\");\n" +
-                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenSearchResult<the.group.artifact.entityname.EntityName> searchResult = service.search(select, exclude, expand, filter, orderby, null, null, null);\n" +
-                "java.util.List<the.group.artifact.entityname.web.EntityNameOutResource> result = mapper.toResource(searchResult.getSearchResult());\n" +
-                "return new the.group.artifact.entityname.web.EntityNameListResponse(result);\n", methodSpec.code.toString());
+        assertEquals("" +
+                "namingTranslator.translate(select, exclude, expand, orderby, the.group.artifact.child.web.ChildOutResource.class);\n" +
+                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(parentId, null, \"parent.id\");\n" +
+                "expand = getParentExpand(expand, \"parent\");\n" +
+                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenSearchResult<the.group.artifact.child.Child> searchResult = service.search(select, exclude, expand, filter, orderby, null, null, null);\n" +
+                "java.util.List<the.group.artifact.child.web.ChildOutResource> result = mapper.toResource(searchResult.getSearchResult());\n" +
+                "return new the.group.artifact.child.web.ChildListResponse(result);\n", methodSpec.code.toString());
     }
 
 }

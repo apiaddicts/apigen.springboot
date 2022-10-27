@@ -7,7 +7,6 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.ConfigurationObjectMo
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContextObjectMother;
-import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.web.controller.endpoints.DeleteEndpointBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.persistence.JavaEntitiesData;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.web.controller.endpoints.EndpointObjectMother;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
@@ -18,27 +17,27 @@ import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-class DeleteMoreLevelsEndpointBuilderTests {
+class DeleteParentChildEndpointBuilderTests {
 
     static TypeSpec typeSpec;
 
     @BeforeAll
     static void init() {
-        Endpoint endPoint = EndpointObjectMother.standardDeleteMoreLevels("deleteMoreLevels", "EntityName");
+        Endpoint endPoint = EndpointObjectMother.standardParentChildDelete("deleteParentChild", "Child");
         JavaEntitiesData entitiesData = Mockito.mock(JavaEntitiesData.class);
         ApigenContext ctx = ApigenContextObjectMother.create();
         ctx.setEntitiesData(entitiesData);
-        DeleteMoreLevelsEndpointBuilder<ApigenContext>
-                builderEndpoint = new DeleteMoreLevelsEndpointBuilder<>(new Mapping("/entities"), endPoint, ctx,
+        DeleteParentChildEndpointBuilder<ApigenContext>
+                builderEndpoint = new DeleteParentChildEndpointBuilder<>(new Mapping("/parents/{id}/children"), endPoint, ctx,
                 ConfigurationObjectMother.create());
-        TypeSpec.Builder builder = TypeSpec.classBuilder("DeleteMoreLevelsEndpoint");
+        TypeSpec.Builder builder = TypeSpec.classBuilder("DeleteParentChildEndpoint");
         builderEndpoint.apply(builder);
         typeSpec = builder.build();
     }
 
     @Test
     void givenDeleteEndpointBuilder_whenBuild_thenNameCorrect() {
-        assertEquals("DeleteMoreLevelsEndpoint", typeSpec.name);
+        assertEquals("DeleteParentChildEndpoint", typeSpec.name);
     }
 
     @Test
@@ -75,27 +74,28 @@ class DeleteMoreLevelsEndpointBuilderTests {
     void givenDeleteEndpointBuilder_whenBuild_thenHaveMethodSpecIsCorrect() {
         MethodSpec methodSpec = typeSpec.methodSpecs.get(0);
         assertFalse(methodSpec.isConstructor());
-        assertEquals("deleteMoreLevels", methodSpec.name);
+        assertEquals("deleteParentChild", methodSpec.name);
 
         assertEquals(2, methodSpec.annotations.size());
         AnnotationSpec annotationSpec = methodSpec.annotations.get(0);
-        assertEquals("@org.springframework.web.bind.annotation.DeleteMapping(\"/{id}/elements/{idElement}\")", annotationSpec.toString());
+        assertEquals("@org.springframework.web.bind.annotation.DeleteMapping(\"/{child_id}\")", annotationSpec.toString());
         annotationSpec = methodSpec.annotations.get(1);
         assertEquals("@org.springframework.web.bind.annotation.ResponseStatus(code = org.springframework.http.HttpStatus.NO_CONTENT)", annotationSpec.toString());
         assertEquals(1, methodSpec.modifiers.size());
         assertEquals("[public]", methodSpec.modifiers.toString());
 
-        assertEquals("@org.springframework.web.bind.annotation.PathVariable(\"idElement\") java.lang.Long idelement", methodSpec.parameters.get(0).toString());
+        assertEquals("@org.springframework.web.bind.annotation.PathVariable(\"parent_id\") java.lang.Long parentId", methodSpec.parameters.get(0).toString());
         assertEquals("java.lang.Long", methodSpec.parameters.get(0).type.toString());
-        assertEquals("idelement", methodSpec.parameters.get(0).name);
+        assertEquals("parentId", methodSpec.parameters.get(0).name);
 
-        assertEquals("@org.springframework.web.bind.annotation.PathVariable(\"id\") java.lang.Long id", methodSpec.parameters.get(1).toString());
+        assertEquals("@org.springframework.web.bind.annotation.PathVariable(\"child_id\") java.lang.Long childId", methodSpec.parameters.get(1).toString());
         assertEquals("java.lang.Long", methodSpec.parameters.get(1).type.toString());
-        assertEquals("id", methodSpec.parameters.get(1).name);
+        assertEquals("childId", methodSpec.parameters.get(1).name);
 
-        assertEquals("org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(idelement, null, \"null\");\n" +
-                "List<String> expand = getParentExpand(null, \"main\");\n" +
-                "service.search(Long.valueOf(id), null, null, expand, filter);\n" +
-                "service.delete(Long.valueOf(id));\n", methodSpec.code.toString());
+        assertEquals("" +
+                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(parentId, null, \"parent.id\");\n" +
+                "List<String> expand = getParentExpand(null, \"parent\");\n" +
+                "service.search(childId, null, null, expand, filter);\n" +
+                "service.delete(childId);\n", methodSpec.code.toString());
     }
 }

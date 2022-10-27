@@ -181,7 +181,7 @@ class ConfigurationExtractorTest {
         assertEquals(4, endpoints.size());
 
         assertEquals(POST, endpoints.get(0).getMethod(), "Check Controller POST Endpoint");
-        assertTrue(endpoints.get(0).getMapping() == null || endpoints.get(0).getMapping().isEmpty(), "Check Controller POST Endpoint");
+        assertEquals(null, endpoints.get(0).getMapping(), "Check Controller POST Endpoint");
 
         assertEquals(GET, endpoints.get(1).getMethod(), "Check Controller GETbyID Endpoint");
         assertEquals("/{id}", endpoints.get(1).getMapping(), "Check Controller GETbyID Endpoint");
