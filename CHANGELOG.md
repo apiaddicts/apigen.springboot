@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Support for nullable in OpenAPI file interpretation
 - Partial support for non json (`application/json`) mime types
+- Support for parent-child entity endpoints generation
 ### Changed
 - Enhance the code generation mechanism to allow to extend and replace by custom code generation strategies
 - Generated non paginated controller endpoints for list and search if the OpenAPI file specifies it

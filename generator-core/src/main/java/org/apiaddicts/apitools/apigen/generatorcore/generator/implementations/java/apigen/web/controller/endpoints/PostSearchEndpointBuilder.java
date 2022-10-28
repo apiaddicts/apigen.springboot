@@ -77,7 +77,7 @@ public class PostSearchEndpointBuilder<C extends ApigenContext> extends ApigenAb
         }
     }
 
-    private String pathParamsAndFilterToString(List<String> names) {
+    protected String pathParamsAndFilterToString(List<String> names) {
         Set<String> params = builder.parameters.stream().map(p -> p.name).collect(Collectors.toSet());
         return names.stream().map(n -> params.contains(n) || n.equals("filter") ? n : "null").collect(Collectors.joining(", "));
     }

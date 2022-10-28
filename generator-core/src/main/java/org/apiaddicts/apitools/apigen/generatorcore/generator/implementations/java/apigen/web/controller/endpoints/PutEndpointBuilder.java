@@ -55,8 +55,8 @@ public class PutEndpointBuilder<C extends ApigenContext> extends ApigenAbstractE
         TypeName resourceType = ApigenEntityOutputResourceBuilder.getTypeName(entityName, cfg.getBasePackage());
         TypeName responseType = EntitySimpleResponseBuilder.getTypeName(entityName, cfg.getBasePackage());
         builder.addStatement("$T updateRequest = $L.toEntity(body)", entityType, MAPPER_NAME);
-        builder.addStatement("$L.update($L, updateRequest, updatedFields)", SERVICE_NAME, firstPathParam);
-        builder.addStatement("$T createResult = $L.search($L, null, null, null)", entityType, SERVICE_NAME, firstPathParam);
+        builder.addStatement("$L.update($L, updateRequest, updatedFields)", SERVICE_NAME, pathParams.get(0));
+        builder.addStatement("$T createResult = $L.search($L, null, null, null)", entityType, SERVICE_NAME, pathParams.get(0));
         builder.addStatement("$T result = $L.toResource(createResult)", resourceType, MAPPER_NAME);
         builder.addStatement("return new $T(result)", responseType);
     }

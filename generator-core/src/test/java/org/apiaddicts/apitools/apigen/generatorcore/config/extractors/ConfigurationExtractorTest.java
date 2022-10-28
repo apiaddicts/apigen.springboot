@@ -184,13 +184,13 @@ class ConfigurationExtractorTest {
         assertEquals(null, endpoints.get(0).getMapping(), "Check Controller POST Endpoint");
 
         assertEquals(GET, endpoints.get(1).getMethod(), "Check Controller GETbyID Endpoint");
-        assertEquals("{id}", endpoints.get(1).getMapping(), "Check Controller GETbyID Endpoint");
+        assertEquals("/{id}", endpoints.get(1).getMapping(), "Check Controller GETbyID Endpoint");
 
         assertEquals(PUT, endpoints.get(2).getMethod(), "Check Controller PUT Endpoint");
-        assertEquals("{id}", endpoints.get(2).getMapping(), "Check Controller PUT Endpoint");
+        assertEquals("/{id}", endpoints.get(2).getMapping(), "Check Controller PUT Endpoint");
 
         assertEquals(DELETE, endpoints.get(3).getMethod(), "Check Controller DELETE Endpoint");
-        assertEquals("{id}", endpoints.get(3).getMapping(), "Check Controller DELETE Endpoint");
+        assertEquals("/{id}", endpoints.get(3).getMapping(), "Check Controller DELETE Endpoint");
     }
 
     @Test

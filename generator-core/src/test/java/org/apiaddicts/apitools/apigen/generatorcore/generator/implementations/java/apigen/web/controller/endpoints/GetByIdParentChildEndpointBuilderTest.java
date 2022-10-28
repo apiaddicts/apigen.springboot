@@ -18,97 +18,101 @@ import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-class GetByIdEndpointBuilderTests {
+class GetByIdParentChildEndpointBuilderTest {
 
     private static TypeSpec typeSpec;
 
     @BeforeAll
     static void init() {
-        Endpoint endPoint = EndpointObjectMother.standardGetById("getById", "EntityName");
+        Endpoint endPoint = EndpointObjectMother.standardParentChildGetById("getByIdParentChild", "Child");
         JavaEntitiesData entitiesData = Mockito.mock(JavaEntitiesData.class);
         ApigenContext ctx = ApigenContextObjectMother.create();
         ctx.setEntitiesData(entitiesData);
-        GetByIdEndpointBuilder<ApigenContext> builderEndpoint = new GetByIdEndpointBuilder<>(new Mapping("/entities"), endPoint, ctx,
+        GetByIdParentChildEndpointBuilder<ApigenContext>
+                builderEndpoint = new GetByIdParentChildEndpointBuilder<>(new Mapping("/parents/{id}/children"), endPoint, ctx,
                 ConfigurationObjectMother.create());
-        TypeSpec.Builder builder = TypeSpec.classBuilder("GetByIdEndpoint");
+        TypeSpec.Builder builder = TypeSpec.classBuilder("GetByIdParentChildEndpoint");
         builderEndpoint.apply(builder);
         typeSpec = builder.build();
     }
 
     @Test
-    void givenGetByIdEndpointBuilder_whenBuild_thenNameCorrect() {
-        assertEquals("GetByIdEndpoint", typeSpec.name);
+    void givenGetByIdParentChildEndpointBuilder_whenBuild_thenNameCorrect() {
+        assertEquals("GetByIdParentChildEndpoint", typeSpec.name);
     }
 
     @Test
-    void givenGetByIdEndpointBuilder_whenBuild_thenModifierIsPublic() {
+    void givenGetByIdParentChildEndpointBuilder_whenBuild_thenModifierIsPublic() {
         assertEquals(0, typeSpec.modifiers.size());
     }
 
     @Test
-    void givenGetByIdEndpointBuilder_whenBuild_thenKindIsClass() {
+    void givenGetByIdParentChildEndpointBuilder_whenBuild_thenKindIsClass() {
         assertEquals("CLASS", typeSpec.kind.toString());
     }
 
     @Test
-    void givenGetByIdEndpointBuilder_whenBuild_thenNoHaveAnnotation() {
+    void givenGetByIdParentChildEndpointBuilder_whenBuild_thenNoHaveAnnotation() {
         assertEquals(0, typeSpec.annotations.size());
     }
 
     @Test
-    void givenGetByIdEndpointBuilder_whenBuild_thenNoHaveModifier() {
+    void givenGetByIdParentChildEndpointBuilder_whenBuild_thenNoHaveModifier() {
         assertEquals(0, typeSpec.modifiers.size());
     }
 
     @Test
-    void givenGetByIdEndpointBuilder_whenBuild_thenNoHaveFieldsSpecs() {
+    void givenGetByIdParentChildEndpointBuilder_whenBuild_thenNoHaveFieldsSpecs() {
         assertEquals(0, typeSpec.fieldSpecs.size());
     }
 
     @Test
-    void givenGetByIdEndpointBuilder_whenBuild_thenHaveSuperClassAndIsCorrect() {
+    void givenGetByIdParentChildEndpointBuilder_whenBuild_thenHaveSuperClassAndIsCorrect() {
         assertEquals("java.lang.Object", typeSpec.superclass.toString());
     }
 
     @Test
-    void givenGetByIdEndpointBuilder_whenBuild_thenHaveMethodSpecIsCorrect() {
+    void givenGetByIdParentChildEndpointBuilder_whenBuild_thenHaveMethodSpecIsCorrect() {
         MethodSpec methodSpec = typeSpec.methodSpecs.get(0);
         assertFalse(methodSpec.isConstructor());
-        assertEquals("getById", methodSpec.name);
+        assertEquals("getByIdParentChild", methodSpec.name);
 
         assertEquals(2, methodSpec.annotations.size());
         AnnotationSpec annotationSpec = methodSpec.annotations.get(0);
-        assertEquals("@org.springframework.web.bind.annotation.GetMapping(\"/{id}\")", annotationSpec.toString());
+        assertEquals("@org.springframework.web.bind.annotation.GetMapping(\"/{child_id}\")", annotationSpec.toString());
         annotationSpec = methodSpec.annotations.get(1);
         assertEquals("@org.springframework.web.bind.annotation.ResponseStatus(code = org.springframework.http.HttpStatus.OK)", annotationSpec.toString());
 
         assertEquals(1, methodSpec.modifiers.size());
         assertEquals("[public]", methodSpec.modifiers.toString());
 
-        assertEquals(4, methodSpec.parameters.size());
+        assertEquals(5, methodSpec.parameters.size());
         ParameterSpec parameterSpec = methodSpec.parameters.get(0);
-        assertEquals("[@org.springframework.web.bind.annotation.PathVariable(\"id\")]", parameterSpec.annotations.toString());
+        assertEquals("[@org.springframework.web.bind.annotation.PathVariable(\"parent_id\")]", parameterSpec.annotations.toString());
         assertEquals("java.lang.Long", parameterSpec.type.toString());
-        assertEquals("id", parameterSpec.name);
+        assertEquals("parentId", parameterSpec.name);
 
         parameterSpec = methodSpec.parameters.get(1);
+        assertEquals("[@org.springframework.web.bind.annotation.PathVariable(\"child_id\")]", parameterSpec.annotations.toString());
+        assertEquals("java.lang.Long", parameterSpec.type.toString());
+        assertEquals("childId", parameterSpec.name);
+
+        parameterSpec = methodSpec.parameters.get(2);
         assertEquals("[@org.springframework.web.bind.annotation.RequestParam(value = \"$select\", required = false)]", parameterSpec.annotations.toString());
         assertEquals("java.util.List<java.lang.String>", parameterSpec.type.toString());
         assertEquals("select", parameterSpec.name);
 
-        parameterSpec = methodSpec.parameters.get(2);
+        parameterSpec = methodSpec.parameters.get(3);
         assertEquals("[@org.springframework.web.bind.annotation.RequestParam(value = \"$exclude\", required = false)]", parameterSpec.annotations.toString());
         assertEquals("java.util.List<java.lang.String>", parameterSpec.type.toString());
         assertEquals("exclude", parameterSpec.name);
 
-        parameterSpec = methodSpec.parameters.get(3);
-        assertEquals("[@org.springframework.web.bind.annotation.RequestParam(value = \"$expand\", required = false)]", parameterSpec.annotations.toString());
-        assertEquals("java.util.List<java.lang.String>", parameterSpec.type.toString());
-        assertEquals("expand", parameterSpec.name);
-
-        assertEquals("namingTranslator.translate(select, exclude, expand, the.group.artifact.entityname.web.EntityNameOutResource.class);\n" +
-                "the.group.artifact.entityname.EntityName searchResult = service.search(id, select, exclude, expand);\n" +
-                "the.group.artifact.entityname.web.EntityNameOutResource result = mapper.toResource(searchResult);\n" +
-                "return new the.group.artifact.entityname.web.EntityNameResponse(result);\n", methodSpec.code.toString());
+        assertEquals("" +
+                "namingTranslator.translate(select, exclude, expand, the.group.artifact.child.web.ChildOutResource.class);\n" +
+                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(parentId, null, \"parent.id\");\n" +
+                "expand = getParentExpand(expand, \"parent\");\n" +
+                "the.group.artifact.child.Child searchResult = service.search(childId, select, exclude, expand, filter);\n" +
+                "the.group.artifact.child.web.ChildOutResource result = mapper.toResource(searchResult);\n" +
+                "return new the.group.artifact.child.web.ChildResponse(result);\n", methodSpec.code.toString());
     }
 }
