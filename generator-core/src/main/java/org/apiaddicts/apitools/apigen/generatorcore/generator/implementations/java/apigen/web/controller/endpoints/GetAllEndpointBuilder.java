@@ -68,7 +68,7 @@ public class GetAllEndpointBuilder<C extends ApigenContext> extends ApigenAbstra
         }
     }
 
-    private String pathParamsToString(List<String> names) {
+    protected String pathParamsToString(List<String> names) {
         Set<String> params = builder.parameters.stream().map(p -> p.name).collect(Collectors.toSet());
         return names.stream().map(n -> params.contains(n) ? n : "null").collect(Collectors.joining(", "));
     }

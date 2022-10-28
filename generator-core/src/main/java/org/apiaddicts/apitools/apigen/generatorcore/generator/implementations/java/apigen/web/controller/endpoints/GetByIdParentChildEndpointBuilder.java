@@ -37,9 +37,4 @@ public class GetByIdParentChildEndpointBuilder<C extends ApigenContext> extends 
         TypeName responseType = EntitySimpleResponseBuilder.getTypeName(endpoint.getResponse().getRelatedEntity(), cfg.getBasePackage());
         builder.addStatement("return new $T(result)", responseType);
     }
-
-    private String pathParamsToString(List<String> names) {
-        Set<String> params = builder.parameters.stream().map(p -> p.name).collect(Collectors.toSet());
-        return names.stream().map(n -> params.contains(n) ? n : "null").collect(Collectors.joining(", "));
-    }
 }

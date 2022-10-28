@@ -49,9 +49,4 @@ public class PostSearchParentChildEndpointBuilder<C extends ApigenContext> exten
             builder.addStatement("return new $T(result).withMetadataPagination($L, searchResult.getTotal())", responseType, pageParams);
         }
     }
-
-    private String pathParamsAndFilterToString(List<String> names) {
-        Set<String> params = builder.parameters.stream().map(p -> p.name).collect(Collectors.toSet());
-        return names.stream().map(n -> params.contains(n) || n.equals("filter") ? n : "null").collect(Collectors.joining(", "));
-    }
 }

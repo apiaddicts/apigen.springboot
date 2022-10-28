@@ -45,7 +45,7 @@ public class GetByIdEndpointBuilder<C extends ApigenContext> extends ApigenAbstr
         builder.addStatement("return new $T(result)", responseType);
     }
 
-    private String pathParamsToString(List<String> names) {
+    protected String pathParamsToString(List<String> names) {
         Set<String> params = builder.parameters.stream().map(p -> p.name).collect(Collectors.toSet());
         return names.stream().map(n -> params.contains(n) ? n : "null").collect(Collectors.joining(", "));
     }
