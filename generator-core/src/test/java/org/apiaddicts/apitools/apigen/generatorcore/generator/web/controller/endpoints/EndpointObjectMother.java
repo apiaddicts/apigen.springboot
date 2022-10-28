@@ -33,7 +33,7 @@ public class EndpointObjectMother {
         endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
         endpoint.setRelatedEntity(entityName);
         endpoint.setParentEntity("Parent");
-        endpoint.setChildParentRelationProperty("parent.id");
+        endpoint.setChildParentRelationProperty("parentProp.id");
         return endpoint;
     }
 
@@ -53,7 +53,7 @@ public class EndpointObjectMother {
         endpoint.setResponse(EndpointBaseResponseObjectMother.listResponseWithoutAttributesAndCollectionNameEqualsEntityName(entityName));
         endpoint.setRelatedEntity(entityName);
         endpoint.setParentEntity("Parent");
-        endpoint.setChildParentRelationProperty("parent.id");
+        endpoint.setChildParentRelationProperty("parentProp.id");
         return endpoint;
     }
 
@@ -73,7 +73,7 @@ public class EndpointObjectMother {
         endpoint.setResponse(EndpointBaseResponseObjectMother.listResponseWithoutAttributesAndCollectionNameEqualsEntityName(entityName));
         endpoint.setRelatedEntity(entityName);
         endpoint.setParentEntity("Parent");
-        endpoint.setChildParentRelationProperty("parent.id");
+        endpoint.setChildParentRelationProperty("parentProp.id");
         return endpoint;
     }
 
@@ -97,7 +97,7 @@ public class EndpointObjectMother {
         endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
         endpoint.setRelatedEntity(entityName);
         endpoint.setParentEntity("Parent");
-        endpoint.setChildParentRelationProperty("parent.id");
+        endpoint.setChildParentRelationProperty("parentProp.id");
         return endpoint;
     }
 
@@ -123,7 +123,7 @@ public class EndpointObjectMother {
         endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
         endpoint.setRelatedEntity(entityName);
         endpoint.setParentEntity("Parent");
-        endpoint.setChildParentRelationProperty("parent.id");
+        endpoint.setChildParentRelationProperty("parentProp.id");
         return endpoint;
     }
 
@@ -147,7 +147,7 @@ public class EndpointObjectMother {
         endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
         endpoint.setRelatedEntity(entityName);
         endpoint.setParentEntity("Parent");
-        endpoint.setChildParentRelationProperty("parent.id");
+        endpoint.setChildParentRelationProperty("parentProp.id");
         return endpoint;
     }
 

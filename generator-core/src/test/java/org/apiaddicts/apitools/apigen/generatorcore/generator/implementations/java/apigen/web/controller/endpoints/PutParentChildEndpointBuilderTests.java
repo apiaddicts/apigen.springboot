@@ -103,8 +103,8 @@ class PutParentChildEndpointBuilderTests {
         assertEquals("body", parameterSpec.name);
 
         assertEquals("" +
-                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(parentId, null, \"parent.id\");\n" +
-                "List<String> expand = getParentExpand(null, \"parent\");\n" +
+                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(parentId, null, \"parentProp.id\");\n" +
+                "List<String> expand = getParentExpand(null, \"parentProp\");\n" +
                 "service.search(childId, null, null, expand, filter);\n" +
                 "the.group.artifact.child.Child updateRequest = mapper.toEntity(body);\n" +
                 "service.update(childId, updateRequest, updatedFields);\n" +

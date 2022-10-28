@@ -129,8 +129,8 @@ class PostSearchParentChildEndpointBuilderTests {
         assertEquals("orderby", parameterSpec.name);
 
         assertEquals("" +
-                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(parentId, null, \"parent.id\");\n" +
-                "expand = getParentExpand(expand, \"parent\");\n" +
+                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(parentId, null, \"parentProp.id\");\n" +
+                "expand = getParentExpand(expand, \"parentProp\");\n" +
                 "namingTranslator.translate(select, exclude, expand, orderby, the.group.artifact.child.web.ChildOutResource.class);\n" +
                 "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenSearchResult<the.group.artifact.child.Child> searchResult = service.search(select, exclude, expand, filter, orderby, init, limit, total);\n" +
                 "java.util.List<the.group.artifact.child.web.ChildOutResource> result = mapper.toResource(searchResult.getSearchResult());\n" +
@@ -192,8 +192,8 @@ class PostSearchParentChildEndpointBuilderTests {
         assertEquals("orderby", parameterSpec.name);
 
         assertEquals("" +
-                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(parentId, null, \"parent.id\");\n" +
-                "expand = getParentExpand(expand, \"parent\");\n" +
+                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(parentId, null, \"parentProp.id\");\n" +
+                "expand = getParentExpand(expand, \"parentProp\");\n" +
                 "namingTranslator.translate(select, exclude, expand, orderby, the.group.artifact.child.web.ChildOutResource.class);\n" +
                 "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenSearchResult<the.group.artifact.child.Child> searchResult = service.search(select, exclude, expand, filter, orderby, null, null, null);\n" +
                 "java.util.List<the.group.artifact.child.web.ChildOutResource> result = mapper.toResource(searchResult.getSearchResult());\n" +

@@ -109,8 +109,8 @@ class GetByIdParentChildEndpointBuilderTest {
 
         assertEquals("" +
                 "namingTranslator.translate(select, exclude, expand, the.group.artifact.child.web.ChildOutResource.class);\n" +
-                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(parentId, null, \"parent.id\");\n" +
-                "expand = getParentExpand(expand, \"parent\");\n" +
+                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(parentId, null, \"parentProp.id\");\n" +
+                "expand = getParentExpand(expand, \"parentProp\");\n" +
                 "the.group.artifact.child.Child searchResult = service.search(childId, select, exclude, expand, filter);\n" +
                 "the.group.artifact.child.web.ChildOutResource result = mapper.toResource(searchResult);\n" +
                 "return new the.group.artifact.child.web.ChildResponse(result);\n", methodSpec.code.toString());

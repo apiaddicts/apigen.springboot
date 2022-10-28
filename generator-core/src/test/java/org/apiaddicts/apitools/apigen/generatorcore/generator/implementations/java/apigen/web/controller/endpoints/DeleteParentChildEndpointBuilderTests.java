@@ -93,8 +93,8 @@ class DeleteParentChildEndpointBuilderTests {
         assertEquals("childId", methodSpec.parameters.get(1).name);
 
         assertEquals("" +
-                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(parentId, null, \"parent.id\");\n" +
-                "List<String> expand = getParentExpand(null, \"parent\");\n" +
+                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(parentId, null, \"parentProp.id\");\n" +
+                "List<String> expand = getParentExpand(null, \"parentProp\");\n" +
                 "service.search(childId, null, null, expand, filter);\n" +
                 "service.delete(childId);\n", methodSpec.code.toString());
     }

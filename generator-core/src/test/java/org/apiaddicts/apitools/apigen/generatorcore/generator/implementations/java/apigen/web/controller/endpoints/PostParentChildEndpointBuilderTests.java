@@ -92,7 +92,7 @@ class PostParentChildEndpointBuilderTests {
         assertEquals("body", parameterSpec.name);
 
         assertEquals("the.group.artifact.child.Child createRequest = mapper.toEntity(body);\n" +
-                "createRequest.setParent(new the.group.artifact.parent.Parent(parentId));\n" +
+                "createRequest.setParentProp(new the.group.artifact.parent.Parent(parentId));\n" +
                 "service.create(createRequest);\n" +
                 "the.group.artifact.child.Child createResult = service.search(createRequest.getId(), null, null, null);\n" +
                 "the.group.artifact.child.web.ChildOutResource result = mapper.toResource(createResult);\n" +
