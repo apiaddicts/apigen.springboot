@@ -106,8 +106,8 @@ class GetByIdEndpointBuilderTests {
         assertEquals("java.util.List<java.lang.String>", parameterSpec.type.toString());
         assertEquals("expand", parameterSpec.name);
 
-        assertEquals("namingTranslator.translate(select, exclude, expand, null, the.group.artifact.entityname.web.EntityNameOutResource.class);\n" +
-                "the.group.artifact.entityname.EntityName searchResult = service.search(id, select, exclude, expand, null);\n" +
+        assertEquals("namingTranslator.translate(select, exclude, expand, the.group.artifact.entityname.web.EntityNameOutResource.class);\n" +
+                "the.group.artifact.entityname.EntityName searchResult = service.search(id, select, exclude, expand);\n" +
                 "the.group.artifact.entityname.web.EntityNameOutResource result = mapper.toResource(searchResult);\n" +
                 "return new the.group.artifact.entityname.web.EntityNameResponse(result);\n", methodSpec.code.toString());
     }

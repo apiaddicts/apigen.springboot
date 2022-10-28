@@ -166,6 +166,27 @@ paths:
               schema:
                 $ref: "#/components/schemas/standard_response_pet"
 
+  /tags:
+    x-apigen-binding:
+      model: Tag
+    get:
+      operationId: getTags
+      parameters:
+        - $ref: "#/components/parameters/init_param"
+        - $ref: "#/components/parameters/limit_param"
+        - $ref: "#/components/parameters/total_param"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+        - $ref: "#/components/parameters/order_by_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_tags"
+
 components:
   parameters:
     string_id_param:
@@ -345,6 +366,19 @@ components:
             data:
               $ref: "#/components/schemas/owner"
 
+    standard_response_tags:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                tags:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/tag"
+
     pet:
       x-apigen-mapping:
         model: Pet
@@ -446,6 +480,8 @@ components:
 
   x-apigen-models:
     Owner:
+      relational-persistence:
+        table: owners
       attributes:
         - name: id
           type: String
@@ -461,6 +497,8 @@ components:
             foreign-column: owner_id
 
     Pet:
+      relational-persistence:
+        table: pets
       attributes:
         - name: id
           type: Long
@@ -496,6 +534,8 @@ components:
             column: tag_id
 
     Tag:
+      relational-persistence:
+        table: tags
       attributes:
         - name: id
           type: Long

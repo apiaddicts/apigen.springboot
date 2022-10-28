@@ -88,7 +88,7 @@ class PostParentChildEndpointBuilderTests {
 
         parameterSpec = methodSpec.parameters.get(1);
         assertEquals("[@org.springframework.web.bind.annotation.RequestBody, @javax.validation.Valid]", parameterSpec.annotations.toString());
-        assertEquals("the.group.artifact.child.web.CreateChildResource", parameterSpec.type.toString());
+        assertEquals("the.group.artifact.child.web.CreateParentChildResource", parameterSpec.type.toString());
         assertEquals("body", parameterSpec.name);
 
         assertEquals("the.group.artifact.child.Child createRequest = mapper.toEntity(body);\n" +
