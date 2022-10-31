@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.lang.model.element.Modifier;
 import javax.validation.Valid;
 
+import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Constants.JSON_MIME_TYPE;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.ENUM_VALUE;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.STRING;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.CODE;
@@ -69,6 +70,14 @@ public abstract class EndpointBuilder<C extends JavaContext> extends AbstractJav
         AnnotationSpec.Builder mappingAnnotation = AnnotationSpec.builder(getMappingClass());
         String mappingValue = getMapping();
         if (mappingValue != null) mappingAnnotation.addMember(VALUE, STRING, mappingValue);
+        if (endpoint.getRequest() != null && !JSON_MIME_TYPE.equals(endpoint.getRequest().getMimeType())) {
+            String mimeTypeStr = endpoint.getRequest().getMimeType();
+            if (mimeTypeStr != null) mappingAnnotation.addMember("consumes", STRING, mimeTypeStr);
+        }
+        if (endpoint.getResponse() != null && !JSON_MIME_TYPE.equals(endpoint.getResponse().getMimeType())) {
+            String mimeTypeStr = endpoint.getResponse().getMimeType();
+            if (mimeTypeStr != null) mappingAnnotation.addMember("produces", STRING, mimeTypeStr);
+        }
         builder.addAnnotation(mappingAnnotation.build());
     }
 

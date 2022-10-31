@@ -1,0 +1,563 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Apigen Pets
+
+paths:
+  /owners:
+    x-apigen-binding:
+      model: Owner
+    get:
+      operationId: getOwners
+      parameters:
+        - $ref: "#/components/parameters/init_param"
+        - $ref: "#/components/parameters/limit_param"
+        - $ref: "#/components/parameters/total_param"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+        - $ref: "#/components/parameters/order_by_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_owners"
+
+  /owners/{owner_id}:
+    x-apigen-binding:
+      model: Owner
+    get:
+      operationId: getOwner
+      parameters:
+        - $ref: "#/components/parameters/string_id_param"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_owner"
+
+  /owners/{owner_id}/pets:
+    x-apigen-binding:
+      model: Owner
+      child-model: Pet
+      child-parent-relation-property: owner.id
+    get:
+      operationId: getOwnerPets
+      parameters:
+        - $ref: "#/components/parameters/init_param"
+        - $ref: "#/components/parameters/limit_param"
+        - $ref: "#/components/parameters/total_param"        
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+        - $ref: "#/components/parameters/order_by_param"
+        - $ref: "#/components/parameters/owner_id_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_pets"
+
+    post:
+      operationId: postOwnerPet
+      parameters:
+        - $ref: "#/components/parameters/owner_id_param"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/newPet"
+      responses:
+        '201':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_pets"
+
+  /owners/{owner_id}/pets/search:
+    x-apigen-binding:
+      model: Owner
+      child-model: Pet
+      child-parent-relation-property: owner.id
+    post:
+      operationId: searchPet
+      parameters:
+        - $ref: "#/components/parameters/init_param"
+        - $ref: "#/components/parameters/limit_param"
+        - $ref: "#/components/parameters/total_param"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+        - $ref: "#/components/parameters/order_by_param"
+        - $ref: "#/components/parameters/owner_id_param"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/standard_search"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_pet"
+
+  /owners/{owner_id}/pets/{pet_id}:
+    x-apigen-binding:
+      model: Owner
+      child-model: Pet
+      child-parent-relation-property: owner.id
+    get:
+      operationId: getOwnerPet
+      parameters:
+        - $ref: "#/components/parameters/owner_id_param"
+        - $ref: "#/components/parameters/pet_id_param"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_pet"
+
+    
+                
+    put:
+      operationId: putOwnerPet
+      parameters:
+        - $ref: "#/components/parameters/owner_id_param"
+        - $ref: "#/components/parameters/pet_id_param"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updatePet"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_pet"
+    delete:
+      operationId: deleteOwnerPet
+      parameters:
+        - $ref: "#/components/parameters/owner_id_param"
+        - $ref: "#/components/parameters/pet_id_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_pet"
+
+  /tags:
+    x-apigen-binding:
+      model: Tag
+    get:
+      operationId: getTags
+      parameters:
+        - $ref: "#/components/parameters/init_param"
+        - $ref: "#/components/parameters/limit_param"
+        - $ref: "#/components/parameters/total_param"
+        - $ref: "#/components/parameters/select_param"
+        - $ref: "#/components/parameters/exclude_param"
+        - $ref: "#/components/parameters/expand_param"
+        - $ref: "#/components/parameters/order_by_param"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_tags"
+
+components:
+  parameters:
+    string_id_param:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+    owner_id_param:
+      in: path
+      name: owner_id
+      required: true
+      schema:
+        type: string
+    pet_id_param:
+      in: path
+      name: pet_id
+      required: true
+      schema:
+        type: integer
+        format: int64
+    init_param:
+      in: query
+      name: $init
+      required: true
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        default: 0
+    limit_param:
+      in: query
+      name: $limit
+      required: true
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 25
+    total_param:
+      in: query
+      name: $total
+      required: true
+      schema:
+        type: boolean
+        default: false
+    select_param:
+      in: query
+      name: $select
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+        maxItems: 100
+    exclude_param:
+      in: query
+      name: $exclude
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+        maxItems: 100
+    expand_param:
+      in: query
+      name: $expand
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+        maxItems: 100
+    order_by_param:
+      in: query
+      name: $orderby
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+        maxItems: 100
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int32
+        minimum: 0
+        default: 23
+  schemas:
+    standard_response_result:
+      properties:
+        result:
+          properties:
+            status:
+              type: boolean
+            http_code:
+              type: integer
+            errors:
+              type: array
+              items:
+                $ref: '#/components/schemas/standard_error'
+            info:
+              type: string
+            trace_id:
+              type: string
+            num_elements:
+              type: integer
+          required:
+            - status
+            - http_code
+            - trace_id
+    standard_error:
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+    standard_search:
+      properties:
+        operation:
+          type: string
+          enum: [AND, OR, GT, LT, GTEQ, LTEQ, EQ, NEQ, IN, BETWEEN, SUBSTRING, LIKE, ILIKE, NLIKE, REGEXP]
+        values:
+          type: array
+          items:
+            properties:
+              property:
+                type: string
+              type:
+                type: string
+                enum: [STRING, INTEGER, FLOAT, DATE, DATETIME, BOOLEAN]
+              value:
+                type: string
+              values:
+                type: array
+                items:
+                  type: string
+              filter:
+                $ref: '#/components/schemas/standard_search'
+
+    standard_response_pets:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - properties:
+            data:
+              properties:
+                pets:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/pet"
+
+    standard_response_pet:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - properties:
+            data:
+              $ref: "#/components/schemas/pet"
+
+    standard_response_owners:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - properties:
+            data:
+              properties:
+                owners:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/owner"
+
+    standard_response_owner:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - properties:
+            data:
+              $ref: "#/components/schemas/owner"
+
+    standard_response_tags:
+      allOf:
+        - $ref: "#/components/schemas/standard_response_result"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                tags:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/tag"
+
+    pet:
+      x-apigen-mapping:
+        model: Pet
+      properties:
+        json_id:
+          type: integer
+          x-apigen-mapping:
+            field: id
+        name:
+          type: string
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/tag"
+        parent:
+          $ref: "#/components/schemas/pet"
+        children:
+          type: array
+          items:
+            $ref: "#/components/schemas/pet"
+        main_tag:
+          $ref: "#/components/schemas/tag"
+        owner:
+          $ref: "#/components/schemas/owner"
+
+    tag:
+      x-apigen-mapping:
+        model: Tag
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        pets:
+          type: array
+          items:
+            $ref: "#/components/schemas/pet"
+
+    owner:
+      x-apigen-mapping:
+        model: Owner
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        pets:
+          type: array
+          items:
+            $ref: "#/components/schemas/pet"
+    
+    newPet:
+      x-apigen-mapping:
+        model: Pet
+      properties:
+        name:
+          type: string
+          minLength: 4
+        owner:
+          type: string
+          x-apigen-mapping: # Required
+            model: Owner
+            field: owner.id
+        parent:
+          x-apigen-mapping:
+            model: Pet
+          properties:
+            id:
+              type: integer
+        tags:
+          type: array
+          items:
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+          maxItems: 10
+        main_tag:
+          x-apigen-mapping:
+            field: mainTag
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+      required:
+        - name
+
+    updatePet:
+      x-apigen-mapping:
+        model: Pet
+      properties:
+        name:
+          type: string
+
+  # -------------------------------------------------
+
+
+  x-apigen-models:
+    Owner:
+      relational-persistence:
+        table: owners
+      attributes:
+        - name: id
+          type: String
+          relational-persistence:
+            primary-key: true
+            autogenerated: true
+        - name: name
+          type: String
+        - name: pets
+          type: Array
+          items-type: Pet
+          relational-persistence:
+            foreign-column: owner_id
+
+    Pet:
+      relational-persistence:
+        table: pets
+      attributes:
+        - name: id
+          type: Long
+          relational-persistence:
+            primary-key: true
+            autogenerated: true
+        - name: name
+          type: String
+        - name: owner
+          type: Owner
+          relational-persistence:
+            column: owner_id
+        - name: tags
+          type: Array
+          items-type: Tag
+          relational-persistence:
+            column: pet_id
+            foreign-column: tag_id
+            intermediate-table: pet_tags
+            owner: true
+        - name: parent
+          type: Pet
+          relational-persistence:
+            column: parent_id
+        - name: children
+          type: Array
+          items-type: Pet
+          relational-persistence:
+            foreign-column: parent_id
+        - name: mainTag
+          type: Tag
+          relational-persistence:
+            column: tag_id
+
+    Tag:
+      relational-persistence:
+        table: tags
+      attributes:
+        - name: id
+          type: Long
+          relational-persistence:
+            primary-key: true
+            autogenerated: true
+        - name: name
+          type: String
+          validations:
+            - type: Size
+              min: 2
+              max: 10
+        - name: pets
+          type: Array
+          items-type: Pet
+          relational-persistence:
+            foreign-column: tag_id
+
+x-apigen-project:
+  name: name
+  description: description
+  version: 1.0.0
+  java-properties:
+    group-id: the.group
+    artifact-id: app

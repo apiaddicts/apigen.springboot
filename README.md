@@ -20,7 +20,7 @@ CloudAppi is one leader in APIs in global word. See the [CloudAPPi Services](htt
 version: "3.3"
 services:
   apigen:
-    image: "apiaddicts/apitools-apigen:0.3.0-rc2"
+    image: "apiaddicts/apitools-apigen:0.3.0-rc6"
     ports:
       - "8080:8080"
 ```
@@ -189,6 +189,8 @@ services:
 ### Definición
  - `x-apigen-binding`: Apartado en el que se define la unión entre el endpoint y el modelo que usaremos
    - `model`: En este campo podremos el nombre del modelo
+   - `child-model`: En este campo pondremos el nombre del modelo hijo. Solo necesario para endpoints autogestionados de entidades de tipo padre-hijo
+   - `child-parent-relation-property`: En este campo podremos el nombre de la propiedad en el hijo que relaciona con el padre. Solo necesario para endpoints autogestionados de entidades de tipo padre-hijo
  
 ### Ejemplo
     paths:
@@ -196,6 +198,13 @@ services:
         x-apigen-binding:
           model: Color
           
+### Ejemplo padre-hijo
+      /owners/{owner_id}/pets:
+        x-apigen-binding:
+          model: Owner
+          child-model: Pet
+          child-parent-relation-property: owner.id
+
 ## Ampliación del apartado schema del requestBody
 
 ### Esquema

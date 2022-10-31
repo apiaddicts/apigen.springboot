@@ -11,4 +11,6 @@ public class Request {
     private String relatedEntity;
     @JsonProperty("attributes")
     private List<Attribute> attributes;
+    @JsonProperty("mime_type")
+    private String mimeType;
 }

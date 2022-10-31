@@ -40,12 +40,12 @@ public class GetByIdEndpointBuilder<C extends ApigenContext> extends ApigenAbstr
         String translatorParams = pathParamsToString(Arrays.asList("select", "exclude", "expand"));
         String params = pathParamsToString(Arrays.asList("select", "exclude", "expand"));
         builder.addStatement("$L.translate($L, $T.class)", NAMING_TRANSLATOR_NAME, translatorParams, resourceType);
-        builder.addStatement("$T searchResult = $L.search($L, $L)", entityType, SERVICE_NAME, firstPathParam, params);
+        builder.addStatement("$T searchResult = $L.search($L, $L)", entityType, SERVICE_NAME, pathParams.get(0), params);
         builder.addStatement("$T result = $L.toResource(searchResult)", resourceType, MAPPER_NAME);
         builder.addStatement("return new $T(result)", responseType);
     }
 
-    private String pathParamsToString(List<String> names) {
+    protected String pathParamsToString(List<String> names) {
         Set<String> params = builder.parameters.stream().map(p -> p.name).collect(Collectors.toSet());
         return names.stream().map(n -> params.contains(n) ? n : "null").collect(Collectors.joining(", "));
     }

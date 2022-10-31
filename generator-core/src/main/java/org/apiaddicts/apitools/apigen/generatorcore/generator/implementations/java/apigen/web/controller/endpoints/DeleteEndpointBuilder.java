@@ -27,7 +27,7 @@ public class DeleteEndpointBuilder<C extends ApigenContext> extends ApigenAbstra
 
     @Override
     protected void addStatements() {
-        builder.addStatement("$L.delete($L)", SERVICE_NAME, firstPathParam);
+        builder.addStatement("$L.delete($L)", SERVICE_NAME, pathParams.get(0));
     }
 
 }

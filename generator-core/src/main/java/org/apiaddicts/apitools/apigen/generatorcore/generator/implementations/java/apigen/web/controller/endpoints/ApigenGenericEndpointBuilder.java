@@ -17,6 +17,8 @@ import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 
 import java.util.List;
 
+import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Constants.JSON_MIME_TYPE;
+
 public class ApigenGenericEndpointBuilder<C extends ApigenContext> extends GenericEndpointBuilder<C> {
     public ApigenGenericEndpointBuilder(Mapping rootMapping, Endpoint endpoint, C ctx, Configuration cfg) {
         super(rootMapping, endpoint, ctx, cfg);
@@ -33,7 +35,9 @@ public class ApigenGenericEndpointBuilder<C extends ApigenContext> extends Gener
         Response response = endpoint.getResponse();
         if (response == null || response.getAttributes() == null) return null;
         TypeName responseType;
-        if (response.getRelatedEntity() != null) {
+        if (!JSON_MIME_TYPE.equals(response.getMimeType())) {
+            responseType = TypeName.OBJECT;
+        } else if (response.getRelatedEntity() != null) {
             if (response.getIsCollection()) {
                 responseType = EntityListResponseBuilder.getTypeName(response.getRelatedEntity(), cfg.getBasePackage());
             } else {
@@ -51,6 +55,9 @@ public class ApigenGenericEndpointBuilder<C extends ApigenContext> extends Gener
     @Override
     protected TypeName getBodyTypeName() {
         if (endpoint.getRequest() == null) return null;
+        if (!JSON_MIME_TYPE.equals(endpoint.getRequest().getMimeType())) {
+            return TypeName.OBJECT;
+        }
         return GenericInputResourceBuilder.getTypeName(rootMapping, endpoint, cfg.getBasePackage());
     }
 }

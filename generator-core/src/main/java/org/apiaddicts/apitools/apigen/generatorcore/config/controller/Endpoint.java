@@ -21,6 +21,10 @@ public class Endpoint {
     private Request request;
     @JsonProperty("related_entity")
     private String relatedEntity;
+    @JsonProperty("parent_entity")
+    private String parentEntity;
+    @JsonProperty("child_parent_relation_property")
+    private String childParentRelationProperty;
 
     public enum Method {
         GET("Find"), POST("Create"), PATCH("PartialUpdate"), PUT("Update"), DELETE("Delete");
