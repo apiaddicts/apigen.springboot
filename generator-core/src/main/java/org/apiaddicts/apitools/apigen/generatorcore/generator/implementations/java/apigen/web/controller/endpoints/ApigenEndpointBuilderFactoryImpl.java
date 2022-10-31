@@ -42,6 +42,8 @@ public class ApigenEndpointBuilderFactoryImpl<C extends ApigenContext> implement
         if (isPut) return new PutEndpointBuilder<>(rootMapping, endpoint, ctx, cfg);
 
         boolean isPatch = isStandardWithEntity && method == Endpoint.Method.PATCH && mapping.isById();
+        boolean isPatchParentChild = isPatch && isParentChild;
+        if (isPatchParentChild) return new PatchParentChildEndpointBuilder<>(rootMapping, endpoint, ctx, cfg);
         if (isPatch) return new PatchEndpointBuilder<>(rootMapping, endpoint, ctx, cfg);
 
         boolean isDelete = isStandardWithEntity && method == Endpoint.Method.DELETE && mapping.isById();
