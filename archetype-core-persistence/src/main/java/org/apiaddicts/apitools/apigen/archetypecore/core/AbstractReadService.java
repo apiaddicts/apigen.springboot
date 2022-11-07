@@ -68,8 +68,13 @@ public abstract class AbstractReadService<E extends ApigenAbstractPersistable<K>
 
 	@Transactional(readOnly = true)
 	public E search(K id, List<String> select, List<String> exclude, List<String> expand) {
+		return search(id, select, exclude, expand, null);
+	}
+
+	@Transactional(readOnly = true)
+	public E search(K id, List<String> select, List<String> exclude, List<String> expand, Filter filter) {
 		Assert.notNull(id, "The argument id cannot be null");
-		ApigenSearch search = new ApigenSearch(select, exclude, expand);
+		ApigenSearch search = new ApigenSearch(select, exclude, expand, filter);
 		return repository.searchById(id, search).orElseThrow(() -> new EntityNotFoundException(id, clazz));
 	}
 

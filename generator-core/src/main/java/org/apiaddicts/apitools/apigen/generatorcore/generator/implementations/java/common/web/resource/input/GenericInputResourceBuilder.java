@@ -62,13 +62,15 @@ public class GenericInputResourceBuilder<C extends JavaContext> extends InputRes
 
     private static String getName(Mapping rootMapping, Endpoint endpoint) {
         String rootEntityName = endpoint.getRelatedEntity();
+        String parentEntityName = endpoint.getParentEntity();
+        if (parentEntityName == null) parentEntityName = "";
         String entityName = endpoint.getRequest().getRelatedEntity();
         if (entityName == null) entityName = rootEntityName;
         if (entityName == null) entityName = rootMapping.toName();
         Endpoint.Method method = endpoint.getMethod();
         Mapping mapping = new Mapping(endpoint.getMapping());
         String mappingName = mapping.toName();
-        return method.prefix + entityName + mappingName + "Resource";
+        return method.prefix + parentEntityName + entityName + mappingName + "Resource";
     }
 
     private static String getPackage(String entityName, String basePackage) {

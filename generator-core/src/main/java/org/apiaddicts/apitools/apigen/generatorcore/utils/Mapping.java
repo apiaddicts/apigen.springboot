@@ -24,8 +24,12 @@ public class Mapping {
         return parts.length;
     }
 
+    private boolean hasSize(int num) {
+        return size() == num;
+    }
+
     public boolean isEmpty() {
-        return size() == 0;
+        return hasSize(0);
     }
 
     public boolean isFirstVariable() {
@@ -33,11 +37,11 @@ public class Mapping {
     }
 
     public boolean isSearch() {
-        return size() == 1 && parts[0].equals("search");
+        return hasSize(1) && parts[0].equals("search");
     }
 
     public boolean isById() {
-        return size() == 1 && isFirstVariable();
+        return hasSize(1) && isFirstVariable();
     }
 
     public String getValue() {

@@ -22,6 +22,13 @@ public class ApigenSearch {
 		this.expand = expand;
 	}
 
+	public ApigenSearch(List<String> select, List<String> exclude, List<String> expand, Filter filter) {
+		this.select = select;
+		this.exclude = exclude;
+		this.expand = expand;
+		this.filter = filter;
+	}
+
 	public ApigenSearch(List<String> select, List<String> exclude, List<String> expand, Filter filter, List<String> orderBy, Pagination pagination, Boolean total) {
 		this.select = select;
 		this.exclude = exclude;

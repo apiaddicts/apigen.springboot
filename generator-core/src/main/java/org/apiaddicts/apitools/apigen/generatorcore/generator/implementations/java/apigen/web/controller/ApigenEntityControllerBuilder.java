@@ -3,6 +3,7 @@ package org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.j
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.TypeName;
+import org.apiaddicts.apitools.apigen.archetypecore.core.controllers.NestedParentChildController;
 import org.apiaddicts.apitools.apigen.archetypecore.core.resource.ResourceNamingTranslator;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Controller;
@@ -30,7 +31,9 @@ public class ApigenEntityControllerBuilder<C extends ApigenContext> extends Cont
 
     @Override
     protected String getName() {
-        return entityName + "Controller";
+        return this.endpoints.get(0).getParentEntity() == null
+            ? entityName + "Controller"
+            : this.endpoints.get(0).getParentEntity() + entityName + "Controller";
     }
 
     @Override
@@ -50,6 +53,14 @@ public class ApigenEntityControllerBuilder<C extends ApigenContext> extends Cont
         autowireMapper();
         autowireNamingTranslator();
         generateEndpoints();
+    }
+
+    @Override
+    protected void initializeBuilder(){
+        super.initializeBuilder();
+        if(this.endpoints.get(0).getParentEntity() != null) {
+            this.builder.superclass(NestedParentChildController.class);
+        }
     }
 
     private void autowireService() {

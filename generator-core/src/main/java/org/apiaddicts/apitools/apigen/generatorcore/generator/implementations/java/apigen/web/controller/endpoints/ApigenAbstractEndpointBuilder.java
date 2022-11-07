@@ -9,6 +9,9 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.controller.parameters.ParameterBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class ApigenAbstractEndpointBuilder<C extends ApigenContext> extends EndpointBuilder<C> {
 
     protected static final String SERVICE_NAME = "service";
@@ -16,7 +19,7 @@ public abstract class ApigenAbstractEndpointBuilder<C extends ApigenContext> ext
     protected static final String NAMING_TRANSLATOR_NAME = "namingTranslator";
 
     protected final TypeName composedIdType;
-    protected String firstPathParam = null;
+    protected List<String> pathParams = new ArrayList<>();
 
     public ApigenAbstractEndpointBuilder(Mapping rootMapping, Endpoint endpoint, C ctx, Configuration cfg) {
         super(rootMapping, endpoint, ctx, cfg);
@@ -31,10 +34,10 @@ public abstract class ApigenAbstractEndpointBuilder<C extends ApigenContext> ext
     @Override
     protected void addParam(Parameter parameter) {
         // We consider the first path parameter as ID
-        if ("path".equalsIgnoreCase(parameter.getIn()) && firstPathParam == null) {
+        if ("path".equalsIgnoreCase(parameter.getIn())) {
             ParameterBuilder<C> paramBuilder = paramFactory.create(parameter, composedIdType, ctx, cfg);
             paramBuilder.apply(builder);
-            firstPathParam = paramBuilder.javaName;
+            pathParams.add(paramBuilder.javaName);
         } else {
             super.addParam(parameter);
         }

@@ -4,7 +4,6 @@ import com.squareup.javapoet.AnnotationSpec;
 
 import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
-
 import java.util.List;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.ENUM_VALUE;

@@ -7,6 +7,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Parameter;
 import org.apiaddicts.apitools.apigen.generatorcore.config.parameter.ParameterObjectMother;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class EndpointObjectMother {
@@ -23,11 +24,36 @@ public class EndpointObjectMother {
         return endpoint;
     }
 
+    public static Endpoint standardParentChildPost(String endpointName, String entityName) {
+        List<Parameter> parameters = new LinkedList<>();
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("parent_id", "integer");
+        parameters.add(parameter);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.POST, null, parameters);
+        endpoint.setRequest(EndpointRequestObjectMother.requestWithoutAttributes(entityName));
+        endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
+        endpoint.setRelatedEntity(entityName);
+        endpoint.setParentEntity("Parent");
+        endpoint.setChildParentRelationProperty("parentProp.id");
+        return endpoint;
+    }
+
     public static Endpoint standardSearch(String endpointName, String entityName) {
         List<Parameter> parameters = ParameterObjectMother.createGetAllStandardParameters();
         Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.POST, "/search", parameters);
         endpoint.setResponse(EndpointBaseResponseObjectMother.listResponseWithoutAttributesAndCollectionNameEqualsEntityName(entityName));
         endpoint.setRelatedEntity(entityName);
+        return endpoint;
+    }
+
+    public static Endpoint standardParentChildSearch(String endpointName, String entityName) {
+        List<Parameter> parameters = ParameterObjectMother.createGetAllStandardParameters();
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("parent_id", "integer");
+        parameters.add(0, parameter);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.POST, "/search", parameters);
+        endpoint.setResponse(EndpointBaseResponseObjectMother.listResponseWithoutAttributesAndCollectionNameEqualsEntityName(entityName));
+        endpoint.setRelatedEntity(entityName);
+        endpoint.setParentEntity("Parent");
+        endpoint.setChildParentRelationProperty("parentProp.id");
         return endpoint;
     }
 
@@ -39,6 +65,18 @@ public class EndpointObjectMother {
         return endpoint;
     }
 
+    public static Endpoint standardParentChildGetAll(String endpointName, String entityName) {
+        List<Parameter> parameters = ParameterObjectMother.createGetAllStandardParameters();
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("parent_id", "integer");
+        parameters.add(0, parameter);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.GET, null, parameters);
+        endpoint.setResponse(EndpointBaseResponseObjectMother.listResponseWithoutAttributesAndCollectionNameEqualsEntityName(entityName));
+        endpoint.setRelatedEntity(entityName);
+        endpoint.setParentEntity("Parent");
+        endpoint.setChildParentRelationProperty("parentProp.id");
+        return endpoint;
+    }
+
     public static Endpoint standardGetById(String endpointName, String entityName) {
         List<Parameter> parameters = ParameterObjectMother.createGetByIdStandardParameters();
         Parameter parameter = ParameterObjectMother.getBasicPathParameter("id", "integer");
@@ -46,6 +84,20 @@ public class EndpointObjectMother {
         Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.GET, "/{id}", parameters);
         endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
         endpoint.setRelatedEntity(entityName);
+        return endpoint;
+    }
+
+    public static Endpoint standardParentChildGetById(String endpointName, String entityName) {
+        List<Parameter> parameters = ParameterObjectMother.createGetByIdStandardParameters();
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("parent_id", "integer");
+        parameters.add(0, parameter);
+        parameter = ParameterObjectMother.getBasicPathParameter("child_id", "integer");
+        parameters.add(1, parameter);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.GET, "/{child_id}", parameters);
+        endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
+        endpoint.setRelatedEntity(entityName);
+        endpoint.setParentEntity("Parent");
+        endpoint.setChildParentRelationProperty("parentProp.id");
         return endpoint;
     }
 
@@ -68,6 +120,36 @@ public class EndpointObjectMother {
         endpoint.setRequest(EndpointRequestObjectMother.requestWithoutAttributes(entityName));
         endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
         endpoint.setRelatedEntity(entityName);
+            return endpoint;
+    }
+
+    public static Endpoint standardParentChildPatch(String endpointName, String entityName) {
+        List<Parameter> parameters = new ArrayList<>();
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("parent_id", "integer");
+        parameters.add(parameter);
+        parameter = ParameterObjectMother.getBasicPathParameter("child_id", "integer");
+        parameters.add(parameter);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.PATCH, "/{child_id}", parameters);
+        endpoint.setRequest(EndpointRequestObjectMother.requestWithoutAttributes(entityName));
+        endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
+        endpoint.setRelatedEntity(entityName);
+        endpoint.setParentEntity("Parent");
+        endpoint.setChildParentRelationProperty("parentProp.id");
+        return endpoint;
+    }
+    
+    public static Endpoint standardParentChildPut(String endpointName, String entityName) {
+        List<Parameter> parameters = new ArrayList<>();
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("parent_id", "integer");
+        parameters.add(parameter);
+        parameter = ParameterObjectMother.getBasicPathParameter("child_id", "integer");
+        parameters.add(parameter);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.PUT, "/{child_id}", parameters);
+        endpoint.setRequest(EndpointRequestObjectMother.requestWithoutAttributes(entityName));
+        endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
+        endpoint.setRelatedEntity(entityName);
+        endpoint.setParentEntity("Parent");
+        endpoint.setChildParentRelationProperty("parentProp.id");
         return endpoint;
     }
 
@@ -78,6 +160,20 @@ public class EndpointObjectMother {
         Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.DELETE, "/{id}", parameters);
         endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
         endpoint.setRelatedEntity(entityName);
+        return endpoint;
+    }
+
+    public static Endpoint standardParentChildDelete(String endpointName, String entityName) {
+        List<Parameter> parameters = new ArrayList<>();
+        Parameter parameter = ParameterObjectMother.getBasicPathParameter("parent_id", "integer");
+        parameters.add(parameter);
+        parameter = ParameterObjectMother.getBasicPathParameter("child_id", "integer");
+        parameters.add(parameter);
+        Endpoint endpoint = createEndpoint(endpointName, Endpoint.Method.DELETE, "/{child_id}", parameters);
+        endpoint.setResponse(EndpointBaseResponseObjectMother.simpleResponseWithoutAttributes(entityName));
+        endpoint.setRelatedEntity(entityName);
+        endpoint.setParentEntity("Parent");
+        endpoint.setChildParentRelationProperty("parentProp.id");
         return endpoint;
     }
 
