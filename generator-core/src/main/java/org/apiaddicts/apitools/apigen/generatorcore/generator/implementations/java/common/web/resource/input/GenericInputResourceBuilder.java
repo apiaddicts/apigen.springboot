@@ -7,7 +7,6 @@ import com.squareup.javapoet.TypeSpec.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.apiaddicts.apitools.apigen.archetypecore.core.SubEntityToEntitiesData;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Attribute;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
@@ -16,6 +15,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.validation.Validation
 import org.apiaddicts.apitools.apigen.generatorcore.generator.common.ApigenExt2JavapoetType;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.common.Openapi2JavapoetType;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.JavaContext;
+import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.resource.JavaResourceDataSubEntity;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 import org.openapitools.jackson.nullable.JsonNullable;
 
@@ -88,17 +88,17 @@ public class GenericInputResourceBuilder<C extends JavaContext> extends InputRes
     }
 
     @Override
-    public List<SubEntityToEntitiesData> subEntityToEntity() {
-        List<SubEntityToEntitiesData> subEntityToEntities = new ArrayList<>();
+    public List<JavaResourceDataSubEntity> getResourceDataSubEntity() {
+        List<JavaResourceDataSubEntity> resourceDataSubEntity = new ArrayList<>();
         for(Attribute attribute : attributes){
             if(endpoint.getMethod() == Endpoint.Method.PATCH && attribute.getRelatedEntity() != null){
                 TypeName resourceEntity = ClassName.get(getPackage(entityName, basePackage), getName(rootMapping, endpoint));
                 TypeName entityFieldName = ClassName.get(getPackage(entityName, basePackage), getName(rootMapping, endpoint) + "."
                         + attribute.getEntityFieldName().substring(0, 1).toUpperCase() + attribute.getEntityFieldName().substring(1));
-                subEntityToEntities.add(new SubEntityToEntitiesData(attribute.getRelatedEntity(), resourceEntity, entityFieldName));
+                resourceDataSubEntity.add(new JavaResourceDataSubEntity(attribute.getRelatedEntity(), resourceEntity, entityFieldName));
             }
         }
-        return subEntityToEntities;
+        return resourceDataSubEntity;
     }
 
     @Override

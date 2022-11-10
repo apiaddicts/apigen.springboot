@@ -45,7 +45,6 @@ public class ApigenMapperBuilder<C extends ApigenContext> extends MapperBuilder<
     protected void initialize() {
         super.initialize();
         addUpdateBasicData();
-        if(patchResource) addPartialUpdate();
     }
 
     @Override
@@ -69,14 +68,18 @@ public class ApigenMapperBuilder<C extends ApigenContext> extends MapperBuilder<
                 .build();
         builder.addMethod(methodSpecBuilder);
     }
-
+    @Override
+    protected void addResourcesToEntity() {
+        super.addResourcesToEntity();
+        if(patchResource) addPartialUpdate();
+    }
     protected void addPartialUpdate(){
         MethodSpec methodSpecBuilder = MethodSpec.methodBuilder(PARTIAL_UPDATE)
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                 .addAnnotation(getAnnotation(BeanMapping.class)
                         .addMember(NULL_VALUE_PROPERTY_MAPPING_STRATEGY, ENUM_VALUE, NullValuePropertyMappingStrategy.class, "IGNORE")
                         .build())
-                .addParameter(this.subEntityToEntity.get(0).getResourceEntity(), "source")
+                .addParameter(this.resourceDataSubEntity.get(0).getResourceEntity(), "source")
                 .addParameter(ParameterSpec.builder(entityType, "target").addAnnotation(MappingTarget.class).build())
                 .build();
         builder.addMethod(methodSpecBuilder);

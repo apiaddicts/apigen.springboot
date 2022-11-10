@@ -2,7 +2,6 @@ package org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.j
 
 import com.squareup.javapoet.*;
 import org.apiaddicts.apitools.apigen.archetypecore.core.JsonNullableMapper;
-import org.apiaddicts.apitools.apigen.archetypecore.core.SubEntityToEntitiesData;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Controller;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
@@ -10,6 +9,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.entity.Entity;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.components.java.AbstractJavaClassBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.JavaContext;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.persistence.EntityBuilder;
+import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.resource.JavaResourceDataSubEntity;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 
@@ -38,7 +38,7 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
     protected final Set<String> relatedEntitiesName;
     protected final Set<TypeName> resourcesToEntity;
     protected final Set<TypeName> entityToResources;
-    protected final List<SubEntityToEntitiesData> subEntityToEntity;
+    protected final List<JavaResourceDataSubEntity> resourceDataSubEntity;
 
     protected final TypeName entityType;
     protected final TypeName idType;
@@ -53,7 +53,7 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
         this.basicAttributes = ctx.getEntitiesData().getBasicAttributes(entityName);
         this.resourcesToEntity = ctx.getResourcesData().getInputResources(entityName);
         this.entityToResources = ctx.getResourcesData().getOutputResources(entityName);
-        this.subEntityToEntity = ctx.getResourcesData().getSubEntityToEntity(entityName);
+        this.resourceDataSubEntity = ctx.getResourcesData().getResourceDataSubEntity(entityName);
         this.entityType = EntityBuilder.getTypeName(entityName, basePackage);
         this.idType = ctx.getEntitiesData().getIDType(entityName);
     }
@@ -147,11 +147,11 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
     }
 
     protected void addSubEntityToEntity(){
-        for (SubEntityToEntitiesData subEntityToEntitiesData : subEntityToEntity) {
-            TypeName entityTypeName = ClassName.get(getPackage(entityName, basePackage), subEntityToEntitiesData.getRelatedEntity());
+        for (JavaResourceDataSubEntity dataSubEntity : resourceDataSubEntity) {
+            TypeName entityTypeName = ClassName.get(getPackage(entityName, basePackage), dataSubEntity.getRelatedEntity());
             MethodSpec methodSpec = MethodSpec.methodBuilder(MAP)
                     .addModifiers(Modifier.PUBLIC)
-                    .addParameter(subEntityToEntitiesData.getEntityFieldName(), "res")
+                    .addParameter(dataSubEntity.getEntityFieldName(), "res")
                     .returns(entityTypeName)
                     .addStatement("if (res == null || res.getId() == null) return null")
                     .addStatement("return new $T(res.getId())", entityTypeName)
