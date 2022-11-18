@@ -43,8 +43,6 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
     protected final TypeName entityType;
     protected final TypeName idType;
 
-    protected boolean patchResource;
-
     public MapperBuilder(Entity entity, C ctx, Configuration cfg) {
         super(ctx, cfg);
         this.basePackage = cfg.getBasePackage();
@@ -78,7 +76,6 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
     @Override
     protected void initialize() {
         initializeBuilder();
-        checkPartialUpdate();
         addMapperAnnotation();
         addResourcesToEntity();
         addEntityToResources();
@@ -94,7 +91,7 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
 
     protected void addMapperAnnotation() {
         List<TypeName> relatedEntities = getRelatedEntities();
-        if(patchResource)
+        if(this.resourceDataSubEntity.size() > 0)
             relatedEntities.add(TypeName.get(JsonNullableMapper.class));
 
         AnnotationSpec annotationSpec = AnnotationSpec.builder(Mapper.class)
@@ -199,12 +196,5 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
 
     protected boolean isComposed(TypeName type) {
         return type != null && !type.toString().startsWith("java");
-    }
-
-    private void checkPartialUpdate(){
-        if(this.cfg.getControllers() != null && this.cfg.getControllers().size() > 0){
-            Controller controller = this.cfg.getControllers().stream().filter(x -> x.getEntity().equals(this.entityName)).findAny().get();
-            this.patchResource = controller.getEndpoints().stream().anyMatch(x -> x.getMethod() == Endpoint.Method.PATCH);
-        }
     }
 }

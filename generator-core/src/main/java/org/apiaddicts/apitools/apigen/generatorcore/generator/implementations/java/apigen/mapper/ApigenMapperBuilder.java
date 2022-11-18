@@ -71,7 +71,7 @@ public class ApigenMapperBuilder<C extends ApigenContext> extends MapperBuilder<
     @Override
     protected void addResourcesToEntity() {
         super.addResourcesToEntity();
-        if(patchResource) addPartialUpdate();
+        if(this.resourceDataSubEntity.size() > 0) addPartialUpdate();
     }
     protected void addPartialUpdate(){
         MethodSpec methodSpecBuilder = MethodSpec.methodBuilder(PARTIAL_UPDATE)

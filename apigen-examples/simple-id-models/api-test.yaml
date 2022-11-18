@@ -698,7 +698,16 @@ components:
                 type: integer
               name:
                 type: string
-          maxItems: 10        
+          maxItems: 10
+        main_tag:
+          x-apigen-mapping:
+            field: mainTag
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
       required:
         - name
 
