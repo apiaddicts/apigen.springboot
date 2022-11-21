@@ -59,6 +59,7 @@
 
         <jacoco.maven.plugin.version>0.8.8</jacoco.maven.plugin.version>
         <flatten.maven.plugin.version>1.2.7</flatten.maven.plugin.version>
+        <sonartype.nexus.plugin.version>1.6.13</sonartype.nexus.plugin.version>
 
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
@@ -159,6 +160,18 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <!-- To release to Maven central -->
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>${sonartype.nexus.plugin.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
             <distributionManagement>
@@ -171,45 +184,6 @@
                     <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
                 </repository>
             </distributionManagement>
-        </profile>
-        <profile>
-            <id>cloudappi</id>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>cloudappi-snapshots</id>
-                    <!--suppress UnresolvedMavenProperty -->
-                    <url>${env.CAPI_NEXUS_URL}/repository/maven-snapshots</url>
-                </snapshotRepository>
-                <repository>
-                    <id>cloudappi-releases</id>
-                    <!--suppress UnresolvedMavenProperty -->
-                    <url>${env.CAPI_NEXUS_URL}/repository/maven-releases</url>
-                </repository>
-            </distributionManagement>
-            <repositories>
-                <repository>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                    <snapshots>
-                        <enabled>false</enabled>
-                    </snapshots>
-                    <id>cloudappi-releases</id>
-                    <!--suppress UnresolvedMavenProperty -->
-                    <url>${env.CAPI_NEXUS_URL}/repository/maven-releases</url>
-                </repository>
-                <repository>
-                    <releases>
-                        <enabled>false</enabled>
-                    </releases>
-                    <snapshots>
-                        <enabled>true</enabled>
-                    </snapshots>
-                    <id>cloudappi-snapshots</id>
-                    <!--suppress UnresolvedMavenProperty -->
-                    <url>${env.CAPI_NEXUS_URL}/repository/maven-snapshots</url>
-                </repository>
-            </repositories>
         </profile>
     </profiles>
 
