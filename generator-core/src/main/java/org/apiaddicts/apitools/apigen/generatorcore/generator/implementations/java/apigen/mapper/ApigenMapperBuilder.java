@@ -68,11 +68,13 @@ public class ApigenMapperBuilder<C extends ApigenContext> extends MapperBuilder<
                 .build();
         builder.addMethod(methodSpecBuilder);
     }
+
     @Override
     protected void addResourcesToEntity() {
         super.addResourcesToEntity();
         if(this.resourceDataSubEntity.size() > 0) addPartialUpdate();
     }
+    
     protected void addPartialUpdate(){
         MethodSpec methodSpecBuilder = MethodSpec.methodBuilder(PARTIAL_UPDATE)
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
