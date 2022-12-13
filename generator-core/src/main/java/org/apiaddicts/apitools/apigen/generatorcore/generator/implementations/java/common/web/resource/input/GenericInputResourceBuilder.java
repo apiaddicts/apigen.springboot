@@ -15,7 +15,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.validation.Validation
 import org.apiaddicts.apitools.apigen.generatorcore.generator.common.ApigenExt2JavapoetType;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.common.Openapi2JavapoetType;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.JavaContext;
-import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.resource.JavaResourceDataSubEntity;
+import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.resource.JavaSubResourcesData;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 import org.openapitools.jackson.nullable.JsonNullable;
 
@@ -88,14 +88,15 @@ public class GenericInputResourceBuilder<C extends JavaContext> extends InputRes
     }
 
     @Override
-    public List<JavaResourceDataSubEntity> getResourceDataSubEntity() {
-        List<JavaResourceDataSubEntity> resourceDataSubEntity = new ArrayList<>();
-        for(Attribute attribute : attributes){
-            if(endpoint.getMethod() == Endpoint.Method.PATCH && attribute.getRelatedEntity() != null){
-                TypeName resourceEntity = ClassName.get(getPackage(entityName, basePackage), getName(rootMapping, endpoint));
-                TypeName entityFieldName = ClassName.get(getPackage(entityName, basePackage), getName(rootMapping, endpoint) + "."
-                        + attribute.getEntityFieldName().substring(0, 1).toUpperCase() + attribute.getEntityFieldName().substring(1));
-                resourceDataSubEntity.add(new JavaResourceDataSubEntity(attribute.getRelatedEntity(), resourceEntity, entityFieldName));
+    public List<JavaSubResourcesData> getSubResourcesData() {
+        List<JavaSubResourcesData> resourceDataSubEntity = new ArrayList<>();
+        for (Attribute attribute : attributes) {
+            if (endpoint.getMethod() == Endpoint.Method.PATCH && attribute.getRelatedEntity() != null) {
+                String pkg = getPackage();
+                String resourceName = getName(rootMapping, endpoint);
+                String subResourceName = attribute.getEntityFieldName().substring(0, 1).toUpperCase() + attribute.getEntityFieldName().substring(1);
+                TypeName entityFieldName = ClassName.get(pkg, resourceName + "." + subResourceName);
+                resourceDataSubEntity.add(new JavaSubResourcesData(attribute.getRelatedEntity(), entityFieldName));
             }
         }
         return resourceDataSubEntity;
@@ -135,13 +136,12 @@ public class GenericInputResourceBuilder<C extends JavaContext> extends InputRes
             String javaName = attribute.getEntityFieldName();
             TypeName type;
             boolean nested = false;
-            boolean patch = endpoint.getMethod() == Endpoint.Method.PATCH;
+            boolean isPatch = endpoint.getMethod() == Endpoint.Method.PATCH;
 
             if (requiresNestedObject) {
-                if(patch){
+                if (isPatch) {
                     type = createNestedObjectPatch(javaName, attribute.getAttributes(), parentType, builder);
-                }
-                else{
+                } else {
                     type = createNestedObject(javaName, attribute.getAttributes(), parentType, builder);
                 }
                 nested = true;
@@ -161,7 +161,7 @@ public class GenericInputResourceBuilder<C extends JavaContext> extends InputRes
             if (attribute.isCollection()) {
                 type = ParameterizedTypeName.get(ClassName.get(Set.class), type);
             }
-            if(patch && !classParentType)
+            if(isPatch && !classParentType)
                 type = ParameterizedTypeName.get(ClassName.get(JsonNullable.class), type);
 
             addAttribute(type, javaName, attribute.getName(), attribute.getValidations(), nested, builder);

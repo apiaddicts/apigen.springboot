@@ -3,20 +3,16 @@ package org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.j
 import com.squareup.javapoet.*;
 import org.apiaddicts.apitools.apigen.archetypecore.core.JsonNullableMapper;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
-import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Controller;
-import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
 import org.apiaddicts.apitools.apigen.generatorcore.config.entity.Entity;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.components.java.AbstractJavaClassBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.JavaContext;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.persistence.EntityBuilder;
-import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.resource.JavaResourceDataSubEntity;
+import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.resource.JavaSubResourcesData;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 
 import javax.lang.model.element.Modifier;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,7 +34,7 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
     protected final Set<String> relatedEntitiesName;
     protected final Set<TypeName> resourcesToEntity;
     protected final Set<TypeName> entityToResources;
-    protected final List<JavaResourceDataSubEntity> resourceDataSubEntity;
+    protected final List<JavaSubResourcesData> subResourcesToEntity;
 
     protected final TypeName entityType;
     protected final TypeName idType;
@@ -51,7 +47,7 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
         this.basicAttributes = ctx.getEntitiesData().getBasicAttributes(entityName);
         this.resourcesToEntity = ctx.getResourcesData().getInputResources(entityName);
         this.entityToResources = ctx.getResourcesData().getOutputResources(entityName);
-        this.resourceDataSubEntity = ctx.getResourcesData().getResourceDataSubEntity(entityName);
+        this.subResourcesToEntity = ctx.getResourcesData().getSubResourcesData(entityName);
         this.entityType = EntityBuilder.getTypeName(entityName, basePackage);
         this.idType = ctx.getEntitiesData().getIDType(entityName);
     }
@@ -79,7 +75,6 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
         addMapperAnnotation();
         addResourcesToEntity();
         addEntityToResources();
-        addSubEntityToEntity();
         addComposedIDMapping();
         addIdToEntityMapping();
     }
@@ -91,7 +86,7 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
 
     protected void addMapperAnnotation() {
         List<TypeName> relatedEntities = getRelatedEntities();
-        if(this.resourceDataSubEntity.size() > 0)
+        if(!this.subResourcesToEntity.isEmpty())
             relatedEntities.add(TypeName.get(JsonNullableMapper.class));
 
         AnnotationSpec annotationSpec = AnnotationSpec.builder(Mapper.class)
@@ -143,19 +138,7 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
         }
     }
 
-    protected void addSubEntityToEntity(){
-        for (JavaResourceDataSubEntity dataSubEntity : resourceDataSubEntity) {
-            TypeName entityTypeName = ClassName.get(getPackage(entityName, basePackage), dataSubEntity.getRelatedEntity());
-            MethodSpec methodSpec = MethodSpec.methodBuilder(MAP)
-                    .addModifiers(Modifier.PUBLIC)
-                    .addParameter(dataSubEntity.getEntityFieldName(), "res")
-                    .returns(entityTypeName)
-                    .addStatement("if (res == null || res.getId() == null) return null")
-                    .addStatement("return new $T(res.getId())", entityTypeName)
-                    .build();
-            builder.addMethod(methodSpec);
-        }
-    }
+
 
     protected void addComposedIDMapping() {
         if (!isComposed(idType)) return;

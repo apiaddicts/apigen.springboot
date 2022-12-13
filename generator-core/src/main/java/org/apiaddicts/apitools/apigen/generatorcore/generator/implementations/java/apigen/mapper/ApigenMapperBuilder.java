@@ -3,10 +3,12 @@ package org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.j
 import com.squareup.javapoet.*;
 import org.apiaddicts.apitools.apigen.archetypecore.core.ApigenMapper;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
+import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
 import org.apiaddicts.apitools.apigen.generatorcore.config.entity.Entity;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.web.resource.output.ApigenEntityOutputResourceBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.mapper.MapperBuilder;
+import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.resource.JavaSubResourcesData;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -23,10 +25,15 @@ import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Memb
 public class ApigenMapperBuilder<C extends ApigenContext> extends MapperBuilder<C> {
 
     protected final TypeName resourceType;
+    protected final TypeName partialUpdateResourceType;
 
     public ApigenMapperBuilder(Entity entity, C ctx, Configuration cfg) {
         super(entity, ctx, cfg);
         this.resourceType = ApigenEntityOutputResourceBuilder.getTypeName(entityName, basePackage);
+        this.partialUpdateResourceType = this.resourcesToEntity.stream()
+                .filter(it -> it.toString().contains(Endpoint.Method.PATCH.prefix))
+                .findFirst().orElse(null);
+        this.resourcesToEntity.remove(partialUpdateResourceType);
     }
 
     public static TypeName getTypeName(String entityName, String basePackage) {
@@ -72,19 +79,37 @@ public class ApigenMapperBuilder<C extends ApigenContext> extends MapperBuilder<
     @Override
     protected void addResourcesToEntity() {
         super.addResourcesToEntity();
-        if(this.resourceDataSubEntity.size() > 0) addPartialUpdate();
+        if (partialUpdateResourceType != null) {
+            addPartialUpdate();
+            addSubResourcesToEntity();
+        }
     }
-    
-    protected void addPartialUpdate(){
+
+    protected void addPartialUpdate() {
         MethodSpec methodSpecBuilder = MethodSpec.methodBuilder(PARTIAL_UPDATE)
                 .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
                 .addAnnotation(getAnnotation(BeanMapping.class)
                         .addMember(NULL_VALUE_PROPERTY_MAPPING_STRATEGY, ENUM_VALUE, NullValuePropertyMappingStrategy.class, "IGNORE")
                         .build())
-                .addParameter(this.resourceDataSubEntity.get(0).getResourceEntity(), "source")
+                .addParameter(partialUpdateResourceType, "source")
                 .addParameter(ParameterSpec.builder(entityType, "target").addAnnotation(MappingTarget.class).build())
                 .build();
         builder.addMethod(methodSpecBuilder);
+    }
+
+    protected void addSubResourcesToEntity() {
+        for (JavaSubResourcesData subResourceToEntity : subResourcesToEntity) {
+            String relatedEntity = subResourceToEntity.getRelatedEntity();
+            TypeName entityTypeName = ClassName.get(getPackage(relatedEntity, basePackage), relatedEntity);
+            MethodSpec methodSpec = MethodSpec.methodBuilder(MAP)
+                    .addModifiers(Modifier.PUBLIC)
+                    .addParameter(subResourceToEntity.getSubResource(), "resource")
+                    .returns(entityTypeName)
+                    .addStatement("if (resource == null || resource.getId() == null) return null")
+                    .addStatement("return new $T(resource.getId())", entityTypeName)
+                    .build();
+            builder.addMethod(methodSpec);
+        }
     }
 
     @Override
