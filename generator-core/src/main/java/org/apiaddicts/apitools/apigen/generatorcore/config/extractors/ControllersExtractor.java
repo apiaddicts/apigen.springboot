@@ -12,7 +12,10 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.entity.Entity;
 import org.apiaddicts.apitools.apigen.generatorcore.spec.components.ApigenBinding;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -154,6 +157,8 @@ public class ControllersExtractor {
             endpoints.add(getEndpoint(pathItem.getPut(), Endpoint.Method.PUT, endpointMapping));
         if (pathItem.getDelete() != null)
             endpoints.add(getEndpoint(pathItem.getDelete(), Endpoint.Method.DELETE, endpointMapping));
+        if (pathItem.getPatch() != null)
+            endpoints.add(getEndpoint(pathItem.getPatch(), Endpoint.Method.PATCH, endpointMapping));
         endpoints.forEach(e -> e.setChildParentRelationProperty(childParentRelationProperty));
         return endpoints;
     }

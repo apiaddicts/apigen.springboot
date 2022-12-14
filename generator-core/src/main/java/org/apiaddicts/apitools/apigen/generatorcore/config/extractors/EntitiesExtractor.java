@@ -7,7 +7,9 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.entity.Relation;
 import org.apiaddicts.apitools.apigen.generatorcore.config.extractors.context.ExtractorContext;
 import org.apiaddicts.apitools.apigen.generatorcore.spec.components.ApigenModel;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.exceptions.GeneratorErrors.*;

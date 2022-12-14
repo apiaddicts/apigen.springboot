@@ -1,6 +1,7 @@
 package org.apiaddicts.apitools.apigen.archetypecore.autoconfigure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.Module;
 import org.apiaddicts.apitools.apigen.archetypecore.core.advice.ApigenControllerAdvice;
 import org.apiaddicts.apitools.apigen.archetypecore.core.errors.ApigenErrorManager;
 import org.apiaddicts.apitools.apigen.archetypecore.core.errors.DefaultApigenErrorManager;
@@ -11,6 +12,7 @@ import org.apiaddicts.apitools.apigen.archetypecore.interceptors.response.Apigen
 import org.apiaddicts.apitools.apigen.archetypecore.interceptors.update.CachingRequestBodyFilter;
 import org.apiaddicts.apitools.apigen.archetypecore.interceptors.update.UpdateRequestBodyAdvice;
 import org.apiaddicts.apitools.apigen.archetypecore.interceptors.WebConfig;
+import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -65,5 +67,10 @@ public class ApigenConfiguration {
 	@ConditionalOnMissingBean(CachingRequestBodyFilter.class)
 	public CachingRequestBodyFilter cachingRequestBodyFilter() {
 		return new CachingRequestBodyFilter();
+	}
+
+	@Bean
+	public Module jsonNullableModule() {
+		return new JsonNullableModule();
 	}
 }

@@ -6,7 +6,10 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Attribute;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.common.Openapi2JavapoetType;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.CustomStringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.spec.components.Extensions.*;
 

@@ -172,6 +172,23 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/standard_response_pet"
+
+    patch:
+      operationId: patchPet
+      parameters:
+        - $ref: "#/components/parameters/integer_id_param"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updatePartialPet"
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/standard_response_pet"
     delete:
       operationId: deletePet
       parameters:
@@ -711,6 +728,27 @@ components:
       properties:
         name:
           type: string
+
+    updatePartialPet:
+      x-apigen-mapping:
+        model: Pet
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 4
+        owner:
+          type: string
+        main_tag:
+          x-apigen-mapping:
+            model: Tag
+            field: mainTag
+          type: object
+          properties:
+            id:
+              type: Integer
+      required:
+        - name
 
     updateOwner:
       x-apigen-mapping:

@@ -169,9 +169,7 @@ class ApigenRelationManagerBuilderTests {
         assertEquals("[]", methodSpec.annotations.toString());
         assertEquals("[the.group.artifact.entityfirst.EntityFirst persistedEntityFirst, the.group.artifact.entityfirst.EntityFirst entityFirst, java.util.Set<java.lang.String> fields, org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrors errors]", methodSpec.parameters.toString());
         assertEquals("void", methodSpec.returnType.toString());
-        assertEquals("" +
-                        "persistedEntityFirst.getList().clear();\n" +
-                        "persistedEntityFirst.getList().addAll(retrieve(entityFirst.getList(), listItemService, errors));\n"
+        assertEquals("replace(persistedEntityFirst.getList(), retrieve(entityFirst.getList(), listItemService, errors);\n"
                 , methodSpec.code.toString());
     }
 
