@@ -5,7 +5,8 @@ import com.squareup.javapoet.AnnotationSpec;
 import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
 
-import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.*;
+import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.ENUM_VALUE;
+import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.STRING;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.FETCH;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.MAPPED_BY;
 

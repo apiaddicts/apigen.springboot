@@ -9,6 +9,5 @@ public abstract class SubResourcesData<T> {
         this.subResource = subResource;
     }
     String relatedEntity;
-    T resource;
     T subResource;
 }

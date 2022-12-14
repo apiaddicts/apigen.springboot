@@ -20,7 +20,10 @@ import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import javax.validation.Valid;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 import static java.util.Objects.nonNull;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.LITERAL;
@@ -114,7 +117,7 @@ public class GenericInputResourceBuilder<C extends JavaContext> extends InputRes
     @Override
     protected void initialize() {
         initializeBuilder();
-        addAttributes();
+        addAttributes(endpoint.getMethod() == Endpoint.Method.PATCH);
     }
 
     protected void initializeBuilder() {
@@ -122,28 +125,19 @@ public class GenericInputResourceBuilder<C extends JavaContext> extends InputRes
                 .addAnnotation(Data.class);
     }
 
-    protected void addAttributes() {
-        addAttributes(attributes, builder, getTypeName(rootMapping, endpoint, basePackage));
+    protected void addAttributes(boolean nullable) {
+        addAttributes(attributes, builder, getTypeName(rootMapping, endpoint, basePackage), nullable);
     }
 
-    protected void addAttributes(List<Attribute> attributes, Builder builder, TypeName parentType) {
-        addAttributes(attributes, builder, parentType, false);
-    }
-
-    protected void addAttributes(List<Attribute> attributes, Builder builder, TypeName parentType, boolean classParentType) {
+    protected void addAttributes(List<Attribute> attributes, Builder builder, TypeName parentType, boolean nullable) {
         for (Attribute attribute : attributes) {
             boolean requiresNestedObject = requiredNestedObject(attribute);
             String javaName = attribute.getEntityFieldName();
             TypeName type;
             boolean nested = false;
-            boolean isPatch = endpoint.getMethod() == Endpoint.Method.PATCH;
 
             if (requiresNestedObject) {
-                if (isPatch) {
-                    type = createNestedObjectPatch(javaName, attribute.getAttributes(), parentType, builder);
-                } else {
-                    type = createNestedObject(javaName, attribute.getAttributes(), parentType, builder);
-                }
+                type = createNestedObject(javaName, attribute.getAttributes(), parentType, builder, false);
                 nested = true;
             } else {
                 if (attribute.getImplementationType() != null) {
@@ -161,7 +155,7 @@ public class GenericInputResourceBuilder<C extends JavaContext> extends InputRes
             if (attribute.isCollection()) {
                 type = ParameterizedTypeName.get(ClassName.get(Set.class), type);
             }
-            if(isPatch && !classParentType)
+            if (nullable)
                 type = ParameterizedTypeName.get(ClassName.get(JsonNullable.class), type);
 
             addAttribute(type, javaName, attribute.getName(), attribute.getValidations(), nested, builder);
@@ -172,28 +166,11 @@ public class GenericInputResourceBuilder<C extends JavaContext> extends InputRes
         return Openapi2JavapoetType.TYPE_OBJECT.equals(attribute.getType()) || Openapi2JavapoetType.TYPE_ARRAY.equals(attribute.getType());
     }
 
-    protected TypeName createNestedObject(String javaName, List<Attribute> attributes, TypeName parentType, Builder builder) {
+    protected TypeName createNestedObject(String javaName, List<Attribute> attributes, TypeName parentType, Builder builder, boolean nullable) {
         String nestedName = StringUtils.capitalize(javaName);
         TypeName type = ((ClassName) parentType).nestedClass(nestedName);
         Builder nestedBuilder = getPublicInnerClass(nestedName).addAnnotation(Data.class);
-        addAttributes(attributes, nestedBuilder, type);
-        builder.addType(nestedBuilder.build());
-        return type;
-    }
-
-    protected TypeName createNestedObjectPatch(String javaName, List<Attribute> attributes, TypeName parentType, Builder builder) {
-        String nestedName = StringUtils.capitalize(javaName);
-        TypeName type = ((ClassName) parentType).nestedClass(nestedName);
-        TypeName typeAttibute = ApigenExt2JavapoetType.transformSimpleType(attributes.get(0).getType().substring(0, 1).toUpperCase() +
-                attributes.get(0).getType().substring(1));
-        Builder nestedBuilder = getPublicInnerClass(nestedName).addAnnotation(Data.class).addAnnotation(NoArgsConstructor.class);
-        MethodSpec constructor = MethodSpec.constructorBuilder()
-                .addAnnotation(AnnotationSpec.builder(JsonCreator.class).addMember(MODE, LITERAL, "JsonCreator.Mode.DELEGATING").build())
-                .addParameter(typeAttibute, attributes.get(0).getName())
-                .addStatement("this.$1L = $1L", attributes.get(0).getName())
-                .build();
-        nestedBuilder.addMethod(constructor);
-        addAttributes(attributes, nestedBuilder, type, true);
+        addAttributes(attributes, nestedBuilder, type, nullable);
         builder.addType(nestedBuilder.build());
         return type;
     }

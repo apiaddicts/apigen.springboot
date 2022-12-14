@@ -15,8 +15,6 @@ import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class PostSearchParentChildEndpointBuilder<C extends ApigenContext> extends PostSearchEndpointBuilder<C> {
 

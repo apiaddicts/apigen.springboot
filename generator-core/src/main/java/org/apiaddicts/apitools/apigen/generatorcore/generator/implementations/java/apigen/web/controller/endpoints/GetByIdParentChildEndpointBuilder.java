@@ -12,9 +12,6 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class GetByIdParentChildEndpointBuilder<C extends ApigenContext> extends GetByIdEndpointBuilder<C> {
 

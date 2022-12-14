@@ -7,8 +7,8 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.entity.Entity;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContextObjectMother;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.persistence.JavaEntitiesData;
-import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.resource.JavaSubResourcesData;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.resource.JavaResourcesData;
+import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.resource.JavaSubResourcesData;
 import org.mockito.Mockito;
 
 import java.util.List;
