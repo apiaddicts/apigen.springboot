@@ -182,15 +182,19 @@ class ConfigurationExtractorTest {
 
         assertEquals(POST, endpoints.get(0).getMethod(), "Check Controller POST Endpoint");
         assertEquals(null, endpoints.get(0).getMapping(), "Check Controller POST Endpoint");
+        assertEquals("createOwner", endpoints.get(0).getName(), "Check Name POST Endpoint");
 
         assertEquals(GET, endpoints.get(1).getMethod(), "Check Controller GETbyID Endpoint");
         assertEquals("/{id}", endpoints.get(1).getMapping(), "Check Controller GETbyID Endpoint");
+        assertEquals("findOwners", endpoints.get(1).getName(), "Check Name GETbyID Endpoint");
 
         assertEquals(PUT, endpoints.get(2).getMethod(), "Check Controller PUT Endpoint");
         assertEquals("/{id}", endpoints.get(2).getMapping(), "Check Controller PUT Endpoint");
+        assertEquals("updateOwners", endpoints.get(2).getName(), "Check Name PUT Endpoint");
 
         assertEquals(DELETE, endpoints.get(3).getMethod(), "Check Controller DELETE Endpoint");
         assertEquals("/{id}", endpoints.get(3).getMapping(), "Check Controller DELETE Endpoint");
+        assertEquals("deleteOwners", endpoints.get(3).getName(), "Check Name DELETE Endpoint");
     }
 
     @Test
@@ -216,6 +220,7 @@ class ConfigurationExtractorTest {
         Controller controller = configuration.getControllers().get(0);
         assertEquals(1, controller.getEndpoints().size(), "One endpoint expected");
         Endpoint endpoint = controller.getEndpoints().get(0);
+        assertEquals("createResOne", endpoint.getName(), "Name endpoint expected");
         Request request = endpoint.getRequest();
         assertNotNull(request, "Request expected");
     }
