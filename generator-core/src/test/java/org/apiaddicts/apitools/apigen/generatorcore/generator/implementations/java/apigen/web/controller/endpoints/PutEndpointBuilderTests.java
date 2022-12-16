@@ -8,6 +8,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.ConfigurationObjectMo
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContextObjectMother;
+import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.web.controller.endpoints.PutEndpointBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.persistence.JavaEntitiesData;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.web.controller.endpoints.EndpointObjectMother;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
@@ -85,7 +86,7 @@ class PutEndpointBuilderTests {
         assertEquals(1, methodSpec.modifiers.size());
         assertEquals("[public]", methodSpec.modifiers.toString());
 
-        assertEquals(3, methodSpec.parameters.size());
+        assertEquals(2, methodSpec.parameters.size());
         ParameterSpec parameterSpec = methodSpec.parameters.get(0);
         assertEquals("@org.springframework.web.bind.annotation.PathVariable(\"id\") java.lang.Long id", parameterSpec.toString());
         assertEquals("java.lang.Long", parameterSpec.type.toString());
@@ -96,13 +97,8 @@ class PutEndpointBuilderTests {
         assertEquals("the.group.artifact.entityname.web.UpdateEntityNameByIdResource", parameterSpec.type.toString());
         assertEquals("body", parameterSpec.name);
 
-        parameterSpec = methodSpec.parameters.get(2);
-        assertEquals("[@org.springframework.web.bind.annotation.RequestAttribute]", parameterSpec.annotations.toString());
-        assertEquals("java.util.Set<java.lang.String>", parameterSpec.type.toString());
-        assertEquals("updatedFields", parameterSpec.name);
-
         assertEquals("the.group.artifact.entityname.EntityName updateRequest = mapper.toEntity(body);\n" +
-                "service.update(id, updateRequest, updatedFields);\n" +
+                "service.update(id, updateRequest);\n" +
                 "the.group.artifact.entityname.EntityName createResult = service.search(id, null, null, null);\n" +
                 "the.group.artifact.entityname.web.EntityNameOutResource result = mapper.toResource(createResult);\n" +
                 "return new the.group.artifact.entityname.web.EntityNameResponse(result);\n", methodSpec.code.toString());

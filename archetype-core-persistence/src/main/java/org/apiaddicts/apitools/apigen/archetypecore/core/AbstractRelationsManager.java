@@ -19,7 +19,7 @@ public class AbstractRelationsManager<E> {
     }
 
     @Transactional(propagation = Propagation.MANDATORY)
-    public void updateRelations(E persistedEntity, E entity, Set<String> fields) {
+    public void updateRelations(E persistedEntity, E entity) {
         // Override if required
     }
 

@@ -269,10 +269,5 @@ class AbstractRelationsManagerTest {
         ) {
             super(repository, relationsManager, mapper);
         }
-
-        @Override
-        protected void updateBasicDataPartially(OtherEntity persistedEntity, OtherEntity entity, Set<String> fields) {
-
-        }
     }
 }

@@ -47,7 +47,7 @@ class ApigenServiceBuilderTests {
         assertEquals(TypeSpec.Kind.CLASS, generatedService.kind, "Class declaration is wrong");
         assertEquals("SimpleTestEntityService", generatedService.name, "The name is wrong");
         assertEquals(2, generatedService.annotations.size(), "Number of annotations is wrong");
-        assertEquals(2, generatedService.methodSpecs.size(), "Number of methods is wrong");
+        assertEquals(1, generatedService.methodSpecs.size(), "Number of methods is wrong");
     }
 
     @Test
@@ -68,18 +68,6 @@ class ApigenServiceBuilderTests {
                         ".apigen.archetypecore.core.ApigenMapper<the.group.artifact.simpletestentity.SimpleTestEntity> " +
                         "mapper) {\n" + "  super(repository, relationsManager, mapper);\n" + "}\n",
                 generatedService.methodSpecs.get(0).toString(), "Constructor Method is wrong");
-    }
-
-    @Test
-    void givenAnEntity_whenGenerateService_thenUpdateBasicDataPartiallyMethodIsCorrect() {
-        assertEquals(
-                "@java.lang.Override\n" + "protected void updateBasicDataPartially(\n" + "    the.group.artifact" +
-                        ".simpletestentity.SimpleTestEntity persistedEntity,\n" + "    the.group.artifact" +
-                        ".simpletestentity.SimpleTestEntity entity,\n" + "    java.util.Set<java.lang.String> fields)" +
-                        " {\n" + "  if (fields == null) {\n" + "    mapper.updateBasicData(entity, persistedEntity);" +
-                        "\n" + "  } else {\n" + "    if (fields.contains(\"id\")) persistedEntity.setId(entity.getId" +
-                        "());\n" + "  }\n" + "}\n",
-                generatedService.methodSpecs.get(1).toString());
     }
 
     @Test

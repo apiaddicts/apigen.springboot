@@ -40,7 +40,6 @@ public class ApigenServiceBuilder<C extends ApigenContext> extends ServiceBuilde
     @Override
     protected void initialize() {
         super.initialize();
-        addUpdateBasicDataPartiallyMethod();
     }
 
     @Override
@@ -66,22 +65,5 @@ public class ApigenServiceBuilder<C extends ApigenContext> extends ServiceBuilde
                 identifierType,
                 repositoryType
         );
-    }
-
-    protected void addUpdateBasicDataPartiallyMethod() {
-        MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder("updateBasicDataPartially")
-                .addModifiers(Modifier.PROTECTED)
-                .addAnnotation(Override.class)
-                .addParameter(entityType, "persistedEntity")
-                .addParameter(entityType, "entity")
-                .addParameter(ParameterizedTypeName.get(ClassName.get(Set.class), ClassName.get(String.class)), "fields");
-
-        methodBuilder.beginControlFlow("if (fields == null)");
-        methodBuilder.addStatement("mapper.updateBasicData(entity, persistedEntity)");
-        methodBuilder.nextControlFlow("else");
-        basicAttributes.forEach(attribute -> methodBuilder.addStatement("if (fields.contains($1S)) persistedEntity.set$2L(entity.get$2L())", attribute, StringUtils.capitalize(attribute)));
-        methodBuilder.endControlFlow();
-
-        builder.addMethod(methodBuilder.build());
     }
 }
