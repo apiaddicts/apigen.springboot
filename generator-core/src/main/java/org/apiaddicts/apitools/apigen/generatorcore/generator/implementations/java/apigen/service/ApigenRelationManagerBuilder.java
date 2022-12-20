@@ -132,11 +132,9 @@ public class ApigenRelationManagerBuilder<C extends ApigenContext> extends Abstr
                 .addAnnotation(Override.class)
                 .addAnnotation(getAnnotation(Transactional.class).addMember(PROPAGATION, ENUM_VALUE, Propagation.class, Propagation.MANDATORY.name()).build())
                 .addParameter(entityType, persistedParamName)
-                .addParameter(entityType, paramName)
-                .addParameter(ParameterizedTypeName.get(ClassName.get(Set.class), ClassName.get(String.class)), "fields");
+                .addParameter(entityType, paramName);
 
         methodSpecBuilder.addStatement("$1T errors = new $1T()", RelationalErrors.class);
-        methodSpecBuilder.addStatement("boolean updateAll = (fields == null)");
         List<MethodSpec.Builder> fieldMethodBuilders = new ArrayList<>(sortedAttributes.size());
         for (String attribute : sortedAttributes) {
             AttributeData<?> attributeData = attributes.get(attribute);
@@ -144,19 +142,16 @@ public class ApigenRelationManagerBuilder<C extends ApigenContext> extends Abstr
             String capAttribute = StringUtils.capitalize(attribute);
             String serviceName = StringUtils.uncapitalize(ServiceBuilder.getName(attributeData.getRelatedEntity()));
 
-            methodSpecBuilder.beginControlFlow("if (updateAll || fields.contains($S))", attribute);
-            methodSpecBuilder.addStatement("updateRelations$3L($1L, $2L, fields, errors)", persistedParamName, paramName, capAttribute);
-            methodSpecBuilder.endControlFlow();
+            methodSpecBuilder.addStatement("updateRelations$3L($1L, $2L, errors)", persistedParamName, paramName, capAttribute);
 
             MethodSpec.Builder fieldMethodBuilder = MethodSpec.methodBuilder("updateRelations" + capAttribute)
                     .addModifiers(Modifier.PROTECTED)
                     .addParameter(entityType, persistedParamName)
                     .addParameter(entityType, paramName)
-                    .addParameter(ParameterizedTypeName.get(ClassName.get(Set.class), ClassName.get(String.class)), "fields")
                     .addParameter(RelationalErrors.class, "errors");
 
             if (attributeData.isCollection()) {
-                fieldMethodBuilder.addStatement("replace($1L.get$3L(), retrieve($2L.get$3L(), $4L, errors)",
+                fieldMethodBuilder.addStatement("replace($1L.get$3L(), retrieve($2L.get$3L(), $4L, errors))",
                         persistedParamName, paramName, capAttribute, serviceName);
             } else {
                 fieldMethodBuilder.addStatement("$1L.set$3L(retrieve($2L.get$3L(), $4L, errors))", persistedParamName, paramName, capAttribute, serviceName);
