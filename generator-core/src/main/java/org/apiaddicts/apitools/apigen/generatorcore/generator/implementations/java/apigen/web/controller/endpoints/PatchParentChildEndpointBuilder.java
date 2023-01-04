@@ -11,11 +11,9 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.persistence.EntityBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 
-import java.util.Arrays;
+public class PatchParentChildEndpointBuilder<C extends ApigenContext> extends PatchEndpointBuilder<C> {
 
-public class GetByIdParentChildEndpointBuilder<C extends ApigenContext> extends GetByIdEndpointBuilder<C> {
-
-    public GetByIdParentChildEndpointBuilder(Mapping rootMapping, Endpoint endpoint, C ctx, Configuration cfg) {
+    public PatchParentChildEndpointBuilder(Mapping rootMapping, Endpoint endpoint, C ctx, Configuration cfg) {
         super(rootMapping, endpoint, ctx, cfg);
     }
 
@@ -24,14 +22,15 @@ public class GetByIdParentChildEndpointBuilder<C extends ApigenContext> extends 
         TypeName filterType = ClassName.get(Filter.class);
         TypeName entityType = EntityBuilder.getTypeName(entityName, cfg.getBasePackage());
         TypeName resourceType = ApigenEntityOutputResourceBuilder.getTypeName(entityName, cfg.getBasePackage());
-        String translatorParams = pathParamsToString(Arrays.asList("select", "exclude", "expand"));
-        String params = pathParamsToString(Arrays.asList("select", "exclude", "expand"));
-        builder.addStatement("$L.translate($L, $T.class)", NAMING_TRANSLATOR_NAME, translatorParams, resourceType);
+        TypeName responseType = EntitySimpleResponseBuilder.getTypeName(entityName, cfg.getBasePackage());
         builder.addStatement("$T filter = getParentFilter($L, $L, $S)", filterType, pathParams.get(0), null, endpoint.getChildParentRelationProperty());
-        builder.addStatement("expand = getParentExpand(expand, $S)", endpoint.getChildParentRelationProperty().split("\\.")[0]);
-        builder.addStatement("$T searchResult = $L.search($L, $L, $L)", entityType, SERVICE_NAME, pathParams.get(1), params, "filter");
-        builder.addStatement("$T result = $L.toResource(searchResult)", resourceType, MAPPER_NAME);
-        TypeName responseType = EntitySimpleResponseBuilder.getTypeName(endpoint.getResponse().getRelatedEntity(), cfg.getBasePackage());
+        builder.addStatement("List<String> expand = getParentExpand(null, $S)", endpoint.getChildParentRelationProperty().split("\\.")[0]);
+        builder.addStatement("$L.search($L, null, null, $L, $L)", SERVICE_NAME, pathParams.get(1), "expand", "filter");
+        builder.addStatement("$T original = $L.safeGetOne($L)", entityType, SERVICE_NAME, pathParams.get(0));
+        builder.addStatement("$L.partialUpdate(body, original)", MAPPER_NAME);
+        builder.addStatement("$L.update($L, original)", SERVICE_NAME, pathParams.get(0));
+        builder.addStatement("$T createResult = $L.search($L, null, null, null)", entityType, SERVICE_NAME, pathParams.get(0));
+        builder.addStatement("$T result = $L.toResource(createResult)", resourceType, MAPPER_NAME);
         builder.addStatement("return new $T(result)", responseType);
     }
 }

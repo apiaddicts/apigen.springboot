@@ -4,10 +4,11 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
-
-import java.util.*;
-
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Response;
+
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Map;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Constants.JSON_MIME_TYPE;
 import static org.apiaddicts.apitools.apigen.generatorcore.spec.components.Extensions.*;

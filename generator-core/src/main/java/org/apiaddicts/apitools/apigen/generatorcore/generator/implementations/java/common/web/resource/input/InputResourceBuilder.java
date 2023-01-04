@@ -4,6 +4,9 @@ import com.squareup.javapoet.TypeName;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.JavaContext;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.resource.AbstractResourceBuilder;
+import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.resource.JavaSubResourcesData;
+
+import java.util.List;
 
 public abstract class InputResourceBuilder<C extends JavaContext> extends AbstractResourceBuilder<C> {
 
@@ -14,4 +17,6 @@ public abstract class InputResourceBuilder<C extends JavaContext> extends Abstra
     public abstract String getEntityName();
 
     public abstract TypeName getTypeName();
+
+    public abstract List<JavaSubResourcesData> getSubResourcesData();
 }

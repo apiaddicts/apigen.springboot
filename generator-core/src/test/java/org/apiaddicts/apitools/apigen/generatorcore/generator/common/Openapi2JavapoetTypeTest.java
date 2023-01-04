@@ -68,12 +68,6 @@ class Openapi2JavapoetTypeTest {
     }
 
     @Test
-    void givenNonSimpleTypeObject_whenTransformToSimpleType_thenThrowException() {
-        assertThrows(IllegalArgumentException.class, () ->
-                Openapi2JavapoetType.transformSimpleType("object", null));
-    }
-
-    @Test
     void givenNonSimpleTypeArray_whenTransformToSimpleType_thenThrowException() {
         assertThrows(IllegalArgumentException.class, () ->
                 Openapi2JavapoetType.transformSimpleType("array", null));

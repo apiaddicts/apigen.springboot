@@ -8,8 +8,10 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContextObjectMother;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.persistence.JavaEntitiesData;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.resource.JavaResourcesData;
+import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.resource.JavaSubResourcesData;
 import org.mockito.Mockito;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -22,7 +24,8 @@ public class ApigenMapperBuilderObjectMother {
             Set<String> relatedEntities,
             Set<String> basicAttributes,
             Set<TypeName> inputResources,
-            Set<TypeName> outputResources
+            Set<TypeName> outputResources,
+            List<JavaSubResourcesData> resourceDataSubEntity
     ) {
         Configuration cfg = ConfigurationObjectMother.create();
 
@@ -34,6 +37,7 @@ public class ApigenMapperBuilderObjectMother {
         JavaResourcesData resourcesData = Mockito.mock(JavaResourcesData.class);
         Mockito.when(resourcesData.getInputResources(entity.getName())).thenReturn(inputResources);
         Mockito.when(resourcesData.getOutputResources(entity.getName())).thenReturn(outputResources);
+        Mockito.when(resourcesData.getSubResourcesData(entity.getName())).thenReturn(resourceDataSubEntity);
 
         ApigenContext ctx = ApigenContextObjectMother.create();
         ctx.setEntitiesData(entitiesData);

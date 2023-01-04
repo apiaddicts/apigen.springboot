@@ -64,4 +64,9 @@ public class AbstractRelationsManager<E> {
         if (entities == null) return new HashSet<>();
         return entities.stream().map(e -> createOrRetrieve(e, service, errors)).collect(Collectors.toSet());
     }
+
+    protected <T> void replace(Set<T> oldValues, Set<T> newValues) {
+        oldValues.clear();
+        oldValues.addAll(newValues);
+    }
 }
