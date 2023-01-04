@@ -9,6 +9,14 @@ import java.util.List;
 
 @Data
 public class Filter {
+
+	public Filter(){}
+
+	public Filter(FilterOperation operation, List<Value> values) {
+		this.operation = operation;
+		this.values = values;
+	}
+
 	@NotNull
 	private FilterOperation operation;
 	@Valid
