@@ -1,6 +1,7 @@
 package org.apiaddicts.apitools.apigen.generatorcore.config.extractors;
 
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 import io.swagger.v3.parser.core.models.ParseOptions;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
@@ -12,26 +13,17 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.entity.Entity;
 import org.apiaddicts.apitools.apigen.generatorcore.config.validation.Validation;
 import org.apiaddicts.apitools.apigen.generatorcore.config.validation.ValidationType;
 import org.apiaddicts.apitools.apigen.generatorcore.spec.OpenAPIExtended;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint.Method.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 // TODO #14909 refactor tests to use individualized api fragments
 class ConfigurationExtractorTest {
-
-    private static Configuration configuration;
-
-    @BeforeAll
-    static void prepareTest() {
-        OpenAPIExtended openAPIExtended = load("testApi.yaml");
-        configuration = new ConfigurationExtractor(openAPIExtended).extract();
-        assertNotNull(configuration);
-    }
 
     private static OpenAPIExtended load(String fileName) {
         ParseOptions parseOptions = new ParseOptions();
@@ -42,6 +34,8 @@ class ConfigurationExtractorTest {
 
     @Test
     void checkExtractedProjectInfoFromYAML() {
+        OpenAPIExtended openAPIExtended = load("testApi.yaml");
+        Configuration configuration = new ConfigurationExtractor(openAPIExtended).extract();
         assertEquals(configuration.getName(), "test");
         assertEquals(configuration.getDescription(), "test");
         assertEquals("the.test", configuration.getGroup());
@@ -51,6 +45,8 @@ class ConfigurationExtractorTest {
 
     @Test
     void checkExtractedEntitiesFromYAML() {
+        OpenAPIExtended openAPIExtended = load("testApi.yaml");
+        Configuration configuration = new ConfigurationExtractor(openAPIExtended).extract();
         assertNotNull(configuration.getEntities());
 
         List<Entity> entities = configuration.getEntities();
@@ -105,6 +101,8 @@ class ConfigurationExtractorTest {
 
     @Test
     void checkExtractedValidationsFromYAMLModels() {
+        OpenAPIExtended openAPIExtended = load("testApi.yaml");
+        Configuration configuration = new ConfigurationExtractor(openAPIExtended).extract();
         assertNotNull(configuration.getEntities());
 
         List<Validation> validations = configuration.getEntities().get(0).getAttributes().get(0).getValidations();
@@ -160,12 +158,16 @@ class ConfigurationExtractorTest {
 
     @Test
     void checkExtractedValidationsFromYAMLResources() {
+        OpenAPIExtended openAPIExtended = load("testApi.yaml");
+        Configuration configuration = new ConfigurationExtractor(openAPIExtended).extract();
         List<Validation> validations = configuration.getControllers().get(0).getEndpoints().get(0).getRequest().getAttributes().get(0).getValidations();
         assertEquals(ValidationType.NOT_NULL, validations.get(0).getType(), "Check NotNull Validation");
     }
 
     @Test
     void checkExtractedControllersFromYAML() {
+        OpenAPIExtended openAPIExtended = load("testApi.yaml");
+        Configuration configuration = new ConfigurationExtractor(openAPIExtended).extract();
         assertNotNull(configuration.getControllers());
 
         List<Controller> controllers = configuration.getControllers();
@@ -199,6 +201,8 @@ class ConfigurationExtractorTest {
 
     @Test
     void checkExtractedEndpointsParametersFromYAML() {
+        OpenAPIExtended openAPIExtended = load("testApi.yaml");
+        Configuration configuration = new ConfigurationExtractor(openAPIExtended).extract();
         assertNotNull(configuration.getControllers());
         Controller controller = configuration.getControllers().get(0);
 
@@ -273,4 +277,12 @@ class ConfigurationExtractorTest {
         assertEquals("boolean", parameter.getType(), "Check Endpoint BooleanParameter type");
     }
 
+    @Test
+    void allOfWithProperties() {
+        OpenAPIExtended openAPIExtended = load("0001_allOffProps.yaml");
+        Schema<?> schema = openAPIExtended.getSchemas().get("standard_response_res_one");
+        Map<String, Schema> props = schema.getProperties();
+        assertTrue(props.containsKey("data"), "'data' property expected");
+        assertTrue(props.containsKey("result"), "'result' property expected");
+    }
 }
