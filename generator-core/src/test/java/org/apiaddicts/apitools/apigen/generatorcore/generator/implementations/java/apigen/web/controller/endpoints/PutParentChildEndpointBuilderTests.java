@@ -85,7 +85,7 @@ class PutParentChildEndpointBuilderTests {
         assertEquals(1, methodSpec.modifiers.size());
         assertEquals("[public]", methodSpec.modifiers.toString());
 
-        assertEquals(4, methodSpec.parameters.size());
+        assertEquals(3, methodSpec.parameters.size());
 
         ParameterSpec parameterSpec = methodSpec.parameters.get(0);
         assertEquals("[@org.springframework.web.bind.annotation.PathVariable(\"parent_id\")]", parameterSpec.annotations.toString());

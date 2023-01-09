@@ -22,13 +22,14 @@ import static java.util.Objects.nonNull;
 
 @Transactional
 @SuppressWarnings("squid:S1192")
-public abstract class AbstractCrudService<E extends ApigenAbstractPersistable<K>, K extends Serializable, R extends ApigenRepository<E, K>>
+@Deprecated
+public abstract class AbstractCrudLegacyService<E extends ApigenAbstractPersistable<K>, K extends Serializable, R extends ApigenRepository<E, K>>
 		extends AbstractReadService<E, K, R> {
 
-	protected final AbstractRelationsManager<E> relationsManager;
+	protected final AbstractRelationsLegacyManager<E> relationsManager;
 	protected final ApigenMapper<E> mapper;
 
-	public AbstractCrudService(R repository, @Nullable AbstractRelationsManager<E> relationsManager, @Nullable ApigenMapper<E> mapper) {
+	public AbstractCrudLegacyService(R repository, @Nullable AbstractRelationsLegacyManager<E> relationsManager, @Nullable ApigenMapper<E> mapper) {
 		super(repository);
 		this.relationsManager = relationsManager;
 		this.mapper = mapper;
@@ -64,40 +65,61 @@ public abstract class AbstractCrudService<E extends ApigenAbstractPersistable<K>
 
 	@Transactional
 	public E update(K id, E entity) {
+		return update(id, entity, null);
+	}
+
+	@Transactional
+	public E update(K id, E entity, Set<String> fields) {
 		Assert.notNull(id, "The argument id cannot be null.");
 		Assert.notNull(entity, "The argument entity cannot be null.");
 		E persistedEntity = safeGetOne(id);
-		return update(persistedEntity, entity);
+		return update(persistedEntity, entity, fields);
 	}
 
 	@Transactional
 	public E update(E persistedEntity, E entity) {
+		return update(persistedEntity, entity, null);
+	}
+
+	@Transactional
+	public E update(E persistedEntity, E entity, Set<String> fields) {
 		Assert.notNull(persistedEntity, "The argument persistedEntity cannot be null.");
 		Assert.notNull(entity, "The argument entity cannot be null.");
-		preUpdate(persistedEntity, entity);
-		updateData(persistedEntity, entity);
+		preUpdate(persistedEntity, entity, fields);
+		updateData(persistedEntity, entity, fields);
 		persistedEntity = save(persistedEntity);
-		postUpdate(persistedEntity, entity);
+		postUpdate(persistedEntity, entity, fields);
 		return persistedEntity;
 	}
 
 	protected E updateData(E persistedEntity, E entity) {
-		updateBasicData(persistedEntity, entity);
-		preUpdateBeforeManageRelations(persistedEntity, entity);
-		if (nonNull(relationsManager)) relationsManager.updateRelations(persistedEntity, entity);
-		preUpdateAfterManageRelations(persistedEntity, entity);
+		return updateData(persistedEntity, entity, null);
+	}
+
+	protected E updateData(E persistedEntity, E entity, Set<String> fields) {
+		updateBasicData(persistedEntity, entity, fields);
+		preUpdateBeforeManageRelations(persistedEntity, entity, fields);
+		if (nonNull(relationsManager)) relationsManager.updateRelations(persistedEntity, entity, fields);
+		preUpdateAfterManageRelations(persistedEntity, entity, fields);
 		return persistedEntity;
 	}
 
 	@Transactional(propagation = Propagation.MANDATORY)
 	public E updateBasicData(E persistedEntity, E entity) {
-		preUpdateAfterManageBasicData(persistedEntity, entity);
+		return updateBasicData(persistedEntity, entity, null);
+	}
+
+	@Transactional(propagation = Propagation.MANDATORY)
+	public E updateBasicData(E persistedEntity, E entity, Set<String> fields) {
+		preUpdateAfterManageBasicData(persistedEntity, entity, fields);
 		K id = persistedEntity.getId();
-		mapper.updateBasicData(entity, persistedEntity);
+		updateBasicDataPartially(persistedEntity, entity, fields);
 		persistedEntity.setId(id);
-		preUpdateBeforeManageBasicData(persistedEntity, entity);
+		preUpdateBeforeManageBasicData(persistedEntity, entity, fields);
 		return persistedEntity;
 	}
+
+	protected abstract void updateBasicDataPartially(E persistedEntity, E entity, Set<String> fields);
 
 	@Transactional
 	public Set<E> update(Set<E> persistedEntities, Collection<E> entities) {
@@ -178,27 +200,27 @@ public abstract class AbstractCrudService<E extends ApigenAbstractPersistable<K>
 		// Override if required
 	}
 
-	protected void preUpdate(E persistedEntity, E entity) {
+	protected void preUpdate(E persistedEntity, E entity, Set<String> fields) {
 		// Override if required
 	}
 
-	protected void preUpdateAfterManageBasicData(E persistedEntity, E entity) {
+	protected void preUpdateAfterManageBasicData(E persistedEntity, E entity, Set<String> fields) {
 		// Override if required
 	}
 
-	protected void preUpdateBeforeManageBasicData(E persistedEntity, E entity) {
+	protected void preUpdateBeforeManageBasicData(E persistedEntity, E entity, Set<String> fields) {
 		// Override if required
 	}
 
-	protected void preUpdateAfterManageRelations(E persistedEntity, E entity) {
+	protected void preUpdateAfterManageRelations(E persistedEntity, E entity, Set<String> fields) {
 		// Override if required
 	}
 
-	protected void preUpdateBeforeManageRelations(E persistedEntity, E entity) {
+	protected void preUpdateBeforeManageRelations(E persistedEntity, E entity, Set<String> fields) {
 		// Override if required
 	}
 
-	protected void postUpdate(E persistedEntity, E entity) {
+	protected void postUpdate(E persistedEntity, E entity, Set<String> fields) {
 		// Override if required
 	}
 

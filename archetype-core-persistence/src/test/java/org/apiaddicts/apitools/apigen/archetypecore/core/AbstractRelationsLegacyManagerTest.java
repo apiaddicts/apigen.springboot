@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class AbstractRelationsManagerTest {
+class AbstractRelationsLegacyManagerTest {
 
     private RelationsManager relationsManager;
     private OtherEntityService otherEntityService;
@@ -182,7 +182,7 @@ class AbstractRelationsManagerTest {
     }
 
     @AllArgsConstructor
-    private static class RelationsManager extends AbstractRelationsManager<Entity> {
+    private static class RelationsManager extends AbstractRelationsLegacyManager<Entity> {
 
         private OtherEntityService otherEntityService;
 
@@ -262,12 +262,17 @@ class AbstractRelationsManagerTest {
     }
 
     private static class OtherEntityService
-            extends AbstractCrudService<OtherEntity, Long, ApigenRepository<OtherEntity, Long>> {
+            extends AbstractCrudLegacyService<OtherEntity, Long, ApigenRepository<OtherEntity, Long>> {
         public OtherEntityService(
-                ApigenRepository<OtherEntity, Long> repository, AbstractRelationsManager<OtherEntity> relationsManager,
+                ApigenRepository<OtherEntity, Long> repository, AbstractRelationsLegacyManager<OtherEntity> relationsManager,
                 ApigenMapper<OtherEntity> mapper
         ) {
             super(repository, relationsManager, mapper);
+        }
+
+        @Override
+        protected void updateBasicDataPartially(OtherEntity persistedEntity, OtherEntity entity, Set<String> fields) {
+
         }
     }
 }

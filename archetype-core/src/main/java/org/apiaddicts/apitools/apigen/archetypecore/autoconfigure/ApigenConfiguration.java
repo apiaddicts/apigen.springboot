@@ -2,6 +2,8 @@ package org.apiaddicts.apitools.apigen.archetypecore.autoconfigure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.Module;
+import org.apiaddicts.apitools.apigen.archetypecore.core.JsonNullableMapper;
+import org.apiaddicts.apitools.apigen.archetypecore.core.JsonNullableMapperImpl;
 import org.apiaddicts.apitools.apigen.archetypecore.core.advice.ApigenControllerAdvice;
 import org.apiaddicts.apitools.apigen.archetypecore.core.errors.ApigenErrorManager;
 import org.apiaddicts.apitools.apigen.archetypecore.core.errors.DefaultApigenErrorManager;
@@ -72,5 +74,11 @@ public class ApigenConfiguration {
 	@Bean
 	public Module jsonNullableModule() {
 		return new JsonNullableModule();
+	}
+
+	@Bean
+	@ConditionalOnMissingBean(JsonNullableMapper.class)
+	public JsonNullableMapper jsonNullableMapper() {
+		return new JsonNullableMapperImpl();
 	}
 }

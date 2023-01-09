@@ -141,20 +141,14 @@ class ApigenRelationManagerBuilderTests {
         assertEquals("updateRelations", methodSpec.name);
         assertEquals("[@java.lang.Override, @org.springframework.transaction.annotation.Transactional(propagation = org.springframework.transaction.annotation.Propagation.MANDATORY)]",
                 methodSpec.annotations.toString());
-        assertEquals("[the.group.artifact.entityfirst.EntityFirst persistedEntityFirst, the.group.artifact.entityfirst.EntityFirst entityFirst, java.util.Set<java.lang.String> fields]", methodSpec.parameters.toString());
+        assertEquals("[the.group.artifact.entityfirst.EntityFirst persistedEntityFirst, the.group.artifact.entityfirst.EntityFirst entityFirst]", methodSpec.parameters.toString());
         assertEquals("void", methodSpec.returnType.toString());
+
         assertEquals("" +
                         "org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrors errors = new org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrors();\n" +
-                        "boolean updateAll = (fields == null);\n" +
-                        "if (updateAll || fields.contains(\"list\")) {\n" +
-                          "  updateRelationsList(persistedEntityFirst, entityFirst, fields, errors);\n" +
-                        "}\n" +
-                        "if (updateAll || fields.contains(\"simple\")) {\n" +
-                        "  updateRelationsSimple(persistedEntityFirst, entityFirst, fields, errors);\n" +
-                        "}\n" +
-                        "if (updateAll || fields.contains(\"simpleTwo\")) {\n" +
-                        "  updateRelationsSimpleTwo(persistedEntityFirst, entityFirst, fields, errors);\n" +
-                        "}\n" +
+                        "updateRelationsList(persistedEntityFirst, entityFirst, errors);\n" +
+                        "updateRelationsSimple(persistedEntityFirst, entityFirst, errors);\n" +
+                        "updateRelationsSimpleTwo(persistedEntityFirst, entityFirst, errors);\n" +
                         "if (!errors.isEmpty()) {\n" +
                         "  throw new org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrorsException(errors);\n" +
                         "}\n"
@@ -167,9 +161,10 @@ class ApigenRelationManagerBuilderTests {
 
         assertEquals("updateRelationsList", methodSpec.name);
         assertEquals("[]", methodSpec.annotations.toString());
-        assertEquals("[the.group.artifact.entityfirst.EntityFirst persistedEntityFirst, the.group.artifact.entityfirst.EntityFirst entityFirst, java.util.Set<java.lang.String> fields, org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrors errors]", methodSpec.parameters.toString());
+        assertEquals("[the.group.artifact.entityfirst.EntityFirst persistedEntityFirst, the.group.artifact.entityfirst.EntityFirst entityFirst, org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrors errors]", methodSpec.parameters.toString());
         assertEquals("void", methodSpec.returnType.toString());
-        assertEquals("replace(persistedEntityFirst.getList(), retrieve(entityFirst.getList(), listItemService, errors);\n"
+
+        assertEquals("replace(persistedEntityFirst.getList(), retrieve(entityFirst.getList(), listItemService, errors));\n"
                 , methodSpec.code.toString());
     }
 
@@ -179,7 +174,7 @@ class ApigenRelationManagerBuilderTests {
 
         assertEquals("updateRelationsSimpleTwo", methodSpec.name);
         assertEquals("[]", methodSpec.annotations.toString());
-        assertEquals("[the.group.artifact.entityfirst.EntityFirst persistedEntityFirst, the.group.artifact.entityfirst.EntityFirst entityFirst, java.util.Set<java.lang.String> fields, org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrors errors]", methodSpec.parameters.toString());
+        assertEquals("[the.group.artifact.entityfirst.EntityFirst persistedEntityFirst, the.group.artifact.entityfirst.EntityFirst entityFirst, org.apiaddicts.apitools.apigen.archetypecore.exceptions.RelationalErrors errors]", methodSpec.parameters.toString());
         assertEquals("void", methodSpec.returnType.toString());
         assertEquals("" +
                         "persistedEntityFirst.setSimpleTwo(retrieve(entityFirst.getSimpleTwo(), simpleService, errors));\n"
