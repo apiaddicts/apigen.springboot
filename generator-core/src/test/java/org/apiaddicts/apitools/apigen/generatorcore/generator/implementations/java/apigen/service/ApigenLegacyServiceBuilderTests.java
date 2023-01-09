@@ -21,10 +21,10 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 
-class ApigenServiceBuilderTests {
+class ApigenLegacyServiceBuilderTests {
 
     private static TypeSpec generatedService;
-    private static ApigenServiceBuilder<ApigenContext> serviceBuilder;
+    private static ApigenLegacyServiceBuilder<ApigenContext> serviceBuilder;
 
     @BeforeAll
     static void prepareTest() {
@@ -37,7 +37,7 @@ class ApigenServiceBuilderTests {
         ApigenContext ctx = ApigenContextObjectMother.create();
         ctx.setEntitiesData(entitiesData);
         Configuration cfg = ConfigurationObjectMother.create(Collections.singletonList(entity), null);
-        serviceBuilder = new ApigenServiceBuilder<>(entity, ctx, cfg);
+        serviceBuilder = new ApigenLegacyServiceBuilder<>(entity, ctx, cfg);
         generatedService = serviceBuilder.build();
     }
 
@@ -47,7 +47,7 @@ class ApigenServiceBuilderTests {
         assertEquals(TypeSpec.Kind.CLASS, generatedService.kind, "Class declaration is wrong");
         assertEquals("SimpleTestEntityService", generatedService.name, "The name is wrong");
         assertEquals(2, generatedService.annotations.size(), "Number of annotations is wrong");
-        assertEquals(1, generatedService.methodSpecs.size(), "Number of methods is wrong");
+        assertEquals(2, generatedService.methodSpecs.size(), "Number of methods is wrong");
     }
 
     @Test
@@ -71,13 +71,25 @@ class ApigenServiceBuilderTests {
     }
 
     @Test
+    void givenAnEntity_whenGenerateService_thenUpdateBasicDataPartiallyMethodIsCorrect() {
+        assertEquals(
+                "@java.lang.Override\n" + "protected void updateBasicDataPartially(\n" + "    the.group.artifact" +
+                        ".simpletestentity.SimpleTestEntity persistedEntity,\n" + "    the.group.artifact" +
+                        ".simpletestentity.SimpleTestEntity entity,\n" + "    java.util.Set<java.lang.String> fields)" +
+                        " {\n" + "  if (fields == null) {\n" + "    mapper.updateBasicData(entity, persistedEntity);" +
+                        "\n" + "  } else {\n" + "    if (fields.contains(\"id\")) persistedEntity.setId(entity.getId" +
+                        "());\n" + "  }\n" + "}\n",
+                generatedService.methodSpecs.get(1).toString());
+    }
+
+    @Test
     void givenValidAttributes_whenAskForPackage_thenPackageIsCorrect() {
         assertEquals("the.group.artifact.simpletestentity", serviceBuilder.getPackage(), "The package is wrong");
     }
 
     @Test
     void givenValidAttributes_whenAskForTypeName_thenTypeNameIsCorrect() {
-        TypeName typeName = ApigenServiceBuilder.getTypeName("EntityName", "the.group.artifact");
+        TypeName typeName = ApigenLegacyServiceBuilder.getTypeName("EntityName", "the.group.artifact");
         assertEquals("the.group.artifact.entityname.EntityNameService", typeName.toString(), "TypeName is wrong");
     }
 

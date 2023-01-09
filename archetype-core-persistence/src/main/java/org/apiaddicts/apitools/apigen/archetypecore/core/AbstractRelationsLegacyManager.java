@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class AbstractRelationsManager<E> {
+public class AbstractRelationsLegacyManager<E> {
 
     @Transactional(propagation = Propagation.MANDATORY)
     public void createOrRetrieveRelations(E entity) {
@@ -19,7 +19,7 @@ public class AbstractRelationsManager<E> {
     }
 
     @Transactional(propagation = Propagation.MANDATORY)
-    public void updateRelations(E persistedEntity, E entity) {
+    public void updateRelations(E persistedEntity, E entity, Set<String> fields) {
         // Override if required
     }
 
@@ -36,17 +36,17 @@ public class AbstractRelationsManager<E> {
         return entities.stream().map(e -> retrieve(e, service, errors)).collect(Collectors.toSet());
     }
 
-    protected <T extends ApigenAbstractPersistable<?>> T create(T entity, AbstractCrudService<T, ?, ?> service) {
+    protected <T extends ApigenAbstractPersistable<?>> T create(T entity, AbstractCrudLegacyService<T, ?, ?> service) {
         if (entity == null) return null;
         return service.create(entity);
     }
 
-	protected <T extends ApigenAbstractPersistable<?>> void delete(T entity, AbstractCrudService<T, ?, ?> service) {
+	protected <T extends ApigenAbstractPersistable<?>> void delete(T entity, AbstractCrudLegacyService<T, ?, ?> service) {
         if (entity == null) return;
 		service.delete(entity);
 	}
 
-    protected <T extends ApigenAbstractPersistable<K>, K extends Serializable> T createOrRetrieve(T entity, AbstractCrudService<T, K, ?> service, RelationalErrors errors) {
+    protected <T extends ApigenAbstractPersistable<K>, K extends Serializable> T createOrRetrieve(T entity, AbstractCrudLegacyService<T, K, ?> service, RelationalErrors errors) {
         if (entity == null) return null;
         if (entity.isReference()) {
             return retrieve(entity, service, errors);
@@ -60,7 +60,7 @@ public class AbstractRelationsManager<E> {
         }
     }
 
-    protected <T extends ApigenAbstractPersistable<K>, K extends Serializable> Set<T> createOrRetrieve(Set<T> entities, AbstractCrudService<T, K, ?> service, RelationalErrors errors) {
+    protected <T extends ApigenAbstractPersistable<K>, K extends Serializable> Set<T> createOrRetrieve(Set<T> entities, AbstractCrudLegacyService<T, K, ?> service, RelationalErrors errors) {
         if (entities == null) return new HashSet<>();
         return entities.stream().map(e -> createOrRetrieve(e, service, errors)).collect(Collectors.toSet());
     }
