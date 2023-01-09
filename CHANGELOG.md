@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated spring boot version to `2.7.5`
 - Updated `mapstruct` version to `1.5.3.Final`
 - Updated `springdoc` version to `1.6.11`
-- Updated `swagger-parser` version to `2.1.3`
+- Updated `swagger-parser` version to `2.1.10`
 - Updated `maven-model` version to `3.8.6`
 - Separate persistence related classes from the archetype core to another module and add it as a dependency
 ### Removed
