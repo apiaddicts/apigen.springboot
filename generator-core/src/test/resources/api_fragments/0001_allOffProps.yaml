@@ -1,7 +1,7 @@
-openapi: "3.0.3"
+openapi: "3.0.0"
 info:
   version: 1.0.0
-  title: standard_request
+  title: 0001_allOffProps
 
 x-apigen-project:
   name: test
@@ -68,9 +68,13 @@ components:
       x-apigen-mapping:
         model: ResOne
       type: object
+      allOf:
+        - $ref: '#/components/schemas/standard_response_result'
       properties:
-        name:
-          type: string
+        data:
+          properties:
+            name:
+              type: string
 
     create_res_one:
       x-apigen-mapping:
