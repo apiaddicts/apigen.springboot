@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenAbstractPersistable;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 

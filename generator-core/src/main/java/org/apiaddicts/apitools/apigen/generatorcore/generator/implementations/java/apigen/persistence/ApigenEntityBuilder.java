@@ -14,7 +14,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.persistence.EntityBuilder;
 
 import javax.lang.model.element.Modifier;
-import javax.persistence.Table;
+import jakarta.persistence.Table;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,7 +43,7 @@ public class ApigenEntityBuilder<C extends ApigenContext> extends EntityBuilder<
         builder = getClass(entity.getName())
                 .superclass(getParentClass())
                 .addAnnotation(Getter.class).addAnnotation(Setter.class)
-                .addAnnotation(getAnnotation(javax.persistence.Entity.class).build())
+                .addAnnotation(getAnnotation(jakarta.persistence.Entity.class).build())
                 .addAnnotation(getAnnotation(Table.class).addMember(NAME, STRING, getTable()).build())
                 .addAnnotation(NoArgsConstructor.class);
     }

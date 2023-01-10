@@ -16,7 +16,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.utils.CustomStringUtils;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.lang.model.element.Modifier;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -102,7 +102,7 @@ public class EntityBuilder<C extends JavaContext> extends AbstractJavaClassBuild
     protected void initializeBuilder() {
         builder = getClass(entity.getName())
                 .addAnnotation(Getter.class).addAnnotation(Setter.class)
-                .addAnnotation(getAnnotation(javax.persistence.Entity.class).build())
+                .addAnnotation(getAnnotation(jakarta.persistence.Entity.class).build())
                 .addAnnotation(getAnnotation(Table.class).addMember(NAME, STRING, getTable()).build())
                 .addAnnotation(NoArgsConstructor.class);
     }
@@ -177,7 +177,7 @@ public class EntityBuilder<C extends JavaContext> extends AbstractJavaClassBuild
         if (columnName == null) columnName = CustomStringUtils.camelCaseToSnakeCase(javaName);
         boolean isUnique = Boolean.TRUE.equals(column.getUnique());
 
-        AnnotationSpec.Builder annotationBuilder = getAnnotation(javax.persistence.Column.class)
+        AnnotationSpec.Builder annotationBuilder = getAnnotation(jakarta.persistence.Column.class)
                 .addMember(NAME, STRING, columnName);
 
         if (isUnique) {

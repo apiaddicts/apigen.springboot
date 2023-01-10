@@ -124,7 +124,7 @@ class PostSearchEndpointBuilderTests {
         assertEquals("orderby", parameterSpec.name);
 
         parameterSpec = methodSpec.parameters.get(7);
-        assertEquals("[@org.springframework.web.bind.annotation.RequestBody, @javax.validation.Valid]", parameterSpec.annotations.toString());
+        assertEquals("[@org.springframework.web.bind.annotation.RequestBody, @jakarta.validation.Valid]", parameterSpec.annotations.toString());
         assertEquals("org.apiaddicts.apitools.apigen.archetypecore.core.resource.FilterResource", parameterSpec.type.toString());
         assertEquals("body", parameterSpec.name);
 
@@ -185,7 +185,7 @@ class PostSearchEndpointBuilderTests {
         assertEquals("orderby", parameterSpec.name);
 
         parameterSpec = methodSpec.parameters.get(7);
-        assertEquals("[@org.springframework.web.bind.annotation.RequestBody, @javax.validation.Valid]", parameterSpec.annotations.toString());
+        assertEquals("[@org.springframework.web.bind.annotation.RequestBody, @jakarta.validation.Valid]", parameterSpec.annotations.toString());
         assertEquals("org.apiaddicts.apitools.apigen.archetypecore.core.resource.FilterResource", parameterSpec.type.toString());
         assertEquals("body", parameterSpec.name);
 

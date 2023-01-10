@@ -3,7 +3,7 @@ package org.apiaddicts.apitools.apigen.generatorcore.generator.persistence.relat
 import com.squareup.javapoet.AnnotationSpec;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.OneToMany;
+import jakarta.persistence.OneToMany;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.STRING;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.MAPPED_BY;

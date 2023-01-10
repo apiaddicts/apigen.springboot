@@ -2,8 +2,8 @@ package org.apiaddicts.apitools.apigen.generatorcore.generator.persistence.relat
 
 import com.squareup.javapoet.AnnotationSpec;
 
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToOne;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.ENUM_VALUE;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.STRING;

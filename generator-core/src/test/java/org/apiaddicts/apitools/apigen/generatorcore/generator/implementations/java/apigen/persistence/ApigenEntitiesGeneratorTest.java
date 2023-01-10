@@ -12,11 +12,11 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContextObjectMother;
 import org.junit.jupiter.api.Test;
 
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.*;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -67,7 +67,7 @@ class ApigenEntitiesGeneratorTest {
         assertTrue(generatedEntity.annotations.contains(AnnotationSpec.builder(Getter.class).build()), "Checking if Entity contains @Getter annotation:");
         assertTrue(generatedEntity.annotations.contains(AnnotationSpec.builder(Setter.class).build()), "Checking if Entity contains @Setter annotation:");
 
-        assertTrue(generatedEntity.annotations.contains(AnnotationSpec.builder(javax.persistence.Entity.class).build()), "Checking if Entity contains @Entity annotation:");
+        assertTrue(generatedEntity.annotations.contains(AnnotationSpec.builder(jakarta.persistence.Entity.class).build()), "Checking if Entity contains @Entity annotation:");
 
         assertTrue(generatedEntity.annotations.contains(AnnotationSpec.builder(Table.class).addMember("name", "$S", "tableName").build()), "Checking if Entity contains @Table annotation:");
         assertTrue(generatedEntity.annotations.contains(AnnotationSpec.builder(NoArgsConstructor.class).build()), "Checking if Entity contains @NoArgsConstructor annotation:");
@@ -91,7 +91,7 @@ class ApigenEntitiesGeneratorTest {
         assertTrue(generatedEntity.annotations.contains(AnnotationSpec.builder(Getter.class).build()), "Checking if Entity contains @Getter annotation:");
         assertTrue(generatedEntity.annotations.contains(AnnotationSpec.builder(Setter.class).build()), "Checking if Entity contains @Setter annotation:");
 
-        assertTrue(generatedEntity.annotations.contains(AnnotationSpec.builder(javax.persistence.Entity.class).build()), "Checking if Entity contains @Entity annotation:");
+        assertTrue(generatedEntity.annotations.contains(AnnotationSpec.builder(jakarta.persistence.Entity.class).build()), "Checking if Entity contains @Entity annotation:");
 
         assertTrue(generatedEntity.annotations.contains(AnnotationSpec.builder(Table.class).addMember("name", "$S", "tableName").build()), "Checking if Entity contains @Table annotation:");
 
@@ -116,8 +116,8 @@ class ApigenEntitiesGeneratorTest {
         assertTrue(generatedEntityOneToMany.fieldSpecs.get(2).annotations.contains(AnnotationSpec.builder(OneToMany.class).addMember("mappedBy", "$S", "manyToOneRelationAttribute").build()), "Checking if Entity1 contains @OneToMany annotation:");
 
         assertEquals("[" +
-                "@javax.persistence.ManyToOne(fetch = javax.persistence.FetchType.LAZY)," +
-                " @javax.persistence.JoinColumn(name = \"manyToOneRelationColumn\")" +
+                "@jakarta.persistence.ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)," +
+                " @jakarta.persistence.JoinColumn(name = \"manyToOneRelationColumn\")" +
                 "]", generatedEntityManyToOne.fieldSpecs.get(0).annotations.toString());
     }
 
@@ -134,13 +134,13 @@ class ApigenEntitiesGeneratorTest {
         assertEquals(testEntitiesList.get(0).getName(), generatedEntityManyToManyOwner.name, "Checking if Entity name matches given name:");
         assertEquals(testEntitiesList.get(1).getName(), generatedEntityManyToMany.name, "Checking if Entity name matches given name:");
 
-        assertEquals("@javax.persistence.ManyToMany", generatedEntityManyToManyOwner.fieldSpecs.get(0).annotations.get(0).toString());
+        assertEquals("@jakarta.persistence.ManyToMany", generatedEntityManyToManyOwner.fieldSpecs.get(0).annotations.get(0).toString());
         assertEquals("" +
-                "@javax.persistence.JoinTable(" +
+                "@jakarta.persistence.JoinTable(" +
                 "name = \"intermediateTableName\", " +
-                "joinColumns = @javax.persistence.JoinColumn(name = \"column_1_id\"), " +
-                "inverseJoinColumns = @javax.persistence.JoinColumn(name = \"column_2_id\"), " +
-                "uniqueConstraints = @javax.persistence.UniqueConstraint(columnNames = {\"column_1_id\", \"column_2_id\"})" +
+                "joinColumns = @jakarta.persistence.JoinColumn(name = \"column_1_id\"), " +
+                "inverseJoinColumns = @jakarta.persistence.JoinColumn(name = \"column_2_id\"), " +
+                "uniqueConstraints = @jakarta.persistence.UniqueConstraint(columnNames = {\"column_1_id\", \"column_2_id\"})" +
                 ")", generatedEntityManyToManyOwner.fieldSpecs.get(0).annotations.get(1).toString());
         assertTrue(generatedEntityManyToMany.fieldSpecs.get(0).annotations.contains(AnnotationSpec.builder(ManyToMany.class).addMember("mappedBy", "$S", "manyToManyOwnerRelationAttribute").build()), "Checking if Entity2 contains @ManyToMany annotation:");
     }
@@ -158,11 +158,11 @@ class ApigenEntitiesGeneratorTest {
         assertEquals(testEntitiesList.get(1).getName(), generatedEntityOneToOne.name, "Checking if Entity name matches given name:");
 
         assertEquals("[" +
-                "@javax.persistence.OneToOne(fetch = javax.persistence.FetchType.LAZY)," +
-                " @javax.persistence.JoinColumn(name = \"oneToOneOwnerRelationColumn\")" +
+                "@jakarta.persistence.OneToOne(fetch = jakarta.persistence.FetchType.LAZY)," +
+                " @jakarta.persistence.JoinColumn(name = \"oneToOneOwnerRelationColumn\")" +
                 "]", generatedEntityOneToOneOwner.fieldSpecs.get(0).annotations.toString());
         assertEquals("[" +
-                "@javax.persistence.OneToOne(mappedBy = \"oneToOneOwnerRelationAttribute\", fetch = javax.persistence.FetchType.LAZY)" +
+                "@jakarta.persistence.OneToOne(mappedBy = \"oneToOneOwnerRelationAttribute\", fetch = jakarta.persistence.FetchType.LAZY)" +
                 "]", generatedEntityOneToOne.fieldSpecs.get(0).annotations.toString());
     }
 
@@ -419,10 +419,10 @@ class ApigenEntitiesGeneratorTest {
         String actual = generatedEntity.fieldSpecs.get(0).annotations.toString();
 
         assertEquals("[" +
-                "@javax.persistence.Id, " +
-                "@javax.persistence.GeneratedValue(generator = \"SEQUENCE_NAME_name\"), " +
-                "@javax.persistence.SequenceGenerator(name = \"SEQUENCE_NAME_name\", sequenceName = \"SEQUENCE_NAME\"), " +
-                "@javax.persistence.Column(name = \"id_column\")" +
+                "@jakarta.persistence.Id, " +
+                "@jakarta.persistence.GeneratedValue(generator = \"SEQUENCE_NAME_name\"), " +
+                "@jakarta.persistence.SequenceGenerator(name = \"SEQUENCE_NAME_name\", sequenceName = \"SEQUENCE_NAME\"), " +
+                "@jakarta.persistence.Column(name = \"id_column\")" +
                 "]", actual);
     }
 
@@ -435,9 +435,9 @@ class ApigenEntitiesGeneratorTest {
         String actual = generatedEntity.fieldSpecs.get(0).annotations.toString();
 
         assertEquals("[" +
-                "@javax.persistence.Id, " +
-                "@javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY), " +
-                "@javax.persistence.Column(name = \"id\")" +
+                "@jakarta.persistence.Id, " +
+                "@jakarta.persistence.GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY), " +
+                "@jakarta.persistence.Column(name = \"id\")" +
                 "]", actual);
     }
 
@@ -450,10 +450,10 @@ class ApigenEntitiesGeneratorTest {
         String actual = generatedEntity.fieldSpecs.get(0).annotations.toString();
 
         assertEquals("[" +
-                "@javax.persistence.Id, " +
-                "@javax.persistence.GeneratedValue(generator = \"uuid\"), " +
+                "@jakarta.persistence.Id, " +
+                "@jakarta.persistence.GeneratedValue(generator = \"uuid\"), " +
                 "@org.hibernate.annotations.GenericGenerator(name = \"uuid\", strategy = \"uuid2\"), " +
-                "@javax.persistence.Column(name = \"id\")" +
+                "@jakarta.persistence.Column(name = \"id\")" +
                 "]", actual);
     }
 
@@ -465,7 +465,7 @@ class ApigenEntitiesGeneratorTest {
 
         String actual = generatedEntity.fieldSpecs.get(0).annotations.toString();
 
-        assertEquals("[@javax.persistence.Id, @javax.persistence.Column(name = \"id\")]", actual);
+        assertEquals("[@jakarta.persistence.Id, @jakarta.persistence.Column(name = \"id\")]", actual);
     }
 
     private Map<String, TypeSpec> generate(List<Entity> entities) {

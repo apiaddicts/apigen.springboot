@@ -13,7 +13,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.common.Openapi2Jav
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.JavaContext;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Set;
 

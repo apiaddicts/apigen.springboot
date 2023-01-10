@@ -4,7 +4,7 @@ import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.FieldSpec;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.JoinColumn;
+import jakarta.persistence.JoinColumn;
 import java.util.ArrayList;
 import java.util.List;
 

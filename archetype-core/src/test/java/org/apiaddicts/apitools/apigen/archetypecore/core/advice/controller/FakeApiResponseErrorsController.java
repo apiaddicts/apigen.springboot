@@ -9,8 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -53,7 +53,7 @@ public class FakeApiResponseErrorsController {
 
     @Data
     public static class Email{
-        @javax.validation.constraints.Email
+        @jakarta.validation.constraints.Email
         @JsonProperty("email_property")
         private String email;
     }
@@ -66,7 +66,7 @@ public class FakeApiResponseErrorsController {
 
     @Data
     public static class NotEmpty{
-        @javax.validation.constraints.NotEmpty
+        @jakarta.validation.constraints.NotEmpty
         @JsonProperty("name_property")
         private String name;
     }
@@ -79,7 +79,7 @@ public class FakeApiResponseErrorsController {
 
     @Data
     public static class NotBlank{
-        @javax.validation.constraints.NotBlank
+        @jakarta.validation.constraints.NotBlank
         @JsonProperty("name_property")
         private String name;
     }
@@ -92,7 +92,7 @@ public class FakeApiResponseErrorsController {
 
     @Data
     public static class Positive{
-        @javax.validation.constraints.Positive
+        @jakarta.validation.constraints.Positive
         @JsonProperty("number_property")
         private Integer number;
     }
@@ -105,7 +105,7 @@ public class FakeApiResponseErrorsController {
 
     @Data
     public static class PositiveOrZero{
-        @javax.validation.constraints.PositiveOrZero
+        @jakarta.validation.constraints.PositiveOrZero
         @JsonProperty("number_property")
         private Integer number;
     }
@@ -118,7 +118,7 @@ public class FakeApiResponseErrorsController {
 
     @Data
     public static class Negative{
-        @javax.validation.constraints.Negative
+        @jakarta.validation.constraints.Negative
         @JsonProperty("number_property")
         private Integer number;
     }
@@ -131,7 +131,7 @@ public class FakeApiResponseErrorsController {
 
     @Data
     public static class NegativeOrZero{
-        @javax.validation.constraints.NegativeOrZero
+        @jakarta.validation.constraints.NegativeOrZero
         @JsonProperty("number_property")
         private Integer number;
     }
@@ -144,7 +144,7 @@ public class FakeApiResponseErrorsController {
 
     @Data
     public static class Past{
-        @javax.validation.constraints.Past
+        @jakarta.validation.constraints.Past
         @JsonProperty("date_property")
         private LocalDate date;
     }
@@ -157,7 +157,7 @@ public class FakeApiResponseErrorsController {
 
     @Data
     public static class PastOrPresent{
-        @javax.validation.constraints.PastOrPresent
+        @jakarta.validation.constraints.PastOrPresent
         @JsonProperty("date_property")
         private LocalDate date;
     }
@@ -170,7 +170,7 @@ public class FakeApiResponseErrorsController {
 
     @Data
     public static class Future{
-        @javax.validation.constraints.Future
+        @jakarta.validation.constraints.Future
         @JsonProperty("date_property")
         private LocalDate date;
     }
@@ -183,7 +183,7 @@ public class FakeApiResponseErrorsController {
 
     @Data
     public static class FutureOrPresent{
-        @javax.validation.constraints.FutureOrPresent
+        @jakarta.validation.constraints.FutureOrPresent
         @JsonProperty("date_property")
         private LocalDate date;
     }
@@ -196,7 +196,7 @@ public class FakeApiResponseErrorsController {
 
     @Data
     public static class Min{
-        @javax.validation.constraints.Min(10)
+        @jakarta.validation.constraints.Min(10)
         @JsonProperty("number_property")
         private Long number;
     }
@@ -235,7 +235,7 @@ public class FakeApiResponseErrorsController {
 
     @Data
     public static class Max{
-        @javax.validation.constraints.Max(20)
+        @jakarta.validation.constraints.Max(20)
         @JsonProperty("number_property")
         private Long number;
     }
@@ -274,7 +274,7 @@ public class FakeApiResponseErrorsController {
 
     @Data
     public static class Size {
-        @javax.validation.constraints.Size( min = 5, max = 10)
+        @jakarta.validation.constraints.Size( min = 5, max = 10)
         @JsonProperty("name_property")
         private String name;
     }
@@ -287,7 +287,7 @@ public class FakeApiResponseErrorsController {
 
     @Data
     public static class Digits {
-        @javax.validation.constraints.Digits(integer=1, fraction=2)
+        @jakarta.validation.constraints.Digits(integer=1, fraction=2)
         @JsonProperty("number_property")
         private BigDecimal number;
     }
@@ -300,7 +300,7 @@ public class FakeApiResponseErrorsController {
 
     @Data
     public static class PatternBody {
-        @javax.validation.constraints.Pattern(regexp = "[A-Z]+")
+        @jakarta.validation.constraints.Pattern(regexp = "[A-Z]+")
         @JsonProperty("name_property")
         private String name;
     }
@@ -349,7 +349,7 @@ public class FakeApiResponseErrorsController {
     }
 
     @GetMapping(value = "/constrain-violation")
-    public @ResponseBody ApiResponse getConstraintViolationException(@javax.validation.constraints.PositiveOrZero @RequestParam(value = "$init", required = true) Integer init,
+    public @ResponseBody ApiResponse getConstraintViolationException(@jakarta.validation.constraints.PositiveOrZero @RequestParam(value = "$init", required = true) Integer init,
                                                                                 @RequestParam(value = "$limit", required = true) Integer limit){
         throw new RuntimeException();
     }

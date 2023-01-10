@@ -13,7 +13,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 public class PatchEndpointBuilder<C extends ApigenContext> extends ApigenAbstractEndpointBuilder<C> {
 
