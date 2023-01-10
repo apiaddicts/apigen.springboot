@@ -2,13 +2,13 @@ package org.apiaddicts.apitools.apigen.generatorcore.generator.common;
 
 import org.apiaddicts.apitools.apigen.generatorcore.exceptions.InvalidValuesException;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
 import java.util.Set;
 
 public class Validator {
 
-    private static final javax.validation.Validator javaValidator = Validation.buildDefaultValidatorFactory().getValidator();
+    private static final jakarta.validation.Validator javaValidator = Validation.buildDefaultValidatorFactory().getValidator();
 
     private Validator() {
         // Intentional blank

@@ -4,7 +4,7 @@ import com.squareup.javapoet.*;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.common.persistence.AttributeData;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.common.persistence.EntitiesData;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.*;
 import java.util.stream.Collectors;
 

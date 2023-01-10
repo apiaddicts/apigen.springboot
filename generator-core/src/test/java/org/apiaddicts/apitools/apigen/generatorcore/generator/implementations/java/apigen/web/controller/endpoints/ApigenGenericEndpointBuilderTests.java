@@ -59,7 +59,7 @@ class ApigenGenericEndpointBuilderTests {
 
         assertEquals(1, methodSpec.parameters.size());
         ParameterSpec parameterSpec = methodSpec.parameters.get(0);
-        assertEquals("[@org.springframework.web.bind.annotation.RequestBody, @javax.validation.Valid]", parameterSpec.annotations.toString());
+        assertEquals("[@org.springframework.web.bind.annotation.RequestBody, @jakarta.validation.Valid]", parameterSpec.annotations.toString());
         assertEquals("the.group.artifact.custom.web.CreateCustomEndpointResource", parameterSpec.type.toString());
         assertEquals("body", parameterSpec.name);
 
@@ -85,7 +85,7 @@ class ApigenGenericEndpointBuilderTests {
 
         assertEquals(1, methodSpec.parameters.size());
         ParameterSpec parameterSpec = methodSpec.parameters.get(0);
-        assertEquals("[@org.springframework.web.bind.annotation.RequestBody, @javax.validation.Valid]", parameterSpec.annotations.toString());
+        assertEquals("[@org.springframework.web.bind.annotation.RequestBody, @jakarta.validation.Valid]", parameterSpec.annotations.toString());
         assertEquals("java.lang.Object", parameterSpec.type.toString());
         assertEquals("body", parameterSpec.name);
 

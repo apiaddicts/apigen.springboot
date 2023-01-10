@@ -11,7 +11,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.service.ServiceBuilder;
 import org.springframework.lang.Nullable;
 
-import javax.lang.model.element.Modifier;
+import jakarta.lang.model.element.Modifier;
 import java.util.Set;
 
 public class ApigenServiceBuilder<C extends ApigenContext> extends ServiceBuilder<C> {

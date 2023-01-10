@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Allow to customize the field implementation type for properties
 - Honor default OpenAPI object type in file interpretation
 - Allow independence between basePackage and artifactId in OpenAPI extension
-- Updated spring boot version to `2.7.7`
+- Updated spring boot version to `3.0.1`
 - Updated `mapstruct` version to `1.5.3.Final`
 - Updated `springdoc` version to `1.6.14`
 - Updated `swagger-parser` version to `2.1.10`

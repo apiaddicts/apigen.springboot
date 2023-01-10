@@ -5,7 +5,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.entity.Entity;
 import org.apiaddicts.apitools.apigen.generatorcore.config.entity.EntityObjectMother;
 import org.junit.jupiter.api.Test;
 
-import javax.lang.model.element.Modifier;
+import jakarta.lang.model.element.Modifier;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,8 +23,8 @@ class JavaEntityRelationManagerTest {
         m.applyRelation("One", entity.getAttributes().get(0), builder);
 
         assertEquals("[" +
-                        "@javax.persistence.ManyToOne(fetch = javax.persistence.FetchType.LAZY), " +
-                        "@javax.persistence.JoinColumn(name = \"column\")" +
+                        "@jakarta.persistence.ManyToOne(fetch = jakarta.persistence.FetchType.LAZY), " +
+                        "@jakarta.persistence.JoinColumn(name = \"column\")" +
                         "]",
                 builder.annotations.toString());
     }

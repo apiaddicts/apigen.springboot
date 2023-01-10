@@ -2,7 +2,7 @@ package org.apiaddicts.apitools.apigen.generatorcore.generator.persistence.relat
 
 import com.squareup.javapoet.AnnotationSpec;
 
-import javax.persistence.ManyToMany;
+import jakarta.persistence.ManyToMany;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.STRING;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Members.MAPPED_BY;

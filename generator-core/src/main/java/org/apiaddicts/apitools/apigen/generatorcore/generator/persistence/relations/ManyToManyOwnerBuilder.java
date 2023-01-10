@@ -2,9 +2,9 @@ package org.apiaddicts.apitools.apigen.generatorcore.generator.persistence.relat
 
 import com.squareup.javapoet.AnnotationSpec;
 
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.UniqueConstraint;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.UniqueConstraint;
 import java.util.ArrayList;
 import java.util.List;
 

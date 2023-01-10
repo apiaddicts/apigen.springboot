@@ -18,8 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.lang.model.element.Modifier;
-import javax.validation.Valid;
+import jakarta.lang.model.element.Modifier;
+import jakarta.validation.Valid;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Constants.JSON_MIME_TYPE;
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.ENUM_VALUE;

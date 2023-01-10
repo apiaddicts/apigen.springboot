@@ -71,8 +71,8 @@ class ParameterBuilderTest {
         assertEquals("java.lang.Integer", generatedParameter.type.toString());
         assertEquals("[" +
                 "@org.springframework.web.bind.annotation.RequestParam(value = \"integerParameter\", required = true, defaultValue = \"5\"), " +
-                "@javax.validation.constraints.Min(5), " +
-                "@javax.validation.constraints.Max(10)" +
+                "@jakarta.validation.constraints.Min(5), " +
+                "@jakarta.validation.constraints.Max(10)" +
                 "]", generatedParameter.annotations.toString());
     }
 
@@ -88,8 +88,8 @@ class ParameterBuilderTest {
         assertEquals("java.lang.Long", generatedParameter.type.toString());
         assertEquals("[" +
                 "@org.springframework.web.bind.annotation.RequestParam(value = \"longParameter\", required = true, defaultValue = \"5\"), " +
-                "@javax.validation.constraints.Min(5), " +
-                "@javax.validation.constraints.Max(10)" +
+                "@jakarta.validation.constraints.Min(5), " +
+                "@jakarta.validation.constraints.Max(10)" +
                 "]", generatedParameter.annotations.toString());
     }
 
@@ -105,8 +105,8 @@ class ParameterBuilderTest {
         assertEquals("java.lang.Double", generatedParameter.type.toString());
         assertEquals("[" +
                 "@org.springframework.web.bind.annotation.RequestParam(value = \"doubleParameter\", required = true, defaultValue = \"5.0\"), " +
-                "@javax.validation.constraints.DecimalMin(value = \"5\", inclusive = false), " +
-                "@javax.validation.constraints.DecimalMax(value = \"10\", inclusive = false)" +
+                "@jakarta.validation.constraints.DecimalMin(value = \"5\", inclusive = false), " +
+                "@jakarta.validation.constraints.DecimalMax(value = \"10\", inclusive = false)" +
                 "]", generatedParameter.annotations.toString());
 
     }
@@ -123,8 +123,8 @@ class ParameterBuilderTest {
         assertEquals("java.lang.Float", generatedParameter.type.toString());
         assertEquals("[" +
                 "@org.springframework.web.bind.annotation.RequestParam(value = \"floatParameter\", required = true, defaultValue = \"5.0\"), " +
-                "@javax.validation.constraints.DecimalMin(value = \"5\", inclusive = false), " +
-                "@javax.validation.constraints.DecimalMax(value = \"10\", inclusive = false)" +
+                "@jakarta.validation.constraints.DecimalMin(value = \"5\", inclusive = false), " +
+                "@jakarta.validation.constraints.DecimalMax(value = \"10\", inclusive = false)" +
                 "]", generatedParameter.annotations.toString());
     }
 
@@ -140,8 +140,8 @@ class ParameterBuilderTest {
         assertEquals("java.lang.String", generatedParameter.type.toString());
         assertEquals("[" +
                 "@org.springframework.web.bind.annotation.RequestParam(value = \"stringParameter\", required = true, defaultValue = \"test\"), " +
-                "@javax.validation.constraints.Size(min = 5, max = 10), " +
-                "@javax.validation.constraints.Pattern(regexp = \"\\\\d{9}\")" +
+                "@jakarta.validation.constraints.Size(min = 5, max = 10), " +
+                "@jakarta.validation.constraints.Pattern(regexp = \"\\\\d{9}\")" +
                 "]", generatedParameter.annotations.toString());
     }
 
@@ -157,7 +157,7 @@ class ParameterBuilderTest {
         assertEquals("java.util.List<java.lang.String>", generatedParameter.type.toString());
         assertEquals("[" +
                 "@org.springframework.web.bind.annotation.RequestParam(value = \"arrayParameter\", required = true, defaultValue = \"primero,segundo,tercero,cuarto,quinto\"), " +
-                "@javax.validation.constraints.Size(min = 5, max = 10)" +
+                "@jakarta.validation.constraints.Size(min = 5, max = 10)" +
                 "]", generatedParameter.annotations.toString());
     }
 

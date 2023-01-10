@@ -93,7 +93,7 @@ class PutEndpointBuilderTests {
         assertEquals("id", parameterSpec.name);
 
         parameterSpec = methodSpec.parameters.get(1);
-        assertEquals("[@org.springframework.web.bind.annotation.RequestBody, @javax.validation.Valid]", parameterSpec.annotations.toString());
+        assertEquals("[@org.springframework.web.bind.annotation.RequestBody, @jakarta.validation.Valid]", parameterSpec.annotations.toString());
         assertEquals("the.group.artifact.entityname.web.UpdateEntityNameByIdResource", parameterSpec.type.toString());
         assertEquals("body", parameterSpec.name);
 

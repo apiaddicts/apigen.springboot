@@ -14,7 +14,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.controller.ControllerBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.lang.model.element.Modifier;
+import jakarta.lang.model.element.Modifier;
 
 public class ApigenEntityControllerBuilder<C extends ApigenContext> extends ControllerBuilder<C> {
 

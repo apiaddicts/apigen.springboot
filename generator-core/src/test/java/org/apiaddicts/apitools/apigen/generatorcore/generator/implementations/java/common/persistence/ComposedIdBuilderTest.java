@@ -9,7 +9,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import javax.lang.model.element.Modifier;
+import jakarta.lang.model.element.Modifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -48,7 +48,7 @@ public class ComposedIdBuilderTest {
 		assertEquals(6, entityTypeSpec.annotations.size(), "Number of annotations is wrong");
 		assertEquals("@lombok.Getter",entityTypeSpec.annotations.get(0).toString(), "Checking if the Entity contains @Setter annotation:");
 		assertEquals("@lombok.Setter",entityTypeSpec.annotations.get(1).toString(), "Checking if the Entity contains @Getter annotation:");
-		assertEquals("@javax.persistence.Embeddable",entityTypeSpec.annotations.get(2).toString(), "Checking if the Entity contains @Embeddable annotation:");
+		assertEquals("@jakarta.persistence.Embeddable",entityTypeSpec.annotations.get(2).toString(), "Checking if the Entity contains @Embeddable annotation:");
 		assertEquals("@lombok.NoArgsConstructor",entityTypeSpec.annotations.get(3).toString(), "Checking if the Entity contains @NoArgsConstructor annotation:");
 		assertEquals("@lombok.AllArgsConstructor",entityTypeSpec.annotations.get(4).toString(), "Checking if the Entity contains @AllArgsConstructor annotation:");
 		assertEquals("@lombok.EqualsAndHashCode",entityTypeSpec.annotations.get(5).toString(), "Checking if the Entity contains @EqualsAndHashCode annotation:");
@@ -61,12 +61,12 @@ public class ComposedIdBuilderTest {
 	
 	@Test
 	void givenEntityWithComposedID_whenGenerated_thenPropertiesAreCorrect() {
-        assertEquals("@javax.persistence.Column(\n" + 
+        assertEquals("@jakarta.persistence.Column(\n" + 
         		"    name = \"id_s\"\n" + 
         		")\n" + 
         		"private java.lang.String idS;\n" + 
         		"",entityTypeSpec.fieldSpecs.get(0).toString());
-        assertEquals("@javax.persistence.Column(\n" + 
+        assertEquals("@jakarta.persistence.Column(\n" + 
         		"    name = \"id_n\"\n" + 
         		")\n" + 
         		"private java.lang.Long idN;\n" + 

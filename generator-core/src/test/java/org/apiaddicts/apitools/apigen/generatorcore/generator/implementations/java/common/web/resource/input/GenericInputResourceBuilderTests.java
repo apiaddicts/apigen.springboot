@@ -126,7 +126,7 @@ class GenericInputResourceBuilderTests {
         assertEquals(1, entityNestedTypeSpec.fieldSpecs.size());
         assertEquals("" +
                         "@com.fasterxml.jackson.annotation.JsonProperty(\"other\")\n" +
-                        "@javax.validation.Valid\n" +
+                        "@jakarta.validation.Valid\n" +
                         "private java.lang.Long other;\n",
                 entityNestedTypeSpec.fieldSpecs.get(0).toString());
     }
@@ -166,7 +166,7 @@ class GenericInputResourceBuilderTests {
         assertEquals(1, resourceTypeSpec.fieldSpecs.size());
         assertEquals("" +
                         "@com.fasterxml.jackson.annotation.JsonProperty(\"parent\")\n" +
-                        "@javax.validation.Valid\n" +
+                        "@jakarta.validation.Valid\n" +
                         "private the.group.artifact.resource.web.CreateResourceEndpointResource.Parent parent;\n",
                 resourceTypeSpec.fieldSpecs.get(0).toString());
     }
@@ -189,13 +189,13 @@ class GenericInputResourceBuilderTests {
         assertEquals("@lombok.Data\n"
         		+ "public class CreateEntityEndpointResource {\n"
         		+ "  @com.fasterxml.jackson.annotation.JsonProperty(\"classOne\")\n"
-        		+ "  @javax.validation.Valid\n"
+        		+ "  @jakarta.validation.Valid\n"
         		+ "  private the.group.artifact.entity.web.CreateEntityEndpointResource.FieldOne fieldOne;\n"
         		+ "\n"
         		+ "  @lombok.Data\n"
         		+ "  public static class FieldOne {\n"
         		+ "    @com.fasterxml.jackson.annotation.JsonProperty(\"classTwo\")\n"
-        		+ "    @javax.validation.Valid\n"
+        		+ "    @jakarta.validation.Valid\n"
         		+ "    private the.group.artifact.entity.web.CreateEntityEndpointResource.FieldOne.FieldTwo fieldTwo;\n"
         		+ "\n"
         		+ "    @lombok.Data\n"

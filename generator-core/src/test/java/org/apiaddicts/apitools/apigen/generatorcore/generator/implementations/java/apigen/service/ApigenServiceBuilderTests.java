@@ -14,7 +14,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import javax.lang.model.element.Modifier;
+import jakarta.lang.model.element.Modifier;
 import java.util.Collections;
 import java.util.stream.Collectors;
 

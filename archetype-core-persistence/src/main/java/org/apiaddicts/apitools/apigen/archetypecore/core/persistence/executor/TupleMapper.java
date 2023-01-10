@@ -8,7 +8,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;

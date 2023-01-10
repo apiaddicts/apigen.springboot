@@ -13,7 +13,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.persistence.repository.RepositoryBuilder;
 import org.springframework.stereotype.Service;
 
-import javax.lang.model.element.Modifier;
+import jakarta.lang.model.element.Modifier;
 import java.util.Set;
 
 public class ServiceBuilder<C extends JavaContext> extends AbstractJavaClassBuilder<C> {

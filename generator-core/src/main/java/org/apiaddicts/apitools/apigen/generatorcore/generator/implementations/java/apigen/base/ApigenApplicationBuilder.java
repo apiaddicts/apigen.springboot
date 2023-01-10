@@ -7,7 +7,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.base.ApplicationBuilder;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import javax.lang.model.element.Modifier;
+import jakarta.lang.model.element.Modifier;
 
 public class ApigenApplicationBuilder<C extends ApigenContext> extends ApplicationBuilder<C> {
 
