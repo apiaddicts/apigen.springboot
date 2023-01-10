@@ -11,7 +11,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 
-import jakarta.lang.model.element.Modifier;
+import javax.lang.model.element.Modifier;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

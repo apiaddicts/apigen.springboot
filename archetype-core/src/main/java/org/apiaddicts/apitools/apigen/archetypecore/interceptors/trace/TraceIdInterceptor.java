@@ -2,13 +2,13 @@ package org.apiaddicts.apitools.apigen.archetypecore.interceptors.trace;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apiaddicts.apitools.apigen.archetypecore.interceptors.ApigenContext;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Slf4j
-public class TraceIdInterceptor extends HandlerInterceptorAdapter {
+public class TraceIdInterceptor implements HandlerInterceptor {
 
 	private final String traceHeader;
 

@@ -2,7 +2,7 @@ package org.apiaddicts.apitools.apigen.archetypecore.interceptors.expand;
 
 import org.apiaddicts.apitools.apigen.archetypecore.exceptions.InvalidPropertyPath;
 import org.springframework.util.StringUtils;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.nonNull;
 
-public class ExpandInterceptor extends HandlerInterceptorAdapter {
+public class ExpandInterceptor implements HandlerInterceptor {
 
     protected void validate(HttpServletRequest request, Set<String> allowed, Set<String> excluded, int maxLevel) {
         Set<String> expands = getExpands(request);

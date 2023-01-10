@@ -13,7 +13,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import jakarta.lang.model.element.Modifier;
+import javax.lang.model.element.Modifier;
 
 import static org.junit.jupiter.api.Assertions.*;
 

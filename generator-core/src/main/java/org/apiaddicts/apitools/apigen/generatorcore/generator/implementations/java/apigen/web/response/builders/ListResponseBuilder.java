@@ -9,7 +9,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.CustomStringUtils;
 
-import jakarta.lang.model.element.Modifier;
+import javax.lang.model.element.Modifier;
 import java.util.List;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.STRING;

@@ -12,7 +12,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.components.java.Ab
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.JavaContext;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.CustomStringUtils;
 
-import jakarta.lang.model.element.Modifier;
+import javax.lang.model.element.Modifier;
 import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.time.LocalDate;

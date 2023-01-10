@@ -13,7 +13,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.entity.Entity;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.persistence.EntityBuilder;
 
-import jakarta.lang.model.element.Modifier;
+import javax.lang.model.element.Modifier;
 import jakarta.persistence.Table;
 import java.util.List;
 import java.util.Optional;

@@ -15,7 +15,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.apiaddicts.apitools.apigen.generatorcore.utils.CustomStringUtils;
 import org.hibernate.annotations.GenericGenerator;
 
-import jakarta.lang.model.element.Modifier;
+import javax.lang.model.element.Modifier;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.Optional;

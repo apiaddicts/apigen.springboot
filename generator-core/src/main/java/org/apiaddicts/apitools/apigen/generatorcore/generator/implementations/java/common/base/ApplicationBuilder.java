@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.ApplicationPidFileWriter;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.lang.model.element.Modifier;
+import javax.lang.model.element.Modifier;
 import java.util.TimeZone;
 
 public class ApplicationBuilder<C extends JavaContext> extends AbstractJavaClassBuilder<C> {

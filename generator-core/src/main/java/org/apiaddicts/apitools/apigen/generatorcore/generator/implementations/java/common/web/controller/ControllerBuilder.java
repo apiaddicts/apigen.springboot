@@ -17,7 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.lang.model.element.Modifier;
+import javax.lang.model.element.Modifier;
 import java.util.List;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.STRING;

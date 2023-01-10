@@ -5,7 +5,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.components.generic.AbstractFileBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.components.generic.Context;
 
-import jakarta.lang.model.element.Modifier;
+import javax.lang.model.element.Modifier;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;

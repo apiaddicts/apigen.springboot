@@ -11,7 +11,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.components.java.Ja
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.JavaContext;
 import org.junit.jupiter.api.Test;
 
-import jakarta.lang.model.element.Modifier;
+import javax.lang.model.element.Modifier;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
