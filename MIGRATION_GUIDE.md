@@ -6,6 +6,10 @@ All changes required to migrate generated Apigen projects to new versions will b
 
 In this version Apigen has been updated to use Spring Boot 3, so now you need a java version >= `17`
 
+Support for PATCH endpoints has been added and the PUT endpoint behaviour has changed. 
+To maintain the same functionality as in the previous versions you need to use
+`AbstractRelationsLegacyManager` and `AbstractCrudLegacyService` instead of `AbstractRelationsManager` and `AbstractCrudService`
+
 ## From [0.2.0] to [0.3.0]
 
 No migration required

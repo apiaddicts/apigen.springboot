@@ -24,19 +24,6 @@ public class ApigenFunctionsMetadataBuilderInitializer implements MetadataBuilde
         final Dialect dialect = jdbcEnvironment.getDialect();
         final Class dialectClass = dialect.getClass();
 
-        /*
-        @Override
-public void initializeFunctionRegistry(QueryEngine queryEngine) {
-    BasicTypeRegistry basicTypeRegistry = queryEngine.getTypeConfiguration().getBasicTypeRegistry();
-    SqmFunctionRegistry functionRegistry = queryEngine.getSqmFunctionRegistry();
-    functionRegistry.registerPattern(
-            "hstore_find",
-            "(?1 -> ?2 = ?3)",
-            basicTypeRegistry.resolve( StandardBasicTypes.BOOLEAN ));
-    // ...
-}
-         */
-
         String regexFunc = null;
         if (PostgreSQLDialect.class.isAssignableFrom(dialectClass) || PostgreSQL81Dialect.class.isAssignableFrom(dialectClass)) {
             regexFunc = REGEXP_FUNCTION_POSTGRESQL;

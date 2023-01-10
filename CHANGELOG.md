@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for nullable in OpenAPI file interpretation
 - Partial support for non json (`application/json`) mime types
 - Support for parent-child entity endpoints generation
+- Support for PATCH endpoints
 ### Changed
 - Enhance the code generation mechanism to allow to extend and replace by custom code generation strategies
 - Generated non paginated controller endpoints for list and search if the OpenAPI file specifies it
@@ -19,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Allow independence between basePackage and artifactId in OpenAPI extension
 - Updated spring boot version to `3.0.1`
 - Updated `mapstruct` version to `1.5.3.Final`
-- Updated `springdoc` version to `1.6.14`
+- Updated `springdoc` version to `2.0.2`
 - Updated `swagger-parser` version to `2.1.10`
 - Updated `maven-model` version to `3.8.7`
 - Separate persistence related classes from the archetype core to another module and add it as a dependency
