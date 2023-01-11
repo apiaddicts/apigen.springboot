@@ -11,8 +11,8 @@ import org.apiaddicts.apitools.apigen.archetypecore.autoconfigure.ApigenProperti
 import org.springframework.http.MediaType;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;

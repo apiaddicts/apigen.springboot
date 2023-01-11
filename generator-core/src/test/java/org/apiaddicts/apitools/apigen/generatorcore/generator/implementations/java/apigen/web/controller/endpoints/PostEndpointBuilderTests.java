@@ -80,7 +80,7 @@ class PostEndpointBuilderTests {
         assertEquals(1, methodSpec.modifiers.size());
         assertEquals("[public]", methodSpec.modifiers.toString());
 
-        assertEquals("[@org.springframework.web.bind.annotation.RequestBody, @javax.validation.Valid]", methodSpec.parameters.get(0).annotations.toString());
+        assertEquals("[@org.springframework.web.bind.annotation.RequestBody, @jakarta.validation.Valid]", methodSpec.parameters.get(0).annotations.toString());
         assertEquals("the.group.artifact.entityname.web.CreateEntityNameResource", methodSpec.parameters.get(0).type.toString());
         assertEquals("body", methodSpec.parameters.get(0).name);
 

@@ -3,8 +3,8 @@ package org.apiaddicts.apitools.apigen.generatorcore.generator.persistence.relat
 import com.squareup.javapoet.AnnotationSpec;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
 import java.util.List;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats.ENUM_VALUE;

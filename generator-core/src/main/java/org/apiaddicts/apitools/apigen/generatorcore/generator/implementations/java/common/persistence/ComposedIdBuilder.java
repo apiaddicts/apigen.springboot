@@ -13,7 +13,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.apiaddicts.apitools.apigen.generatorcore.utils.CustomStringUtils;
 
 import javax.lang.model.element.Modifier;
-import javax.persistence.Embeddable;
+import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -113,7 +113,7 @@ public class ComposedIdBuilder<C extends JavaContext> extends AbstractJavaClassB
         String columnName = column.getName();
         if (columnName == null) columnName = CustomStringUtils.camelCaseToSnakeCase(javaName);
         Boolean isUnique = column.getUnique();
-        AnnotationSpec.Builder annotationBuilder = getAnnotation(javax.persistence.Column.class)
+        AnnotationSpec.Builder annotationBuilder = getAnnotation(jakarta.persistence.Column.class)
                 .addMember(NAME, STRING, columnName);
 
         if (Boolean.TRUE.equals(isUnique)) {

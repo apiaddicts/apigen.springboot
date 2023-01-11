@@ -2,8 +2,8 @@ package org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter;
 
 import lombok.Data;
 
-import javax.validation.Valid;
-import javax.validation.constraints.AssertTrue;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.AssertTrue;
 import java.util.List;
 
 import static java.util.Objects.isNull;

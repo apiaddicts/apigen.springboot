@@ -125,6 +125,7 @@ public class ControllersExtractor {
         Controller controller = new Controller();
         controller.setEntity(entityName);
         String requestMapping = paths.keySet().iterator().next();
+        String fullRequestMapping = requestMapping;
         String[] mappingParts = requestMapping.split("/");
         requestMapping = StringUtils.join(mappingParts, "/", 0, (parentEntity != null) ? 4 : 2);
         controller.setMapping(requestMapping);
@@ -132,6 +133,11 @@ public class ControllersExtractor {
         endpoints.forEach(e -> e.setRelatedEntity(entityName));
         String parentEntityName = parentEntity == null ? null : parentEntity.getName();
         endpoints.forEach(e -> e.setParentEntity(parentEntityName));
+        endpoints.forEach(e -> {
+            if (e.getName() == null) {
+                e.setName(generateOperationId(e.getMethod(), fullRequestMapping));
+            }
+        });
         controller.setEndpoints(endpoints);
         return controller;
     }
@@ -181,5 +187,8 @@ public class ControllersExtractor {
         return endpoint;
     }
 
+    private String generateOperationId(Endpoint.Method method, String endpointMapping) {
+        return StringUtils.uncapitalize(method.prefix) + new Mapping(endpointMapping).toName();
+    }
 
 }

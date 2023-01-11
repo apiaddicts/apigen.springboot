@@ -7,10 +7,10 @@ import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filt
 import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Value;
 import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.pagination.Pagination;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.*;
 import java.io.Serializable;
 import java.util.*;
 import java.util.regex.Pattern;

@@ -140,6 +140,23 @@ class ApigenRepositoryTest {
 	}
 
 	@Test
+	void givenPersistedRecords_whenRegexSearch_thenSuccess() {
+		Pagination pagination = new Pagination(0, 20);
+		Filter filter = new Filter();
+		filter.setOperation(FilterOperation.REGEXP);
+		Value value = new Value();
+		value.setProperty("name");
+		value.setValue("[N*]");
+		filter.setValues(Collections.singletonList(value));
+		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, filter, EMPTY, pagination, false);
+		List<FakeEntityNode> result = nodeRepository.search(search).getSearchResult();
+
+		assertEquals(2, result.size());
+		assertEquals("N", result.get(0).getName().substring(0, 1));
+		assertEquals("N", result.get(1).getName().substring(0, 1));
+	}
+
+	@Test
 	void givenBigAttributes_whenPersist_thenSuccess() {
 		FakeEntityBigEntity e = new FakeEntityBigEntity();
 		e.setBDec(BigDecimal.valueOf(.333333));

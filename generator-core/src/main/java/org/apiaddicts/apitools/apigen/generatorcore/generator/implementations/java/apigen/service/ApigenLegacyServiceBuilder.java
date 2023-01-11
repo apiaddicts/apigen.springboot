@@ -14,6 +14,7 @@ import org.springframework.lang.Nullable;
 import javax.lang.model.element.Modifier;
 import java.util.Set;
 
+@Deprecated
 public class ApigenLegacyServiceBuilder<C extends ApigenContext> extends ServiceBuilder<C> {
 
     public ApigenLegacyServiceBuilder(Entity entity, C ctx, Configuration cfg) {
