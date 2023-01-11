@@ -1,9 +1,6 @@
 package org.apiaddicts.apitools.apigen.archetypecore.core.persistence;
 
 import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter;
-import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.FilterOperation;
-import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.FilterUtils;
-import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Value;
 import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.pagination.Pagination;
 import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.stubs.*;
 import org.junit.jupiter.api.Test;
@@ -16,8 +13,11 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
+import static org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.FilterUtils.gt;
 import static org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.FilterUtils.lt;
+import static org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.FilterUtils.regexp;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -88,12 +88,7 @@ class ApigenRepositoryTest {
 	@Test
 	void givenPersistedRecords_whenSearchedDatetimeFilter_thenSuccess() {
 		Pagination pagination = new Pagination(0, 20);
-		Filter filter = new Filter();
-		filter.setOperation(FilterOperation.GT);
-		Value value = new Value();
-		value.setProperty("dateTime");
-		value.setValue("2020-02-02T12:00:00.000+01:00");
-		filter.setValues(Collections.singletonList(value));
+		Filter filter = gt("dateTime", "2020-02-02T12:00:00.000+01:00");
 		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, filter, EMPTY, pagination, false);
 		ApigenSearchResult<FakeEntityDates> result = datesRepository.search(search);
 		assertEquals(1, result.getSearchResult().size());
@@ -142,12 +137,7 @@ class ApigenRepositoryTest {
 	@Test
 	void givenPersistedRecords_whenRegexSearch_thenSuccess() {
 		Pagination pagination = new Pagination(0, 20);
-		Filter filter = new Filter();
-		filter.setOperation(FilterOperation.REGEXP);
-		Value value = new Value();
-		value.setProperty("name");
-		value.setValue("[N*]");
-		filter.setValues(Collections.singletonList(value));
+		Filter filter = regexp("name", Pattern.compile("[N*]"));
 		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, filter, EMPTY, pagination, false);
 		List<FakeEntityNode> result = nodeRepository.search(search).getSearchResult();
 
