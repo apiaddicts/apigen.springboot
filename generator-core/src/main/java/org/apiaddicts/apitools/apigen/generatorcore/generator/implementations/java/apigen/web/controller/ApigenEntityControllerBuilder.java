@@ -3,6 +3,7 @@ package org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.j
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.TypeName;
+import org.apache.commons.lang3.StringUtils;
 import org.apiaddicts.apitools.apigen.archetypecore.core.controllers.NestedParentChildController;
 import org.apiaddicts.apitools.apigen.archetypecore.core.resource.ResourceNamingTranslator;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
@@ -15,6 +16,8 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.lang.model.element.Modifier;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class ApigenEntityControllerBuilder<C extends ApigenContext> extends ControllerBuilder<C> {
 
@@ -31,9 +34,17 @@ public class ApigenEntityControllerBuilder<C extends ApigenContext> extends Cont
 
     @Override
     protected String getName() {
-        return this.endpoints.get(0).getParentEntity() == null
-            ? entityName + "Controller"
-            : this.endpoints.get(0).getParentEntity() + entityName + "Controller";
+        String parentEntity = this.endpoints.get(0).getParentEntity();
+        String parentPart = "";
+        String appendixPart = "";
+        if (parentEntity != null) {
+            String relationProperty = this.endpoints.get(0).getChildParentRelationProperty();
+            relationProperty = Arrays.stream(relationProperty.split("\\."))
+                    .map(StringUtils::capitalize).collect(Collectors.joining());
+            parentPart = parentEntity;
+            appendixPart = "By" + relationProperty;
+        }
+        return parentPart + entityName + appendixPart + "Controller";
     }
 
     @Override

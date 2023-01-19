@@ -131,8 +131,9 @@ class ApigenMapperBuilderTest {
     @Test
     void givenValidAttributes_whenBuildMapper_thenGeneratedAnnotationIsCorrect() {
         assertEquals(
-                "@org.mapstruct.Mapper(componentModel = \"spring\", uses = {the.group.artifact.relatedentity" +
-                        ".RelatedEntityMapper.class})",
+                "@org.mapstruct.Mapper(componentModel = \"spring\", uses = {" +
+                        "org.apiaddicts.apitools.apigen.archetypecore.core.JsonNullableMapper.class, " +
+                        "the.group.artifact.relatedentity.RelatedEntityMapper.class})",
                 generatedMapper.annotations.get(0).toString(), "Annotation is wrong");
     }
 

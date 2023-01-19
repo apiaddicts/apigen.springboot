@@ -86,8 +86,7 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
 
     protected void addMapperAnnotation() {
         List<TypeName> relatedEntities = getRelatedEntities();
-        if(!this.subResourcesToEntity.isEmpty())
-            relatedEntities.add(TypeName.get(JsonNullableMapper.class));
+        relatedEntities.add(TypeName.get(JsonNullableMapper.class));
 
         AnnotationSpec annotationSpec = AnnotationSpec.builder(Mapper.class)
                 .addMember(COMPONENT_MODEL, STRING, "spring")
@@ -106,7 +105,7 @@ public class MapperBuilder<C extends JavaContext> extends AbstractJavaClassBuild
         return relatedEntities.stream()
                 .sorted()
                 .map(type -> CodeBlock.of("$T.class", type))
-                .collect(CodeBlock.joining(",", "{", "}"));
+                .collect(CodeBlock.joining(", ", "{", "}"));
     }
 
 

@@ -28,7 +28,7 @@ public class JavaEntityRelationManager extends AbstractEntityRelationManager {
 
         switch (relationType) {
             case ONE_TO_MANY:
-                Attribute foreignAttribute = getRelatedEntityAttributeOneToMany(entityName, relatedEntityName);
+                Attribute foreignAttribute = getRelatedEntityAttributeOneToMany(entityName, relatedEntityName, attribute);
                 String foreignAttributeName = foreignAttribute != null ? foreignAttribute.getName() : "";
                 return new OneToManyBuilder(foreignAttributeName);
             case MANY_TO_ONE:
@@ -40,12 +40,12 @@ public class JavaEntityRelationManager extends AbstractEntityRelationManager {
                         toColumnRelations(relation.getReverseColumns()));
             case MANY_TO_MANY:
                 String mappedByFieldNameManyToMany =
-                        getRelatedEntityAttributeManyToMany(entityName, relatedEntityName).getName();
+                        getRelatedEntityAttributeManyToMany(entityName, relatedEntityName, attribute).getName();
                 return new ManyToManyBuilder(mappedByFieldNameManyToMany);
             case ONE_TO_ONE_OWNER:
                 return new OneToOneOwnerBuilder(toColumnRelations(attribute.getColumns()));
             case ONE_TO_ONE:
-                String mappedByFieldName = getRelatedEntityAttributeOneToOne(entityName, relatedEntityName).getName();
+                String mappedByFieldName = getRelatedEntityAttributeOneToOne(entityName, relatedEntityName, attribute).getName();
                 return new OneToOneBuilder(mappedByFieldName);
             default:
                 throw new IllegalArgumentException(String.format("Relation type %s not supported", relationType));

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Controller;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
 import org.apiaddicts.apitools.apigen.generatorcore.config.entity.Entity;
@@ -62,10 +63,10 @@ public class ControllersExtractor {
 
     private List<Controller> getNestedParentChildEntityControllers(Map<String, PathItem> paths, Map<PathItem, ApigenBinding> bindings, List<Entity> rawEntities) {
         Map<String, Entity> entities = rawEntities.stream().collect(Collectors.toMap(Entity::getName, e -> e));
-        Map<Pair<String, String>, Map<String, PathItem>> pathsByParentChildEntities = new HashMap<>();
+        Map<Triple<String, String, String>, Map<String, PathItem>> pathsByParentChildEntities = new HashMap<>();
         for (Map.Entry<String, PathItem> path : paths.entrySet()) {
             ApigenBinding binding = bindings.get(path.getValue());
-            if (binding == null || binding.getChildModel() == null) continue;
+            if (binding == null || binding.getChildModel() == null || binding.getChildParentRelationProperty() == null) continue;
             Entity parentEntity = entities.get(binding.getModel());
             Entity childEntity = entities.get(binding.getChildModel());
             if (parentEntity == null) {
@@ -73,7 +74,7 @@ public class ControllersExtractor {
             } else if (childEntity == null) {
                 log.warn("Model not found {} , path {} ignored", binding.getChildModel(), path.getKey());
             } else {
-                Pair<String, String> childParentEntity = Pair.of(childEntity.getName(), parentEntity.getName());
+                Triple<String, String, String> childParentEntity = Triple.of(childEntity.getName(), parentEntity.getName(), binding.getChildParentRelationProperty());
                 pathsByParentChildEntities.putIfAbsent(childParentEntity, new HashMap<>());
                 pathsByParentChildEntities.get(childParentEntity).put(path.getKey(), path.getValue());
             }
@@ -81,7 +82,8 @@ public class ControllersExtractor {
         return pathsByParentChildEntities.entrySet().stream()
                 .map(entry -> {
                     String childEntity = entry.getKey().getLeft();
-                    String parentEntity = entry.getKey().getRight();
+                    String parentEntity = entry.getKey().getMiddle();
+                    String relationProperty = entry.getKey().getRight();
                     return createController(entry.getValue(), entities.get(childEntity), entities.get(parentEntity), bindings);
                 })
                 .collect(Collectors.toList());
