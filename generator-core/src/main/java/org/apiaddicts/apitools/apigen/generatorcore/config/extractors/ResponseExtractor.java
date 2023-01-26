@@ -111,7 +111,7 @@ public class ResponseExtractor {
     }
 
     private boolean isNamedCollectionSchema(Schema<?> dataSchema) {
-        if (dataSchema.getProperties().size() != 1) return false;
+        if (dataSchema.getProperties() == null || dataSchema.getProperties().size() != 1) return false;
         String key = getNamedCollectionName(dataSchema);
         return dataSchema.getProperties().get(key) instanceof ArraySchema;
     }

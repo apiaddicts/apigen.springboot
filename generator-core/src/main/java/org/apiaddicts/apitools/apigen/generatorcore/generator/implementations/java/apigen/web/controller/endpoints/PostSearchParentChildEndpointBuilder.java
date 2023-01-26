@@ -36,7 +36,9 @@ public class PostSearchParentChildEndpointBuilder<C extends ApigenContext> exten
         if(null != this.endpoint.getResponse().getDefaultStatusCode() && this.endpoint.getResponse().getDefaultStatusCode() == 200){
             params = pathParamsAndFilterToString(Arrays.asList("select", "exclude", "expand", "filter", "orderby", "null", "null", "null"));
         }
-        builder.addStatement("$T filter = getParentFilter($L, $L, $S)", filterType, pathParams.get(0), null, endpoint.getChildParentRelationProperty());
+        builder.addStatement("$T filter = null", filterType);
+        builder.addStatement("if (body != null) filter = body.getFilter()");
+        builder.addStatement("filter = getParentFilter($L, filter, $S)", pathParams.get(0), endpoint.getChildParentRelationProperty());
         builder.addStatement("expand = getParentExpand(expand, $S)", endpoint.getChildParentRelationProperty().split("\\.")[0]);
         builder.addStatement("$L.translate($L, $T.class)", NAMING_TRANSLATOR_NAME, translatorParams, resourceType);
         builder.addStatement("$T searchResult = $L.search($L)", searchResultType, SERVICE_NAME, params);

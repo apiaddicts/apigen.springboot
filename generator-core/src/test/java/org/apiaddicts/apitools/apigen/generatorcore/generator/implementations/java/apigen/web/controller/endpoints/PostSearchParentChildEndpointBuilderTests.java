@@ -129,7 +129,9 @@ class PostSearchParentChildEndpointBuilderTests {
         assertEquals("orderby", parameterSpec.name);
 
         assertEquals("" +
-                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(parentId, null, \"parentProp.id\");\n" +
+                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = null;\n" +
+                "if (body != null) filter = body.getFilter();\n" +
+                "filter = getParentFilter(parentId, filter, \"parentProp.id\");\n" +
                 "expand = getParentExpand(expand, \"parentProp\");\n" +
                 "namingTranslator.translate(select, exclude, expand, orderby, the.group.artifact.child.web.ChildOutResource.class);\n" +
                 "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenSearchResult<the.group.artifact.child.Child> searchResult = service.search(select, exclude, expand, filter, orderby, init, limit, total);\n" +
@@ -192,7 +194,9 @@ class PostSearchParentChildEndpointBuilderTests {
         assertEquals("orderby", parameterSpec.name);
 
         assertEquals("" +
-                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = getParentFilter(parentId, null, \"parentProp.id\");\n" +
+                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = null;\n" +
+                "if (body != null) filter = body.getFilter();\n" +
+                "filter = getParentFilter(parentId, filter, \"parentProp.id\");\n" +
                 "expand = getParentExpand(expand, \"parentProp\");\n" +
                 "namingTranslator.translate(select, exclude, expand, orderby, the.group.artifact.child.web.ChildOutResource.class);\n" +
                 "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenSearchResult<the.group.artifact.child.Child> searchResult = service.search(select, exclude, expand, filter, orderby, null, null, null);\n" +

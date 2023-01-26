@@ -124,11 +124,13 @@ class PostSearchEndpointBuilderTests {
         assertEquals("orderby", parameterSpec.name);
 
         parameterSpec = methodSpec.parameters.get(7);
-        assertEquals("[@org.springframework.web.bind.annotation.RequestBody, @jakarta.validation.Valid]", parameterSpec.annotations.toString());
+        assertEquals("[@org.springframework.web.bind.annotation.RequestBody(required = false), @jakarta.validation.Valid]", parameterSpec.annotations.toString());
         assertEquals("org.apiaddicts.apitools.apigen.archetypecore.core.resource.FilterResource", parameterSpec.type.toString());
         assertEquals("body", parameterSpec.name);
 
-        assertEquals("org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = body.getFilter();\n" +
+        assertEquals("" +
+                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = null;\n" +
+                "if (body != null) filter = body.getFilter();\n" +
                 "namingTranslator.translate(select, exclude, expand, filter, orderby, the.group.artifact.entityname.web.EntityNameOutResource.class);\n" +
                 "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenSearchResult<the.group.artifact.entityname.EntityName> searchResult = service.search(select, exclude, expand, filter, orderby, init, limit, total);\n" +
                 "java.util.List<the.group.artifact.entityname.web.EntityNameOutResource> result = mapper.toResource(searchResult.getSearchResult());\n" +
@@ -185,11 +187,13 @@ class PostSearchEndpointBuilderTests {
         assertEquals("orderby", parameterSpec.name);
 
         parameterSpec = methodSpec.parameters.get(7);
-        assertEquals("[@org.springframework.web.bind.annotation.RequestBody, @jakarta.validation.Valid]", parameterSpec.annotations.toString());
+        assertEquals("[@org.springframework.web.bind.annotation.RequestBody(required = false), @jakarta.validation.Valid]", parameterSpec.annotations.toString());
         assertEquals("org.apiaddicts.apitools.apigen.archetypecore.core.resource.FilterResource", parameterSpec.type.toString());
         assertEquals("body", parameterSpec.name);
 
-        assertEquals("org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = body.getFilter();\n" +
+        assertEquals("" +
+                "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter filter = null;\n" +
+                "if (body != null) filter = body.getFilter();\n" +
                 "namingTranslator.translate(select, exclude, expand, filter, orderby, the.group.artifact.entityname.web.EntityNameOutResource.class);\n" +
                 "org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenSearchResult<the.group.artifact.entityname.EntityName> searchResult = service.search(select, exclude, expand, filter, orderby, null, null, null);\n" +
                 "java.util.List<the.group.artifact.entityname.web.EntityNameOutResource> result = mapper.toResource(searchResult.getSearchResult());\n" +

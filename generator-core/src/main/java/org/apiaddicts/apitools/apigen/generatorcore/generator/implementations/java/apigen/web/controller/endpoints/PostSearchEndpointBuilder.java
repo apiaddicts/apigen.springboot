@@ -1,13 +1,13 @@
 package org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.web.controller.endpoints;
 
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.ParameterizedTypeName;
-import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.*;
+import jakarta.validation.Valid;
 import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenSearchResult;
 import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.Filter;
 import org.apiaddicts.apitools.apigen.archetypecore.core.resource.FilterResource;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Endpoint;
+import org.apiaddicts.apitools.apigen.generatorcore.generator.common.Formats;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.web.resource.output.ApigenEntityOutputResourceBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.web.response.builders.EntityListResponseBuilder;
@@ -15,6 +15,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Arrays;
 import java.util.List;
@@ -51,6 +52,15 @@ public class PostSearchEndpointBuilder<C extends ApigenContext> extends ApigenAb
         return ClassName.get(FilterResource.class);
     }
 
+    protected void addRequestBody() {
+        TypeName bodyType = getBodyTypeName();
+        if (bodyType == null) return;
+        builder.addParameter(
+                ParameterSpec.builder(bodyType, "body")
+                        .addAnnotation(AnnotationSpec.builder(RequestBody.class).addMember("required", Formats.LITERAL, false).build())
+                        .addAnnotation(Valid.class).build());
+    }
+
     @Override
     protected void addStatements() {
         TypeName filterType = ClassName.get(Filter.class);
@@ -65,7 +75,8 @@ public class PostSearchEndpointBuilder<C extends ApigenContext> extends ApigenAb
         if(null != this.endpoint.getResponse().getDefaultStatusCode() && this.endpoint.getResponse().getDefaultStatusCode() == 200){
             params = pathParamsAndFilterToString(Arrays.asList("select", "exclude", "expand", "filter", "orderby", "null", "null", "null"));
         }
-        builder.addStatement("$T filter = body.getFilter()", filterType);
+        builder.addStatement("$T filter = null", filterType);
+        builder.addStatement("if (body != null) filter = body.getFilter()");
         builder.addStatement("$L.translate($L, $T.class)", NAMING_TRANSLATOR_NAME, translatorParams, resourceType);
         builder.addStatement("$T searchResult = $L.search($L)", searchResultType, SERVICE_NAME, params);
         builder.addStatement("$T result = $L.toResource(searchResult.getSearchResult())", listResourceType, MAPPER_NAME);
