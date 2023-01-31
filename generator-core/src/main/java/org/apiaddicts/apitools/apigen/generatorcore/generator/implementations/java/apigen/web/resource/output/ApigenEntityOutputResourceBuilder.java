@@ -27,7 +27,7 @@ public class ApigenEntityOutputResourceBuilder<C extends ApigenContext> extends 
     public ApigenEntityOutputResourceBuilder(Endpoint endpoint, C ctx, Configuration cfg) {
         super(ctx, cfg);
         this.basePackage = cfg.getBasePackage();
-        this.entityName = endpoint.getResponse().getRelatedEntity();
+        this.entityName = endpoint.getResponse().getRelatedEntity() == null ? endpoint.getRelatedEntity() : endpoint.getResponse().getRelatedEntity();
         this.attributes = endpoint.getResponse().getAttributes();
     }
 

@@ -43,7 +43,7 @@ public class GenericInputResourceBuilder<C extends JavaContext> extends InputRes
         super(ctx, cfg);
         Request endpointRequestBody = endpoint.getRequest();
         this.basePackage = cfg.getBasePackage();
-        this.entityName = endpointRequestBody.getRelatedEntity();
+        this.entityName = endpointRequestBody.getRelatedEntity() == null ? endpoint.getRelatedEntity() : endpointRequestBody.getRelatedEntity();
         this.rootMapping = rootMapping;
         this.attributes = endpointRequestBody.getAttributes();
         this.endpoint = endpoint;

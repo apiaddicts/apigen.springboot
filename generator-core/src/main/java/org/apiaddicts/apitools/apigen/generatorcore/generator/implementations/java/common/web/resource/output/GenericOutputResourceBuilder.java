@@ -32,7 +32,7 @@ public class GenericOutputResourceBuilder<C extends JavaContext> extends OutputR
         super(ctx, cfg);
         Response endpointResponseBody = endpoint.getResponse();
         this.basePackage = cfg.getBasePackage();
-        this.entityName = endpointResponseBody.getRelatedEntity();
+        this.entityName = endpointResponseBody.getRelatedEntity() == null ? endpoint.getRelatedEntity() : endpointResponseBody.getRelatedEntity();
         this.rootMapping = rootMapping;
         this.attributes = endpointResponseBody.getAttributes();
         this.endpoint = endpoint;

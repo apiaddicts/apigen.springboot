@@ -33,7 +33,7 @@ public class ControllersExtractor {
         this.responseExtractor = new ResponseExtractor(schemas);
     }
 
-    public List<Controller> getControllers(Map<String, PathItem> paths, Map<PathItem, ApigenBinding> bindings, List<Entity> rawEntities) {
+    public List<Controller> getControllers(Map<String, PathItem> paths, Map<String, ApigenBinding> bindings, List<Entity> rawEntities) {
         List<Controller> entityControllers = getEntityControllers(paths, bindings, rawEntities);
         List<Controller> nestedParentChildEntityControllers = getNestedParentChildEntityControllers(paths, bindings, rawEntities);
         List<Controller> otherControllers = getOtherControllers(paths, bindings);
@@ -41,11 +41,11 @@ public class ControllersExtractor {
                 .flatMap(List::stream).collect(Collectors.toList());
     }
 
-    private List<Controller> getEntityControllers(Map<String, PathItem> paths, Map<PathItem, ApigenBinding> bindings, List<Entity> rawEntities) {
+    private List<Controller> getEntityControllers(Map<String, PathItem> paths, Map<String, ApigenBinding> bindings, List<Entity> rawEntities) {
         Map<String, Entity> entities = rawEntities.stream().collect(Collectors.toMap(Entity::getName, e -> e));
         Map<String, Map<String, PathItem>> pathsByEntity = new HashMap<>();
         for (Map.Entry<String, PathItem> path : paths.entrySet()) {
-            ApigenBinding binding = bindings.get(path.getValue());
+            ApigenBinding binding = bindings.get(path.getKey());
             if (binding == null || binding.getChildModel() != null) continue;
             Entity entity = entities.get(binding.getModel());
             if (entity == null) {
@@ -61,11 +61,11 @@ public class ControllersExtractor {
                 .collect(Collectors.toList());
     }
 
-    private List<Controller> getNestedParentChildEntityControllers(Map<String, PathItem> paths, Map<PathItem, ApigenBinding> bindings, List<Entity> rawEntities) {
+    private List<Controller> getNestedParentChildEntityControllers(Map<String, PathItem> paths, Map<String, ApigenBinding> bindings, List<Entity> rawEntities) {
         Map<String, Entity> entities = rawEntities.stream().collect(Collectors.toMap(Entity::getName, e -> e));
         Map<Triple<String, String, String>, Map<String, PathItem>> pathsByParentChildEntities = new HashMap<>();
         for (Map.Entry<String, PathItem> path : paths.entrySet()) {
-            ApigenBinding binding = bindings.get(path.getValue());
+            ApigenBinding binding = bindings.get(path.getKey());
             if (binding == null || binding.getChildModel() == null || binding.getChildParentRelationProperty() == null) continue;
             Entity parentEntity = entities.get(binding.getModel());
             Entity childEntity = entities.get(binding.getChildModel());
@@ -89,10 +89,10 @@ public class ControllersExtractor {
                 .collect(Collectors.toList());
     }
 
-    private List<Controller> getOtherControllers(Map<String, PathItem> paths, Map<PathItem, ApigenBinding> bindings) {
+    private List<Controller> getOtherControllers(Map<String, PathItem> paths, Map<String, ApigenBinding> bindings) {
         Map<String, PathItem> otherPaths = new HashMap<>();
         for (Map.Entry<String, PathItem> path : paths.entrySet()) {
-            ApigenBinding binding = bindings.get(path.getValue());
+            ApigenBinding binding = bindings.get(path.getKey());
             if (binding == null) {
                 otherPaths.put(path.getKey(), path.getValue());
             }
@@ -122,7 +122,7 @@ public class ControllersExtractor {
         return createController(paths, entity, null, null);
     }
 
-    private Controller createController(Map<String, PathItem> paths, Entity entity, Entity parentEntity, Map<PathItem, ApigenBinding> bindings) {
+    private Controller createController(Map<String, PathItem> paths, Entity entity, Entity parentEntity, Map<String, ApigenBinding> bindings) {
         String entityName = entity == null ? null : entity.getName();
         Controller controller = new Controller();
         controller.setEntity(entityName);
@@ -144,12 +144,12 @@ public class ControllersExtractor {
         return controller;
     }
 
-    private List<Endpoint> getEndpoints(Map<String, PathItem> paths, String controllerMapping, Map<PathItem, ApigenBinding> bindings) {
+    private List<Endpoint> getEndpoints(Map<String, PathItem> paths, String controllerMapping, Map<String, ApigenBinding> bindings) {
         List<Endpoint> endpoints = new ArrayList<>();
         for (Map.Entry<String, PathItem> pathData : paths.entrySet()) {
             String endpointMapping = pathData.getKey().replace(controllerMapping, "");
             if (endpointMapping.isEmpty()) endpointMapping = null;
-            String childParentRelationProperty = (bindings == null) ? null : bindings.get(pathData.getValue()).getChildParentRelationProperty();
+            String childParentRelationProperty = (bindings == null) ? null : bindings.get(pathData.getKey()).getChildParentRelationProperty();
             endpoints.addAll(getEndpoints(endpointMapping, pathData.getValue(), childParentRelationProperty));
         }
         return endpoints;

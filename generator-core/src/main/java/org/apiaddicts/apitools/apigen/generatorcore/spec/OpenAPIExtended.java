@@ -23,7 +23,7 @@ public class OpenAPIExtended {
     private OpenAPI openAPI;
     private ApigenProject project;
     private Map<String, ApigenModel> models;
-    private Map<PathItem, ApigenBinding> pathBindings;
+    private Map<String, ApigenBinding> pathBindings;
     private Map<String, PathItem> paths;
 
     private ObjectMapper mapper;
@@ -56,9 +56,9 @@ public class OpenAPIExtended {
         return mapper.convertValue(openAPI.getComponents().getExtensions().get(MODELS), new TypeReference<HashMap<String, ApigenModel>>() {});
     }
 
-    private Map<PathItem, ApigenBinding> getBindings(OpenAPI openAPI) {
-        return openAPI.getPaths().values().stream()
-                .collect(HashMap::new, (m, v) -> m.put(v, getBinding(v)), HashMap::putAll);
+    private Map<String, ApigenBinding> getBindings(OpenAPI openAPI) {
+        return openAPI.getPaths().entrySet().stream()
+                .collect(HashMap::new, (m, e) -> m.put(e.getKey(), getBinding(e.getValue())), HashMap::putAll);
     }
 
     private ApigenBinding getBinding(PathItem pathItem) {

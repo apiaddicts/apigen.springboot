@@ -121,6 +121,10 @@ public class ResponseExtractor {
     }
 
     private String getMappingEntity(Schema<?> schema) {
+        // TODO: Remove this temporal fix when polymorphism is supported
+        if (schema.getOneOf() != null && !schema.getOneOf().isEmpty()) {
+            schema = schema.getOneOf().get(0);
+        }
         Map<String, Object> apigenExtension = getMappingExtension(schema);
         return (String) apigenExtension.get(MAPPING_MODEL);
     }

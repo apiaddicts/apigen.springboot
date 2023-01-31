@@ -11,10 +11,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.resource.output.GenericOutputResourceBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.Mapping;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +26,8 @@ public class GenericEndpointBuilder<C extends JavaContext> extends EndpointBuild
         switch (endpoint.getMethod()) {
             case DELETE:
                 return DeleteMapping.class;
+            case PATCH:
+                return PatchMapping.class;
             case PUT:
                 return PutMapping.class;
             case POST:

@@ -6,10 +6,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Attribute;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.common.Openapi2JavapoetType;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.CustomStringUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.apiaddicts.apitools.apigen.generatorcore.spec.components.Extensions.*;
 
@@ -29,7 +26,18 @@ public class AttributesExtractor {
     @SuppressWarnings("unchecked")
     public List<Attribute> getFirstLvlAttributes(Schema<?> schema) {
         List<Attribute> attributes = new ArrayList<>();
-        for (Map.Entry<String, Schema> property : schema.getProperties().entrySet()) {
+
+        final Map<String, Schema> properties = Optional.ofNullable(schema.getProperties()).orElseGet(HashMap::new);
+
+        // TODO: Remove this temporal fix when polymorphism is supported
+        if (schema.getOneOf() != null && !schema.getOneOf().isEmpty()) {
+            properties.clear();
+            schema.getOneOf().forEach(it -> {
+                if (it.getProperties() != null) properties.putAll(it.getProperties());
+            });
+        }
+
+        for (Map.Entry<String, Schema> property : properties.entrySet()) {
             String propName = property.getKey();
             Schema<?> propSchema = property.getValue();
 
@@ -72,11 +80,21 @@ public class AttributesExtractor {
     private List<Attribute> getAttributes(Schema<?> schema, int level) {
 
         List<Attribute> attributes = new ArrayList<>();
-        if (schema.getProperties() == null || level > MAX_DEPTH_LEVEL) return attributes;
+        final Map<String, Schema> properties = Optional.ofNullable(schema.getProperties()).orElseGet(HashMap::new);
         List<String> required = schema.getRequired();
+
+        // TODO: Remove this temporal fix when polymorphism is supported
+        if (schema.getOneOf() != null && !schema.getOneOf().isEmpty()) {
+            properties.clear();
+            schema.getOneOf().forEach(it -> {
+                if (it.getProperties() != null) properties.putAll(it.getProperties());
+            });
+        }
+
+        if (properties.isEmpty() || level > MAX_DEPTH_LEVEL) return attributes;
         if (required == null) required = Collections.emptyList();
 
-        for (Map.Entry<String, Schema> property : schema.getProperties().entrySet()) {
+        for (Map.Entry<String, Schema> property : properties.entrySet()) {
             String propName = property.getKey();
             Schema<?> propSchema = property.getValue();
 
