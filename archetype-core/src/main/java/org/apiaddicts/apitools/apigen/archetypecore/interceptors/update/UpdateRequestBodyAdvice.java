@@ -42,6 +42,7 @@ public class UpdateRequestBodyAdvice extends RequestBodyAdviceAdapter {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         if (request instanceof ContentCachingRequestWrapper) {
             byte[] content = ((ContentCachingRequestWrapper) request).getContentAsByteArray();
+            if (content[0] == '[') return body; // We avoid arrays
             Set<String> jsonFields = objectMapper.readValue(content, HashMap.class).keySet();
             Map<String, String> mapping = getMapping(body.getClass());
             Set<String> fields = jsonFields.stream().map(f -> mapping.getOrDefault(f, f)).collect(Collectors.toSet());
