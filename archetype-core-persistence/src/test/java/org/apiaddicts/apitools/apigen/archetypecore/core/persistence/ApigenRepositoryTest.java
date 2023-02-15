@@ -15,9 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.FilterUtils.gt;
-import static org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.FilterUtils.lt;
-import static org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.FilterUtils.regexp;
+import static org.apiaddicts.apitools.apigen.archetypecore.core.persistence.filter.FilterUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -161,6 +159,14 @@ class ApigenRepositoryTest {
 	@Test
 	void givenBigAttributes_whenSearch_thenSuccess() {
 		Filter filter = lt("bDec", "0.3333");
+		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, filter, EMPTY, null, false);
+		ApigenSearchResult<FakeEntityBigEntity> result = bigEntityRepository.search(search);
+		assertEquals(2, result.getSearchResult().size());
+	}
+
+	@Test
+	void givenComposedFilter_whenSearch_thenSuccess() {
+		Filter filter = and(eq("bInt", "100"), lt("bDec", "0.3333"));
 		ApigenSearch search = new ApigenSearch(EMPTY, EMPTY, EMPTY, filter, EMPTY, null, false);
 		ApigenSearchResult<FakeEntityBigEntity> result = bigEntityRepository.search(search);
 		assertEquals(2, result.getSearchResult().size());

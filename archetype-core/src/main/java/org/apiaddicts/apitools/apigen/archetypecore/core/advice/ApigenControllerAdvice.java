@@ -343,7 +343,7 @@ public class ApigenControllerAdvice {
 
 	@ResponseBody
 	@ExceptionHandler(InvalidDataAccessApiUsageException.class)
-	public ResponseEntity handleDataAccessApiUsage(InvalidDataAccessApiUsageException ex) {
+	public ResponseEntity<ApiResponse<Void>> handleDataAccessApiUsage(InvalidDataAccessApiUsageException ex) {
 		ApiError error;
 		if (ex.getCause() instanceof PatternSyntaxException) {
 			error = errorManager.getError(DefaultApigenError.INVALID_REGEX_EXPRESSION, ((PatternSyntaxException)ex.getCause()).getPattern());
@@ -352,7 +352,8 @@ public class ApigenControllerAdvice {
 		} else {
 			return new ResponseEntity<>(exception(ex), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<>(new ApiResponse<Void>().withResultErrors(errors(error)), HttpStatus.BAD_REQUEST);
+		ApiResponse<Void> response = new ApiResponse<Void>().withResultErrors(errors(error));
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
 	@ResponseBody

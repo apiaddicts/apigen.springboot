@@ -39,7 +39,7 @@
 
     <properties>
 
-        <revision>0.4.0-RC2</revision>
+        <revision>0.4.0-RC3</revision>
 
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>

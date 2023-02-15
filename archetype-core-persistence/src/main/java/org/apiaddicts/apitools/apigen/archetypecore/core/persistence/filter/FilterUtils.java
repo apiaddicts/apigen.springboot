@@ -17,13 +17,11 @@ public class FilterUtils {
     }
 
     public static Filter and(Filter... values) {
-        return new Filter(AND, Arrays.stream(values).map(Filter::getValues).flatMap(Collection::stream)
-                .collect(Collectors.toList()));
+        return new Filter(AND, Arrays.stream(values).map(Value::new).toList());
     }
 
     public static Filter or(Filter... values) {
-        return new Filter(OR, Arrays.stream(values).map(Filter::getValues).flatMap(Collection::stream)
-                .collect(Collectors.toList()));
+        return new Filter(OR, Arrays.stream(values).map(Value::new).toList());
     }
 
     public static Filter gt(String property, String value) {
