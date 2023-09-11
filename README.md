@@ -1,13 +1,37 @@
-# Apigen
 
-Apigen allow generate springboot archetipe using openapi file as mapping tool between the openapi definition and the database.
+# 🛠️ Apigen ![Release](https://img.shields.io/badge/release-0.4.0-purple) ![Swagger](https://img.shields.io/badge/-openapi-%23Clojure?style=flat&logo=swagger&logoColor=white) ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=flat&logo=openjdk&logoColor=white) ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=flat&logo=spring&logoColor=white) [![License: LGPL v3](https://img.shields.io/badge/license-LGPL_v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0) 
 
-# Contributors
 
-## CloudAPPi
-CloudAppi is one leader in APIs in global word. See the [CloudAPPi Services](https://cloudappi.net) 
+Welcome to **apigen.springboot**, the opensource project in Java that allows you to generate an archetype of the springboot framework using the openapi file as a mapping tool between the openapi definition and the database.
 
-# Usage 
+[![Twitter](https://img.shields.io/badge/Twitter-%23000000.svg?style=for-the-badge&logo=x&logoColor=white)](https://twitter.com/APIAddicts) 
+[![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/ZdbGqMBYy8)
+[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/company/apiaddicts/)
+[![Facebook](https://img.shields.io/badge/Facebook-%231877F2.svg?style=for-the-badge&logo=Facebook&logoColor=white)](https://www.facebook.com/apiaddicts)
+[![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white)](https://www.youtube.com/@APIAddictslmaoo)
+
+# 🙌 Join the **Apigen** Adopters list
+📢 If Apigen is part of your organization's toolkit, we kindly encourage you to include your company's name in our Adopters list. 🙏 This not only significantly boosts the project's visibility and reputation but also represents a small yet impactful way to give back to the project.
+
+| Organization  | Description of Use / Referenc |
+|---|---|
+| [CloudAppi](https://cloudappi.net/)  | Apification and generation of microservices |
+| [Acciona](https://www.acciona.com/)  | Generation of microservices |
+| [Madrid Digital](https://www.comunidad.madrid/servicios/sede-electronica/madrid-digital/)  | Generation of microservices  |
+| [Apiquality](https://apiquality.io/)  | Generation of microservices  |
+
+# 👩🏽‍💻  Contribute to ApiAddicts
+
+We're an inclusive and open community, and this implies that you too can become a part of our effort to enhance ApiAddicts!
+
+We're excited to prioritize tasks based on community input: you can review and collaborate through our GitHub issue tracker.
+
+Feel free to drop by and greet us on our GitHub discussion or Discord chat. You can also show your support by giving us some GitHub stars ⭐️, or by following us on Twitter, LinkedIn, and subscribing to our YouTube channel! 🚀
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/apiaddicts)
+
+
+# 📑 Getting started 
 
 ## Docker compose
 
@@ -20,9 +44,9 @@ services:
       - "8080:8080"
 ```
 
-## Proyecto
+## Project
 
-### Esquema
+### Scheme
     x-apigen-project:
       name: string
       description: string
@@ -31,27 +55,27 @@ services:
         group-id: string
         artifact-id: string
 
-### Definición
- - `x-apigen-project`: Apartado donde se define la información sobre el proyecto
-   - `name`: Nombre del proyecto
-     - `description`: Breve descripción del proyecto
-     - `version`: Version en la que se encuentra el proyecto
-     - `java-properties`: Apartado donde se define la información específica de java del proyecto
-       - `group-id`: Nombre del paquete inicial donde estará el proyecto, en caso de ser varias palabras, estarán separadas por `.`
-       - `artifact-id`: Nombre que identificará el proyecto
+### Definition
+- `x-apigen-project`: Section where project information is defined
+   - `name`: Project name
+     - `description`: Brief project description
+     - `version`: Project version
+     - `java-properties`: Section where specific Java project information is defined
+       - `group-id`: Initial package name where the project resides. If it consists of multiple words, they will be separated by `.`
+       - `artifact-id`: Identifier name for the project
     
-### Ejemplo
+### Samples
     x-apigen-project:
-      name: Colores
-      description: Este sería el proyecto de los colores
+      name: Colors
+      description: This would be the Colors project
       version: 1.0.0
       java-properties:
         group-id: the.group
         artifact-id: app
         
-## Modelos
+## Models
 
-### Esquema
+### Scheme
     x-apigen-models:
       <model_name>:
         relational-persistence:
@@ -76,36 +100,36 @@ services:
                 fraction: integer
                 inclusive: boolean   
                   
-### Definición
-- `x-apigen-models`: Apartado donde se definen los modelos del proyecto
-  - `<model_name>`: Nombre del modelo
-    - `relational-persistence`: Apartado en el que se indican todos los aspectos relacionados con la peristencia relacional del modelo
-      - `table`: Nombre de la tabla en la base de datos
-    - `attributes`: Apartado que contiene los atributos del modelo
-      - `name`: Nombre del atributo
-      - `type`: Tipo del atributo, los tipos soportados son: [Array, String, Boolean, Double, Float, Integer, Long, LocalDate, OffsetDateTime, ComposedID] o en caso de ser de otro modelo, el nombre de este
-      - `items-type`: En el caso que el valor de `type` sea un `Array`, este campo se debe definir con el nombre del modelo al que hace referencia
-      - `attributes`: Apartado similar a `attributes` del modelo, solo se utiliza cuando el type es ComposedID para indicar los atributos que forman parte de dicho identificador
-      - `relational-persistence`: Apartado en el que se indican todos los aspector relacionados con la persistencia relacional del atributo del modelo
-        - `column`: Nombre de la columna en la base de datos
-        - `columns`: Relacion de las columnas de la tabla actual a otra tabla relacionada cuando se trata de un modelo con un identificador compuesto (cada entrada se define como clave : valor donde la clave es el nombre en la tabla actual y el valor es el nombre en la tabla relacionada)
-        - `primary-key`: Indica si es la clave primaria, en caso de no indicarse el valor por defecto será `false`
-        - `foreign-column`: Indica el nombre de la columna en la tabla relacionada
-        - `foreign-columns`: Relacion de las columnas  en la tabla relacionada respecto a la actual cuando se trata de un modelo con un identificador compuesto (cada entrada se define como clave : valor donde la clave es el nombre en la tabla relacionada y el valor es el nombre en la tabla actual)
-        - `intermediate-table`: Nombre de la tabla intermedia en aquellos atributos que representan una relación muchos a muchos
-        - `owner`: Indica si esta parte de la relación es el propietario de esta, necesario en las relaciones uno a uno o uno a muchos
-        - `sequence`: Apartado donde se puede indicar de forma opciónal el generador ha utilizar para la clave primaria
-      - `validations`: Apartado en el que se definen las validaciones del atributo
-        - `type`: Los tipos soportados para la validación son los siguiente [NotNull, Size, Min, Min, Email, NotEmpty, NotBlank, Positive, PositiveOrZero, Negative, NegativeOrZero, Past, PastOrPresent, Future, FutureOrPresent, Pattern, Digits, DecimalMin, DecimalMax]
-        - `min`: Valor utilizado cuando el valor del campo `type` es `Size`
-        - `max`: Valor utilizado cuando el valor del campo `type` es `Size`
-        - `regex`: Valor utilizado cuando el valor del campo `type` es `Pattern`
-        - `value`: Valor utilizado cuando el valor del campo `type` es `Min`, `Max`, `DecimalMin` o `DecimalMax` 
-        - `integer`: Valor utilizado cuando el valor del campo `type` es `Digits`, representra cuantos números como máximo puede tener la parte entera del número
-        - `fraction`: Valor utilizado cuando el valor del campo `type` es `Digits`, representra cuantos números como máximo puede tener la parte decimal del número
-        - `inclusive`: Valor utilizado cuando el valor del campo `type` es `DecimalMin` o `DecimalMax` 
+### Definition
+- `x-apigen-models`: Section where project models are defined
+  - `<model_name>`: Name of the model
+    - `relational-persistence`: Section where all aspects related to the model's relational persistence are indicated
+      - `table`: Name of the table in the database
+    - `attributes`: Section that contains the model's attributes
+      - `name`: Name of the attribute
+      - `type`: Type of the attribute, supported types are: [Array, String, Boolean, Double, Float, Integer, Long, LocalDate, OffsetDateTime, ComposedID], or in the case of another model, the name of that model
+      - `items-type`: In the case of the `type` being an `Array`, this field should be defined with the name of the referenced model
+      - `attributes`: Similar to the `attributes` of the model, only used when the `type` is ComposedID to indicate the attributes that make up the identifier
+      - `relational-persistence`: Section where all aspects related to the relational persistence of the model's attribute are indicated
+        - `column`: Name of the column in the database
+        - `columns`: Relationship of columns from the current table to another related table when dealing with a model with a composite identifier (each entry is defined as key: value where the key is the name in the current table and the value is the name in the related table)
+        - `primary-key`: Indicates if it is the primary key, if not specified, the default value will be `false`
+        - `foreign-column`: Indicates the name of the column in the related table
+        - `foreign-columns`: Relationship of columns in the related table to the current table when dealing with a model with a composite identifier (each entry is defined as key: value where the key is the name in the related table and the value is the name in the current table)
+        - `intermediate-table`: Name of the intermediate table in those attributes that represent a many-to-many relationship
+        - `owner`: Indicates if this part of the relationship is the owner, necessary in one-to-one or one-to-many relationships
+        - `sequence`: Section where the optional generator to use for the primary key can be indicated
+      - `validations`: Section where attribute validations are defined
+        - `type`: The supported types for validation are as follows: [NotNull, Size, Min, Max, Email, NotEmpty, NotBlank, Positive, PositiveOrZero, Negative, NegativeOrZero, Past, PastOrPresent, Future, FutureOrPresent, Pattern, Digits, DecimalMin, DecimalMax]
+        - `min`: Value used when the `type` field is `Size`
+        - `max`: Value used when the `type` field is `Size`
+        - `regex`: Value used when the `type` field is `Pattern`
+        - `value`: Value used when the `type` field is `Min`, `Max`, `DecimalMin`, or `DecimalMax` 
+        - `integer`: Value used when the `type` field is `Digits`, representing the maximum number of digits in the integer part of the number
+        - `fraction`: Value used when the `type` field is `Digits`, representing the maximum number of digits in the decimal part of the number
+        - `inclusive`: Value used when the `type` field is `DecimalMin` or `DecimalMax`
 
-### Ejemplo
+### Samples
     x-apigen-models:
       Color:
         relational-persistence:
@@ -147,28 +171,28 @@ services:
                 validations:
                  - type: NotNull
 
-## Ampliación de los path
+## Path expansion
 
-### Esquema
+### Scheme
     paths:
       <path>:
         ...
         x-apigen-binding:
           model: string
           
-### Definición
- - `x-apigen-binding`: Apartado en el que se define la unión entre el endpoint y el modelo que usaremos
-   - `model`: En este campo podremos el nombre del modelo
+### Definition
+- `x-apigen-binding`: Section where the connection between the endpoint and the model we will use is defined
+   - `model`: In this field, we can specify the name of the model.
  
-### Ejemplo
+### Sample
     paths:
       /colors:
         x-apigen-binding:
           model: Color
           
-## Ampliación del apartado schema del requestBody
+## Extension of the schema section of the requestBody
 
-### Esquema
+### Scheme
 
     schemas:
       <schema>:
@@ -185,34 +209,34 @@ services:
           x-apigen-mapping:
             model: string
 
-### Definición
+### Definition
 
-- `x-apigen-mapping`: Apartado en el que se definen todos los datos de mapeo entre los recursos y los modelos. Cada atributo de un recurso de entrada, incluyendo el propio recurso de entrada pueden tener definido este apartado, si no esta definido se asume que tiene los valores por defecto indicados en cada apartado.
-  - `model`: Nombre del modelo al que representa el recurso o atributo, si a nivel de recurso no se indica no se considera un recurso estandar de entrada
-  - `field`: Nombre del atributo del modelo al que se mapeará el atributo del recurso, por defecto si no se indica nada se mapeará a un atributo con el mismo nombre si existe, sino se ingnorará. Existen dos casos específicos en los que es obligatorio definir este campo:
-    - Cuando el nombre del atributo en el recurso y en el modelo son diferentes
-      ````
-        nombre:
-          type: string
-          x-apigen-mapping:
-            field: primerNombre
-      ````
-    - Cuando el atributo en el recurso es una abreviatura del identificador de un modelo anidado
-      ````
-        color:
-          type: string
-          x-apigen-mapping:
-            model: color
-            field: valorCromatico.id
-      ````
+- `x-apigen-mapping`: Section where all mapping data between resources and models are defined. Each attribute of an input resource, including the input resource itself, can have this section defined. If it is not defined, it is assumed to have the default values indicated in each section.
+  - `model`: Name of the model that the resource or attribute represents. If not specified at the resource level, it is not considered a standard input resource.
+  - `field`: Name of the model attribute to which the resource attribute will be mapped. By default, if nothing is specified, it will be mapped to an attribute with the same name if it exists; otherwise, it will be ignored. There are two specific cases in which it is mandatory to define this field:
+    - When the name of the attribute in the resource and in the model are different:
+      ```yaml
+      nombre:
+        type: string
+        x-apigen-mapping:
+          field: primerNombre
+      ```
+    - When the attribute in the resource is an abbreviation of the identifier of a nested model:
+      ```yaml
+      color:
+        type: string
+        x-apigen-mapping:
+          model: color
+          field: valorCromatico.id
+      ```
 
-## Ampliación del apartado schema de los responses
+## Expansion of the response outline section
 
-### Precondiciones
+### Preconditions
 
-La extensión de Apigen para OpenAPI nos obliga a tener en cuenta una serie de condiciones para que las respuestas de los endpoints cumplan con el estandar.
+The Apigen extension for OpenAPI forces us to take into account a series of conditions so that endpoint responses comply with the standard.
 
-#### Tener definida una respuesta estandar
+#### Have a defined standard response
 
 ````yaml
   schemas:
@@ -248,7 +272,7 @@ La extensión de Apigen para OpenAPI nos obliga a tener en cuenta una serie de c
           type: string
 ````
 
-#### Tener definida una única respuesta estandar de colección por cada modelo
+#### Have a single standard collection response defined for each model
 
 ````yaml
   schemas:
@@ -266,7 +290,7 @@ La extensión de Apigen para OpenAPI nos obliga a tener en cuenta una serie de c
                     $ref: "#/components/schemas/<model_resource>"
 ````
 
-#### Tener definida una única respuesta estandar simple por cada modelo
+#### Have a single simple standard response defined for each model
 
 ````yaml
   schemas:
@@ -279,7 +303,7 @@ La extensión de Apigen para OpenAPI nos obliga a tener en cuenta una serie de c
               $ref: "#/components/schemas/<model_resource>"
 ````
 
-### Esquema
+### Scheme
 
     schemas:
       <schema>:
@@ -292,12 +316,12 @@ La extensión de Apigen para OpenAPI nos obliga a tener en cuenta una serie de c
           x-apigen-mapping:
             field: string
             
-### Definición
-- `x-apigen-mapping`: Apartado en el que se definen todos los datos de mapeo entre los recursos y los modelos. Cada recurso de salida debe tener definido este apartado
-  - `model`: Nombre del modelo al que representa el recurso
-  - `field`: Nombre del atributo del modelo al que se representará el atributo del recurso
+### Definition
+- `x-apigen-mapping`: Section where all mapping data between resources and models are defined. Each output resource must have this section defined.
+  - `model`: Name of the model that the resource represents.
+  - `field`: Name of the model attribute to which the resource attribute will be mapped.
 
-### Ejemplo
+### Sample
 
     color:
       x-apigen-mapping:
@@ -312,3 +336,10 @@ La extensión de Apigen para OpenAPI nos obliga a tener en cuenta una serie de c
           type: string
         forms:
           $ref: "#/components/schemas/forms"
+
+
+## 💛 Sponsors
+<img src="https://apiaddicts.cloudappi.net/web/image/4248/LOGOCloudappi2020Versiones-01.png" alt="cloudappi" width="150"/>
+<img src="https://www.comunidad.madrid/sites/default/files/styles/block_teaser_image/public/img/logos-simbolos/logo_centrado_md.png?itok=4rTUhmcj" alt="md" width="150"/>
+<img src="https://apiquality.io/wp-content/uploads/2022/09/cropped-logo-apiquality-principal-1-170x70.png" height = "75">
+<img src="https://apiaddicts-web.s3.eu-west-1.amazonaws.com/wp-content/uploads/2022/03/17155736/cropped-APIAddicts-logotipo_rojo.png" height = "75">
