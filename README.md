@@ -1,8 +1,9 @@
 
 # 🛠️ Apigen ![Release](https://img.shields.io/badge/release-0.4.0-purple) ![Swagger](https://img.shields.io/badge/-openapi-%23Clojure?style=flat&logo=swagger&logoColor=white) ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=flat&logo=openjdk&logoColor=white) ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=flat&logo=spring&logoColor=white) [![License: LGPL v3](https://img.shields.io/badge/license-LGPL_v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0) 
 
+Welcome to **apigen.springboot**, made in spain ![Spain](https://raw.githubusercontent.com/stevenrskelton/flag-icon/master/png/16/country-4x3/es.png "Spain"),  the opensource project in Java that allows you to generate an archetype of the springboot framework using the openapi file as a mapping tool between the openapi definition and the database.
 
-Welcome to **apigen.springboot**, the opensource project in Java that allows you to generate an archetype of the springboot framework using the openapi file as a mapping tool between the openapi definition and the database.
+### This repository is intended for :octocat: **community** use, it can be modified and adapted without commercial use. If you need a version, support or help for your **enterprise** or project, please contact us 📧 devrel@apiaddicts.org
 
 [![Twitter](https://img.shields.io/badge/Twitter-%23000000.svg?style=for-the-badge&logo=x&logoColor=white)](https://twitter.com/APIAddicts) 
 [![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/ZdbGqMBYy8)
@@ -10,19 +11,19 @@ Welcome to **apigen.springboot**, the opensource project in Java that allows you
 [![Facebook](https://img.shields.io/badge/Facebook-%231877F2.svg?style=for-the-badge&logo=Facebook&logoColor=white)](https://www.facebook.com/apiaddicts)
 [![YouTube](https://img.shields.io/badge/YouTube-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white)](https://www.youtube.com/@APIAddictslmaoo)
 
-# 🙌 Join the **Apigen** Adopters list
+# 🙌 Join the **Apigen** Adopters list 
 📢 If Apigen is part of your organization's toolkit, we kindly encourage you to include your company's name in our Adopters list. 🙏 This not only significantly boosts the project's visibility and reputation but also represents a small yet impactful way to give back to the project.
 
 | Organization  | Description of Use / Referenc |
 |---|---|
-| [CloudAppi](https://cloudappi.net/)  | Apification and generation of microservices |
+|  [CloudAppi](https://cloudappi.net/)  | Apification and generation of microservices |
 | [Acciona](https://www.acciona.com/)  | Generation of microservices |
 | [Madrid Digital](https://www.comunidad.madrid/servicios/sede-electronica/madrid-digital/)  | Generation of microservices  |
 | [Apiquality](https://apiquality.io/)  | Generation of microservices  |
 
-# 👩🏽‍💻  Contribute to ApiAddicts
+# 👩🏽‍💻  Contribute to ApiAddicts 
 
-We're an inclusive and open community, and this implies that you too can become a part of our effort to enhance ApiAddicts!
+We're an inclusive and open community, , and this implies that you too can become a part of our effort to enhance ApiAddicts!
 
 We're excited to prioritize tasks based on community input: you can review and collaborate through our GitHub issue tracker.
 
@@ -33,7 +34,7 @@ Feel free to drop by and greet us on our GitHub discussion or Discord chat. You 
 
 # 📑 Getting started 
 
-## Docker compose
+## 🐋 Docker compose
 
 ```yaml
 version: "3.3"
