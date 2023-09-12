@@ -1,7 +1,11 @@
 
 # 🛠️ Apigen ![Release](https://img.shields.io/badge/release-0.4.0-purple) ![Swagger](https://img.shields.io/badge/-openapi-%23Clojure?style=flat&logo=swagger&logoColor=white) ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=flat&logo=openjdk&logoColor=white) ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=flat&logo=spring&logoColor=white) [![License: LGPL v3](https://img.shields.io/badge/license-LGPL_v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0) 
 
-Welcome to **apigen.springboot**, made in spain ![Spain](https://raw.githubusercontent.com/stevenrskelton/flag-icon/master/png/16/country-4x3/es.png "Spain"), the opensource project in Java that allows you to generate an archetype of the springboot framework using the openapi file as a mapping tool between the openapi definition and the database.
+Welcome to **apigen.springboot**, made in spain ![Spain](https://raw.githubusercontent.com/stevenrskelton/flag-icon/master/png/16/country-4x3/es.png "Spain"), the opensource project in Java that allows you to generate an archetype of the springboot framework using the openapi file as a mapping tool between the openapi definition and the database. Click maven to see available mvnrepository dependencies.
+
+<a title="mvnrepository" href="https://mvnrepository.com/artifact/org.apiaddicts.apitools.apigen/apigen">
+    <img width="150"  src="https://blog.irontec.com/wp-content/uploads/2019/12/1280px-Maven_logo.svg_-300x76.png">
+</a>
 
 ### This repository is intended for :octocat: **community** use, it can be modified and adapted without commercial use. If you need a version, support or help for your **enterprise** or project, please contact us 📧 devrel@apiaddicts.org
 
