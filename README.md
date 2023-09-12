@@ -1,7 +1,7 @@
 
 # 🛠️ Apigen ![Release](https://img.shields.io/badge/release-0.4.0-purple) ![Swagger](https://img.shields.io/badge/-openapi-%23Clojure?style=flat&logo=swagger&logoColor=white) ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=flat&logo=openjdk&logoColor=white) ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=flat&logo=spring&logoColor=white) [![License: LGPL v3](https://img.shields.io/badge/license-LGPL_v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0) 
 
-Welcome to **apigen.springboot**, made in spain ![Spain](https://raw.githubusercontent.com/stevenrskelton/flag-icon/master/png/16/country-4x3/es.png "Spain"),  the opensource project in Java that allows you to generate an archetype of the springboot framework using the openapi file as a mapping tool between the openapi definition and the database.
+Welcome to **apigen.springboot**, made in spain ![Spain](https://raw.githubusercontent.com/stevenrskelton/flag-icon/master/png/16/country-4x3/es.png "Spain"), the opensource project in Java that allows you to generate an archetype of the springboot framework using the openapi file as a mapping tool between the openapi definition and the database.
 
 ### This repository is intended for :octocat: **community** use, it can be modified and adapted without commercial use. If you need a version, support or help for your **enterprise** or project, please contact us 📧 devrel@apiaddicts.org
 
@@ -23,9 +23,7 @@ Welcome to **apigen.springboot**, made in spain ![Spain](https://raw.githubuserc
 
 # 👩🏽‍💻  Contribute to ApiAddicts 
 
-We're an inclusive and open community, , and this implies that you too can become a part of our effort to enhance ApiAddicts!
-
-We're excited to prioritize tasks based on community input: you can review and collaborate through our GitHub issue tracker.
+We're an inclusive and open community, welcoming you to join our effort to enhance ApiAddicts, and we're excited to prioritize tasks based on community input, inviting you to review and collaborate through our GitHub issue tracker.
 
 Feel free to drop by and greet us on our GitHub discussion or Discord chat. You can also show your support by giving us some GitHub stars ⭐️, or by following us on Twitter, LinkedIn, and subscribing to our YouTube channel! 🚀
 
@@ -340,7 +338,11 @@ The Apigen extension for OpenAPI forces us to take into account a series of cond
 
 
 ## 💛 Sponsors
-<img src="https://apiaddicts.cloudappi.net/web/image/4248/LOGOCloudappi2020Versiones-01.png" alt="cloudappi" width="150"/>
-<img src="https://www.comunidad.madrid/sites/default/files/styles/block_teaser_image/public/img/logos-simbolos/logo_centrado_md.png?itok=4rTUhmcj" alt="md" width="150"/>
-<img src="https://apiquality.io/wp-content/uploads/2022/09/cropped-logo-apiquality-principal-1-170x70.png" height = "75">
-<img src="https://apiaddicts-web.s3.eu-west-1.amazonaws.com/wp-content/uploads/2022/03/17155736/cropped-APIAddicts-logotipo_rojo.png" height = "75">
+<p align="center">
+	<a href="https://apiaddicts.org/">
+    	<img src="https://apiaddicts.cloudappi.net/web/image/4248/LOGOCloudappi2020Versiones-01.png" alt="cloudappi" width="150"/>
+        <img src="https://www.comunidad.madrid/sites/default/files/styles/block_teaser_image/public/img/logos-simbolos/logo_centrado_md.png?itok=4rTUhmcj" alt="md" width="150"/>
+        <img src="https://apiquality.io/wp-content/uploads/2022/09/cropped-logo-apiquality-principal-1-170x70.png" height = "75">
+        <img src="https://apiaddicts-web.s3.eu-west-1.amazonaws.com/wp-content/uploads/2022/03/17155736/cropped-APIAddicts-logotipo_rojo.png" height = "75">
+	</a>
+</p>
