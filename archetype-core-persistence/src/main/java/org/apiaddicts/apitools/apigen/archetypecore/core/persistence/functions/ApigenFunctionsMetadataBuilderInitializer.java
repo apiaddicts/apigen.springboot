@@ -25,13 +25,13 @@ public class ApigenFunctionsMetadataBuilderInitializer implements MetadataBuilde
         final Class dialectClass = dialect.getClass();
 
         String regexFunc = null;
-        if (PostgreSQLDialect.class.isAssignableFrom(dialectClass) || PostgreSQL81Dialect.class.isAssignableFrom(dialectClass)) {
+        if (PostgreSQLDialect.class.isAssignableFrom(dialectClass)) {
             regexFunc = REGEXP_FUNCTION_POSTGRESQL;
             log.debug("Apigen functions initialized for PostgreSQL in dialect: {}", dialectClass);
         } else if (H2Dialect.class.isAssignableFrom(dialectClass)) {
             regexFunc = REGEXP_FUNCTION_STANDARD;
             log.debug("Apigen functions initialized for H2 in dialect: {}", dialectClass);
-        } else if (OracleDialect.class.isAssignableFrom(dialectClass) || Oracle8iDialect.class.isAssignableFrom(dialectClass)) {
+        } else if (OracleDialect.class.isAssignableFrom(dialectClass)) {
             regexFunc = REGEXP_FUNCTION_STANDARD;
             log.debug("Apigen functions initialized for Oracle in dialect: {}", dialectClass);
         } else if (MySQLDialect.class.isAssignableFrom(dialectClass)) {
