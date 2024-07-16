@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.1</version>
+        <version>3.3.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -39,7 +39,7 @@
 
     <properties>
 
-        <revision>0.5.0</revision>
+        <revision>0.6.0</revision>
 
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
@@ -50,14 +50,14 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <javapoet.version>1.13.0</javapoet.version>
-        <maven-model.version>3.8.7</maven-model.version>
-        <commons-io.version>2.11.0</commons-io.version>
-        <swagger-parser.version>2.1.10</swagger-parser.version>
+        <maven-model.version>3.9.8</maven-model.version>
+        <commons-io.version>2.16.1</commons-io.version>
+        <swagger-parser.version>2.1.22</swagger-parser.version>
         <beanutils.version>1.9.4</beanutils.version>
         <jackson-databind-nullable.version>0.2.3</jackson-databind-nullable.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
-        <jsonpatch.version>0.4.13</jsonpatch.version>
-        <springdoc.version>2.0.2</springdoc.version>
+        <jsonpatch.version>0.4.16</jsonpatch.version>
+        <springdoc.version>2.6.0</springdoc.version>
 
         <jacoco.maven.plugin.version>0.8.8</jacoco.maven.plugin.version>
         <flatten.maven.plugin.version>1.2.7</flatten.maven.plugin.version>

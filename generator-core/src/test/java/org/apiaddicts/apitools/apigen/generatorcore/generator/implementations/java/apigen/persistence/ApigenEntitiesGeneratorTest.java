@@ -451,8 +451,7 @@ class ApigenEntitiesGeneratorTest {
 
         assertEquals("[" +
                 "@jakarta.persistence.Id, " +
-                "@jakarta.persistence.GeneratedValue(generator = \"uuid\"), " +
-                "@org.hibernate.annotations.GenericGenerator(name = \"uuid\", strategy = \"uuid2\"), " +
+                "@org.hibernate.annotations.UuidGenerator, " +
                 "@jakarta.persistence.Column(name = \"id\")" +
                 "]", actual);
     }

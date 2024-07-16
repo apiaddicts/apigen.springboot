@@ -2,6 +2,39 @@
 
 All changes required to migrate generated Apigen projects to new versions will be documented in this file.
 
+## From [0.5.0] to [0.6.0]
+
+This version requires to replace the hibernate uuid generation.
+
+Old:
+```java
+    @Id
+    @GeneratedValue(
+            generator = "uuid"
+    )
+    @GenericGenerator(
+            name = "uuid",
+            strategy = "uuid2"
+    )
+    @Column(
+            name = "id"
+    )
+    private String id;
+```
+
+New:
+```java
+    @Id
+    @UuidGenerator
+    @Column(
+            name = "id"
+    )
+    private String id;
+```
+## From [0.4.0] to [0.5.0]
+
+No migration required
+
 ## From [0.3.0] to [0.4.0]
 
 In this version Apigen has been updated to use Spring Boot 3, so now you need a java version >= `17`
@@ -22,7 +55,11 @@ In this version Apigen has been updated to be auto documented with `spring-doc` 
 - Perform the Spring Boot migration from `2.4.x` to `2.6.x`
 - Remove the property `apigen.documentation.enabled`, now the documentation is managed by the `spring-doc` official properties
 
-[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/v0.2.1...HEAD
+[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/0.6.0...HEAD
+[0.6.0]: https://github.com/apiaddicts/apigen/releases/tag/0.6.0
+[0.5.0]: https://github.com/apiaddicts/apigen/releases/tag/0.5.0
+[0.4.0]: https://github.com/apiaddicts/apigen/releases/tag/v0.4.0
+[0.3.0]: https://github.com/apiaddicts/apigen/releases/tag/v0.3.0
 [0.2.1]: https://github.com/apiaddicts/apigen/releases/tag/v0.2.1
 [0.2.0]: https://github.com/apiaddicts/apigen/releases/tag/v0.2.0
 [0.1.1]: https://github.com/apiaddicts/apigen/releases/tag/v0.1.1

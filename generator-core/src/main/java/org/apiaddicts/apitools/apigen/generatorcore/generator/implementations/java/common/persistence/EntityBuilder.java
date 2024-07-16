@@ -13,10 +13,11 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.common.ApigenExt2J
 import org.apiaddicts.apitools.apigen.generatorcore.generator.components.java.AbstractJavaClassBuilder;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.JavaContext;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.CustomStringUtils;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.lang.model.element.Modifier;
 import jakarta.persistence.*;
+import org.hibernate.annotations.UuidGenerator;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -229,20 +230,13 @@ public class EntityBuilder<C extends JavaContext> extends AbstractJavaClassBuild
     }
 
     protected void addUUIDIdGenerationAnnotations(FieldSpec.Builder fieldBuilder) {
-        // @GeneratedValue(generator="uuid")
-        // @GenericGenerator(name = "uuid", strategy = "uuid2")
-        AnnotationSpec.Builder generatedValueAnnotation = getAnnotation(GeneratedValue.class)
-                .addMember(GENERATOR, STRING, "uuid");
-        fieldBuilder.addAnnotation(generatedValueAnnotation.build());
-        AnnotationSpec.Builder genericGeneratorAnnotationUUID = getAnnotation(GenericGenerator.class)
-                .addMember(NAME, STRING, "uuid")
-                .addMember(STRATEGY, STRING, "uuid2");
+        // @UuidGenerator
+        AnnotationSpec.Builder genericGeneratorAnnotationUUID = getAnnotation(UuidGenerator.class);
         fieldBuilder.addAnnotation(genericGeneratorAnnotationUUID.build());
     }
 
     private void addNativeIdGenerationAnnotations(FieldSpec.Builder fieldBuilder) {
         // @GeneratedValue(strategy = GenerationType.IDENTITY)
-        // @GenericGenerator(name = "native", strategy = "native")
         AnnotationSpec.Builder generatedValueAnnotation = getAnnotation(GeneratedValue.class)
                 .addMember(STRATEGY, ENUM_VALUE, GenerationType.class, GenerationType.IDENTITY);
         fieldBuilder.addAnnotation(generatedValueAnnotation.build());
