@@ -3,6 +3,7 @@ package org.apiaddicts.apitools.apigen.archetypecore.interceptors.controller;
 import org.apiaddicts.apitools.apigen.archetypecore.core.responses.ApiResponse;
 import org.apiaddicts.apitools.apigen.archetypecore.core.responses.ApiResponseObjectMother;
 import org.apiaddicts.apitools.apigen.archetypecore.exceptions.EntityNotFoundException;
+import org.apiaddicts.apitools.apigen.archetypecore.interceptors.ApigenContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,12 @@ public class FakeApiResultController {
 
     @GetMapping(value = "/with-200")
     public @ResponseBody ApiResponse getNewApiResultWith200() {
+        return new ValueResponse("value");
+    }
+
+    @GetMapping(value = "/with-200-trace-id-code")
+    public @ResponseBody ApiResponse getNewApiResultWith200AndTraceIdCode() {
+        ApigenContext.setTraceId("code-set-trace-id");
         return new ValueResponse("value");
     }
 

@@ -2,6 +2,7 @@ package org.apiaddicts.apitools.apigen.archetypecore.interceptors.response;
 
 import org.apiaddicts.apitools.apigen.archetypecore.core.responses.ApiResponse;
 import org.apiaddicts.apitools.apigen.archetypecore.core.responses.result.ApiResult;
+import org.apiaddicts.apitools.apigen.archetypecore.interceptors.ApigenContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -41,7 +42,7 @@ public abstract class ApiResponseEnhancer {
 		if (isNull(result.getStatus())) result.setStatus(success);
 		if (isNull(result.getHttpCode())) result.setHttpCode(status);
 		if (isNull(result.getInfo())) result.setInfo(success ? "OK" : "ERROR");
-		if (isNull(result.getTraceId())) result.setTraceId(httpServletRequest.getHeader(traceHeader));
+		if (isNull(result.getTraceId())) result.setTraceId(ApigenContext.getTraceId());
 
 		apiResponse.setResult(result);
 	}

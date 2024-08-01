@@ -232,4 +232,22 @@ public class ApiResponseBodyAdviceTest {
         assertEquals(200, response.getStatus());
     }
 
+    @Test
+    public void givenApiResponseWith200AndSetCodeTraceId_whenHttpCode200_thenReturnsApiResultWithStatusTrueHttpCode200InfoOKAndTraceId() throws Exception {
+        // given
+        // when
+        MockHttpServletResponse response = mvc.perform(
+                        get("/apiresult/with-200-trace-id-code")
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.result.status", is(true)))
+                .andExpect(jsonPath("$.result.http_code", is(200)))
+                .andExpect(jsonPath("$.result.info", is("OK")))
+                .andExpect(jsonPath("$.result.errors").doesNotExist())
+                .andExpect(jsonPath("$.result.trace_id", is("code-set-trace-id")))
+                .andReturn().getResponse();
+
+        // then
+        assertEquals(200, response.getStatus());
+    }
+
 }
