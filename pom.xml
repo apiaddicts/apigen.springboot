@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.2</version>
+        <version>3.3.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -39,7 +39,7 @@
 
     <properties>
 
-        <revision>0.6.1</revision>
+        <revision>0.6.2</revision>
 
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
