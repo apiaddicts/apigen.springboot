@@ -69,7 +69,7 @@ In this version Apigen has been updated to be auto documented with `spring-doc` 
 - Remove the property `apigen.documentation.enabled`, now the documentation is managed by the `spring-doc` official properties
 
 [unreleased]: https://github.com/apiaddicts/apigen/releases/tag/0.6.2...HEAD
-[0.6.1]: https://github.com/apiaddicts/apigen/releases/tag/0.6.2
+[0.6.2]: https://github.com/apiaddicts/apigen/releases/tag/0.6.2
 [0.6.1]: https://github.com/apiaddicts/apigen/releases/tag/0.6.1
 [0.6.0]: https://github.com/apiaddicts/apigen/releases/tag/0.6.0
 [0.5.0]: https://github.com/apiaddicts/apigen/releases/tag/0.5.0
