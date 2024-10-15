@@ -1,4 +1,4 @@
-FROM amazoncorretto:17
+FROM amazoncorretto:21
 VOLUME /tmp
 ARG JAR_FILE
 COPY ${JAR_FILE} app.jar

@@ -50,9 +50,9 @@ public abstract class AbstractPomGenerator<C extends JavaContext> extends Abstra
     }
 
     protected void addProperties(Model model) {
-        model.addProperty("java.version", "17");
-        model.addProperty("maven.compiler.source", "17");
-        model.addProperty("maven.compiler.target", "17");
+        model.addProperty("java.version", "21");
+        model.addProperty("maven.compiler.source", "21");
+        model.addProperty("maven.compiler.target", "21");
         model.addProperty("project.build.sourceEncoding", "UTF-8");
         model.addProperty("project.reporting.outputEncoding", "UTF-8");
     }
