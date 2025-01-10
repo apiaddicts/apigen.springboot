@@ -23,8 +23,8 @@ public class ApigenPropertiesFileBuilder<C extends ApigenContext> extends JavaPr
         addProperty("spring.main.allow-circular-references", "true");
         addProperty("spring.mvc.throw-exception-if-no-handler-found", "true");
         addProperty("spring.web.resources.add-mappings", "false");
-        addProperty("management.endpoints.enabled-by-default", "false");
-        addProperty("management.endpoint.health.enabled", "true");
+        addProperty("management.endpoints.access.default", "none");
+        addProperty("management.endpoint.health.access", "read-only");
         addStandardResponseProperties();
     }
 
