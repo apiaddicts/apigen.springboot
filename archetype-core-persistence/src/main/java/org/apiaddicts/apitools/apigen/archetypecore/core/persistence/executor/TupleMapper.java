@@ -4,13 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apiaddicts.apitools.apigen.archetypecore.core.persistence.ApigenAbstractPersistable;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.util.StringUtils;
 
 import jakarta.persistence.Tuple;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -23,6 +24,7 @@ public class TupleMapper {
 	private final EntityInfo entityData;
 	private final EntityLookup lookup;
 	private List<EntityAttributesGroup> groups;
+	private static final Map<Class<?>, Map<String, Field>> fieldCache = new ConcurrentHashMap<>();
 
 	public TupleMapper(List<String> fields, EntityInfo entityData, Class<?> clazz) {
 		this.clazz = clazz;
@@ -151,7 +153,21 @@ public class TupleMapper {
 
 	private void setFieldValue(ApigenAbstractPersistable<?> instance, String field, Object value) {
 		try {
-			BeanUtils.copyProperty(instance, field, value);
+			Class<?> clazz = instance.getClass();
+			Map<String, Field> fields = fieldCache.computeIfAbsent(clazz, cls -> {
+				Map<String, Field> map = new ConcurrentHashMap<>();
+				for (Field f : cls.getDeclaredFields()) {
+					f.setAccessible(true);
+					map.put(f.getName(), f);
+				}
+				return map;
+			});
+			Field f = fields.get(field);
+			if (f != null) {
+				f.set(instance, value);
+			} else {
+				throw new NoSuchFieldException("Field " + field + " not found in " + clazz.getName());
+			}
 		} catch (Exception e) {
 			log.warn("Attribute '{}' of entity {} can not be set", instance.getClass(), e);
 		}

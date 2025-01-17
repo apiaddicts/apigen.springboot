@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+## [1.1.1] - 2025-01-17
+
+### Changed
+- Optimized search tuple management
+
 ## [1.1.0] - 2025-01-10
 
 ### Changed
@@ -113,7 +118,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial functional version of Apigen
 
-[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/1.1.0...HEAD
+[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/1.1.1...HEAD
+[1.1.1]: https://github.com/apiaddicts/apigen/releases/tag/1.1.1
 [1.1.0]: https://github.com/apiaddicts/apigen/releases/tag/1.1.0
 [1.0.1]: https://github.com/apiaddicts/apigen/releases/tag/1.0.1
 [1.0.0]: https://github.com/apiaddicts/apigen/releases/tag/1.0.0
