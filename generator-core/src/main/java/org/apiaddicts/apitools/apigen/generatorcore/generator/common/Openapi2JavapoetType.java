@@ -45,6 +45,8 @@ public class Openapi2JavapoetType {
                 return getIntegerClass(format);
             case TYPE_BOOLEAN:
                 return getBooleanClass();
+            case TYPE_OBJECT:
+                return getObjectClass();
             default:
                 throw new IllegalArgumentException("Type " + type + " with format " + format + " not supported");
         }
@@ -90,6 +92,10 @@ public class Openapi2JavapoetType {
 
     private static Class getBooleanClass() {
         return Boolean.class;
+    }
+
+    private static Class getObjectClass() {
+        return Object.class;
     }
 
     private static String low(String value) {
