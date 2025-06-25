@@ -38,7 +38,7 @@
 
     <properties>
 
-        <revision>1.2.1</revision>
+        <revision>1.2.2</revision>
 
         <java.version>21</java.version>
         <maven.compiler.source>21</maven.compiler.source>

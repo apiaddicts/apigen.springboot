@@ -39,7 +39,7 @@
 
     <properties>
 
-        <revision>1.2.1</revision>
+        <revision>1.2.2</revision>
 
         <java.version>21</java.version>
         <maven.compiler.source>21</maven.compiler.source>
@@ -53,7 +53,7 @@
         <maven-model.version>3.9.8</maven-model.version>
         <commons-io.version>2.16.1</commons-io.version>
         <swagger-parser.version>2.1.22</swagger-parser.version>
-        <beanutils.version>1.9.4</beanutils.version>
+        <beanutils.version>1.11.0</beanutils.version>
         <jackson-databind-nullable.version>0.2.3</jackson-databind-nullable.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
         <jsonpatch.version>0.4.16</jsonpatch.version>

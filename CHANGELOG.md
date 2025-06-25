@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+## [1.2.2] - 2025-06-25
+
+### Changed
+- Updated apache bean utils to `1.11.0`
+
 ## [1.2.1] - 2025-06-25
 
 ### Changed
@@ -138,7 +143,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial functional version of Apigen
 
-[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/1.2.1...HEAD
+[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/1.2.2...HEAD
+[1.2.2]: https://github.com/apiaddicts/apigen/releases/tag/1.2.2
 [1.2.1]: https://github.com/apiaddicts/apigen/releases/tag/1.2.1
 [1.2.0]: https://github.com/apiaddicts/apigen/releases/tag/1.2.0
 [1.1.3]: https://github.com/apiaddicts/apigen/releases/tag/1.1.3
