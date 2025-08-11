@@ -50,7 +50,7 @@ public class CustomApigenException extends RuntimeException {
 			this.element = element;
 		}
 
-		public Error(String key, String element, Object[] otherElements) {
+		public Error(String key, String element, Object... otherElements) {
 			this.key = key;
 			this.element = element;
 			this.otherElements = otherElements;
