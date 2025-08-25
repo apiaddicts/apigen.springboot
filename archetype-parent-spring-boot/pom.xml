@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.4</version>
+        <version>3.5.5</version>
         <relativePath/>
     </parent>
 
@@ -17,6 +17,9 @@
     <version>${revision}</version>
     <packaging>pom</packaging>
     <url>https://github.com/apiaddicts/apigen</url>
+
+    <name>apigen-archetype-parent-spring-boot</name>
+    <description>Apigen Spring Boot Archetype Parent</description>
 
     <licenses>
         <license>
@@ -38,7 +41,7 @@
 
     <properties>
 
-        <revision>1.2.3</revision>
+        <revision>1.2.4</revision>
 
         <java.version>21</java.version>
         <maven.compiler.source>21</maven.compiler.source>
@@ -136,14 +139,14 @@
                     </plugin>
                     <!-- To release to Maven central -->
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>${sonartype.nexus.plugin.version}</version>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.8.0</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <publishingServerId>ossrh</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>published</waitUntil>
                         </configuration>
                     </plugin>
                 </plugins>
