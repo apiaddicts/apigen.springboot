@@ -1,6 +1,5 @@
 package org.apiaddicts.apitools.apigen.archetypecore.autoconfigure;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.Module;
 import org.apiaddicts.apitools.apigen.archetypecore.core.JsonNullableMapper;
 import org.apiaddicts.apitools.apigen.archetypecore.core.JsonNullableMapperImpl;
@@ -19,6 +18,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Import({WebConfig.class})
 public class ApigenConfiguration {
@@ -55,8 +55,8 @@ public class ApigenConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean(ApigenResponseConverterFilter.class)
-	public ApigenResponseConverterFilter apigenResponseConverterFilter(ApigenProperties properties, ObjectMapper mapper) {
-		return new ApigenResponseConverterFilter(mapper, properties);
+	public ApigenResponseConverterFilter apigenResponseConverterFilter(ObjectMapper objectMapper, ApigenProperties properties) {
+		return new ApigenResponseConverterFilter(objectMapper, properties);
 	}
 
 	@Bean

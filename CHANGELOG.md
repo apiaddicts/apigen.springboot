@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+## [2.0.0] - 2025-09-23
+
+### Added
+
+- CLI support for project generation
+
+### Changed
+- Updated spring boot version to `4.0.0`
+- Updated `swagger-parser` version to `2.1.36`
+- Updated `maven-model` version to `3.9.11`
+- Updated `commons-io` version to `2.21.0`
+- Updated `jackson-databind-nullable` version to `0.2.8`
+- Updated `mapstruct` version to `1.6.3`
+- Updated `springdoc` version to `3.0.0`
+- Update the `jackson.version` to `2.20.1` to avoid using jackson 3 until all required dependencies support it (JsonNullable does not support it yet)
+
 ## [1.2.5] - 2025-09-23
 
 ### Changed
@@ -158,7 +174,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial functional version of Apigen
 
-[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/1.2.5...HEAD
+[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/2.0.0...HEAD
+[2.0.0]: https://github.com/apiaddicts/apigen/releases/tag/2.0.0
 [1.2.5]: https://github.com/apiaddicts/apigen/releases/tag/1.2.5
 [1.2.4]: https://github.com/apiaddicts/apigen/releases/tag/1.2.4
 [1.2.3]: https://github.com/apiaddicts/apigen/releases/tag/1.2.3

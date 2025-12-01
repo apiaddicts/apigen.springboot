@@ -1,7 +1,6 @@
 package org.apiaddicts.apitools.apigen.archetypecore.interceptors.update;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.apiaddicts.apitools.apigen.archetypecore.interceptors.ApigenContext;
 import org.springframework.core.MethodParameter;
@@ -14,6 +13,8 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAd
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import jakarta.servlet.http.HttpServletRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.HashMap;

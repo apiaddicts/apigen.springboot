@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.6</version>
+        <version>4.0.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -39,38 +39,37 @@
 
     <properties>
 
-        <revision>1.2.5</revision>
+        <revision>2.0.0</revision>
 
         <java.version>21</java.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
 
-        <mapstruct.version>1.6.3</mapstruct.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <javapoet.version>1.13.0</javapoet.version>
-        <maven-model.version>3.9.8</maven-model.version>
-        <commons-io.version>2.20.0</commons-io.version>
-        <swagger-parser.version>2.1.31</swagger-parser.version>
+        <maven-model.version>3.9.11</maven-model.version>
+        <commons-io.version>2.21.0</commons-io.version>
+        <swagger-parser.version>2.1.36</swagger-parser.version>
         <beanutils.version>1.11.0</beanutils.version>
-        <jackson-databind-nullable.version>0.2.3</jackson-databind-nullable.version>
-        <mapstruct.version>1.5.3.Final</mapstruct.version>
+        <jackson-databind-nullable.version>0.2.8</jackson-databind-nullable.version>
+        <mapstruct.version>1.6.3</mapstruct.version>
         <jsonpatch.version>0.4.16</jsonpatch.version>
-        <springdoc.version>2.8.9</springdoc.version>
+        <springdoc.version>3.0.0</springdoc.version>
 
-        <jacoco.maven.plugin.version>0.8.12</jacoco.maven.plugin.version>
-        <flatten.maven.plugin.version>1.2.7</flatten.maven.plugin.version>
-        <sonartype.nexus.plugin.version>1.6.13</sonartype.nexus.plugin.version>
+        <jacoco.maven.plugin.version>0.8.14</jacoco.maven.plugin.version>
+        <flatten.maven.plugin.version>1.7.3</flatten.maven.plugin.version>
+        <sonartype.nexus.plugin.version>1.7.0</sonartype.nexus.plugin.version>
 
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.reportPaths>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPaths>
 
-        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-        <maven-javadoc-plugin.version>3.3.2</maven-javadoc-plugin.version>
-        <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
-        <maven-enforcer-plugin.version>3.0.0</maven-enforcer-plugin.version>
+        <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+        <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
+        <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
+        <maven-enforcer-plugin.version>3.6.2</maven-enforcer-plugin.version>
 
         <maven.test.skip>false</maven.test.skip>
     </properties>
@@ -81,6 +80,7 @@
         <module>generator-core</module>
         <module>generator-rest</module>
         <module>archetype-parent-spring-boot</module>
+        <module>generator-cli</module>
     </modules>
 
     <dependencyManagement>

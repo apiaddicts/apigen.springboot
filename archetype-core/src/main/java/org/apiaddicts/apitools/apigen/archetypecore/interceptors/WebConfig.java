@@ -7,7 +7,6 @@ import org.apiaddicts.apitools.apigen.archetypecore.interceptors.expand.ExpandAn
 import org.apiaddicts.apitools.apigen.archetypecore.interceptors.trace.TraceIdInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Collections;
@@ -20,10 +19,6 @@ public class WebConfig implements WebMvcConfigurer {
 	@Autowired
 	ApigenProperties properties;
 
-	@Override
-	public void configurePathMatch(PathMatchConfigurer configurer) {
-		configurer.setUseTrailingSlashMatch(false);
-	}
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
