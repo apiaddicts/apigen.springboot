@@ -4,7 +4,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.ProjectGenerator;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.ZipUtils;
-import org.apiaddicts.apitools.apigen.generatorrest.uitls.OpenAPIZipUtils;
+import org.apiaddicts.apitools.apigen.generatorrest.utils.OpenAPIZipUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

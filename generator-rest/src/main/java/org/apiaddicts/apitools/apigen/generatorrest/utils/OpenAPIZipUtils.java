@@ -1,4 +1,4 @@
-package org.apiaddicts.apitools.apigen.generatorrest.uitls;
+package org.apiaddicts.apitools.apigen.generatorrest.utils;
 
 import org.apiaddicts.apitools.apigen.generatorrest.core.exceptions.GeneratorRestErrors;
 import org.apiaddicts.apitools.apigen.generatorrest.core.exceptions.GeneratorRestException;

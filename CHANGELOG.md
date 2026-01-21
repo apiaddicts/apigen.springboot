@@ -3,9 +3,16 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.1.html).
 
 ## [unreleased]
+
+## [2.0.1] - 2026-01-21
+
+### Fixed
+
+- Wrong `utils` package name in `generator-rest`
+- Wrong `parent` value in generated `pom.xml` from `generator-cli`
 
 ## [2.0.0] - 2025-12-01
 
@@ -174,7 +181,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial functional version of Apigen
 
-[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/2.0.0...HEAD
+[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/2.0.1...HEAD
+[2.0.1]: https://github.com/apiaddicts/apigen/releases/tag/2.0.1
 [2.0.0]: https://github.com/apiaddicts/apigen/releases/tag/2.0.0
 [1.2.5]: https://github.com/apiaddicts/apigen/releases/tag/1.2.5
 [1.2.4]: https://github.com/apiaddicts/apigen/releases/tag/1.2.4

@@ -5,7 +5,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.Project;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.ProjectGenerator;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
 import org.apiaddicts.apitools.apigen.generatorcore.utils.ZipUtils;
-import org.apiaddicts.apitools.apigen.generatorrest.uitls.OpenAPIZipUtils;
+import org.apiaddicts.apitools.apigen.generatorrest.utils.OpenAPIZipUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
