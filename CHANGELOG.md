@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.1
 
 ## [unreleased]
 
+## [2.1.0] - 2026-06-15
+
+### Changed
+
+- Updated spring boot version to `4.1.0`
+- Updated `swagger-parser` version to `2.1.44`
+- Updated `jackson-databind-nullable` version to `0.2.10`
+- Updated `commons-io` version to `2.22.0`
+- Updated `springdoc` version to `3.0.3`
+- Updated `archunit` version to `1.4.2`
+- Updated `spring-shell` version to `4.0.3` and migrated generator-cli to its new API
+- Updated `maven-enforcer-plugin` version to `3.6.3`
+- Updated `jacoco-maven-plugin` version to `0.8.15`
+- Updated `maven-compiler-plugin` version to `3.14.1`
+- Migrated from Jackson 2 to Jackson 3: renamed `com.fasterxml.jackson.databind.*` and `com.fasterxml.jackson.core.*` imports to `tools.jackson.*` across archetype-core, generator-core, and generator-cli; replaced `JsonNullableModule` with `JsonNullableJackson3Module`; removed `spring-boot-jackson2` workaround from all pom files
+
 ## [2.0.3] - 2026-04-01
 
 ### Changed
@@ -197,7 +213,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.1
 ### Added
 - Initial functional version of Apigen
 
-[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/2.0.3...HEAD
+[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/2.1.0...HEAD
+[2.1.0]: https://github.com/apiaddicts/apigen/releases/tag/2.1.0
 [2.0.3]: https://github.com/apiaddicts/apigen/releases/tag/2.0.3
 [2.0.2]: https://github.com/apiaddicts/apigen/releases/tag/2.0.2
 [2.0.1]: https://github.com/apiaddicts/apigen/releases/tag/2.0.1

@@ -1,6 +1,6 @@
 package org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.common.web.controller.parameters;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ArrayNode;
 import com.squareup.javapoet.AnnotationSpec;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Parameter;

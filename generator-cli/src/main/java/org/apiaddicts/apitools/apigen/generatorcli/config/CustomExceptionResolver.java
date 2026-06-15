@@ -1,14 +1,12 @@
 package org.apiaddicts.apitools.apigen.generatorcli.config;
 
-import org.springframework.core.annotation.Order;
-import org.springframework.shell.command.CommandExceptionResolver;
-import org.springframework.shell.command.CommandHandlingResult;
+import org.springframework.shell.core.command.ExitStatus;
+import org.springframework.shell.core.command.exit.ExitStatusExceptionMapper;
 
-@Order(0)
-public class CustomExceptionResolver implements CommandExceptionResolver {
+public class CustomExceptionResolver implements ExitStatusExceptionMapper {
 
     @Override
-    public CommandHandlingResult resolve(Exception ex) {
-        return CommandHandlingResult.of(ex.getMessage(), 1);
+    public ExitStatus apply(Exception ex) {
+        return new ExitStatus(1, ex.getMessage());
     }
 }

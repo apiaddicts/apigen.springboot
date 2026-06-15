@@ -1,11 +1,9 @@
 package org.apiaddicts.apitools.apigen.archetypecore.interceptors.response;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.flipkart.zjsonpatch.JsonPatch;
 import com.flipkart.zjsonpatch.JsonPatchApplicationException;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apiaddicts.apitools.apigen.archetypecore.autoconfigure.ApigenProperties;
 import org.springframework.http.MediaType;
@@ -19,12 +17,18 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 @Slf4j
-@AllArgsConstructor
 public class ApigenResponseConverterFilter implements Filter {
 
-    private final ObjectMapper om;
+    // zjsonpatch 0.4.16 uses com.fasterxml.jackson types in its public API
+    private static final com.fasterxml.jackson.databind.ObjectMapper MAPPER =
+            new com.fasterxml.jackson.databind.ObjectMapper();
+
     private final ApigenProperties props;
     private static final String PROP_PATH_ALL = "^[a-zA-z/]+[*]{1}[a-zA-z/]+";
+
+    public ApigenResponseConverterFilter(ApigenProperties props) {
+        this.props = props;
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -41,10 +45,10 @@ public class ApigenResponseConverterFilter implements Filter {
                 final byte[] originalData = responseWrapper.getContentAsByteArray();
                 String contentType = responseWrapper.getContentType();
                 if (contentType.equals(MediaType.APPLICATION_JSON_VALUE) && originalData.length != 0) {
-                    final JsonNode newData = convert(originalData, operations);
+                    final String newData = convert(originalData, operations);
                     int status = ((HttpServletResponse) response).getStatus();
                     response.reset();
-                    response.setContentLength(newData.toString().length());
+                    response.setContentLength(newData.length());
                     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                     ((HttpServletResponse) response).setStatus(status);
                     PrintWriter out = response.getWriter();
@@ -63,12 +67,12 @@ public class ApigenResponseConverterFilter implements Filter {
         }
     }
 
-    private JsonNode convert(byte[] originalData, List<String> operations) throws IOException {
-        final ObjectNode root = (ObjectNode) om.readTree(originalData);
+    private String convert(byte[] originalData, List<String> operations) throws IOException {
+        final ObjectNode root = (ObjectNode) MAPPER.readTree(originalData);
         JsonNode target = root.deepCopy();
 
         for (String operation : operations) {
-            JsonNode op = om.readTree(operation);
+            JsonNode op = MAPPER.readTree(operation);
             try {
                 String path = op.get("path").asText();
                 String from = op.has("from") ? op.get("from").asText() : null;
@@ -83,16 +87,16 @@ public class ApigenResponseConverterFilter implements Filter {
                             cp2.put("from", from.replace("*", i + ""));
                         }
                         log.debug("Applying response transformation {}", cp2);
-                        target = JsonPatch.apply(om.readTree("[" + op2 + "]"), target);
+                        target = JsonPatch.apply(MAPPER.readTree("[" + op2 + "]"), target);
                     }
                 } else {
                     log.debug("Applying response transformation {}", op);
-                    target = JsonPatch.apply(om.readTree("[" + op + "]"), target);
+                    target = JsonPatch.apply(MAPPER.readTree("[" + op + "]"), target);
                 }
             } catch (JsonPatchApplicationException e) {
                 log.debug("Response transformation error: {} ", e.getMessage());
             }
         }
-        return target;
+        return target.toString();
     }
 }

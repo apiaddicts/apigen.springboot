@@ -1,6 +1,7 @@
 package org.apiaddicts.apitools.apigen.archetypecore.autoconfigure;
 
-import com.fasterxml.jackson.databind.Module;
+import tools.jackson.databind.JacksonModule;
+import tools.jackson.databind.ObjectMapper;
 import org.apiaddicts.apitools.apigen.archetypecore.core.JsonNullableMapper;
 import org.apiaddicts.apitools.apigen.archetypecore.core.JsonNullableMapperImpl;
 import org.apiaddicts.apitools.apigen.archetypecore.core.advice.ApigenControllerAdvice;
@@ -13,12 +14,11 @@ import org.apiaddicts.apitools.apigen.archetypecore.interceptors.response.Apigen
 import org.apiaddicts.apitools.apigen.archetypecore.interceptors.update.CachingRequestBodyFilter;
 import org.apiaddicts.apitools.apigen.archetypecore.interceptors.update.UpdateRequestBodyAdvice;
 import org.apiaddicts.apitools.apigen.archetypecore.interceptors.WebConfig;
-import org.openapitools.jackson.nullable.JsonNullableModule;
+import org.openapitools.jackson.nullable.JsonNullableJackson3Module;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Import({WebConfig.class})
 public class ApigenConfiguration {
@@ -55,8 +55,8 @@ public class ApigenConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean(ApigenResponseConverterFilter.class)
-	public ApigenResponseConverterFilter apigenResponseConverterFilter(ObjectMapper objectMapper, ApigenProperties properties) {
-		return new ApigenResponseConverterFilter(objectMapper, properties);
+	public ApigenResponseConverterFilter apigenResponseConverterFilter(ApigenProperties properties) {
+		return new ApigenResponseConverterFilter(properties);
 	}
 
 	@Bean
@@ -72,8 +72,8 @@ public class ApigenConfiguration {
 	}
 
 	@Bean
-	public Module jsonNullableModule() {
-		return new JsonNullableModule();
+	public JacksonModule jsonNullableModule() {
+		return new JsonNullableJackson3Module();
 	}
 
 	@Bean

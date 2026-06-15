@@ -1,12 +1,13 @@
 package org.apiaddicts.apitools.apigen.generatorcli.cmd;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.Project;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.ProjectGenerator;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenGenerationStrategy;
-import org.springframework.shell.command.annotation.Command;
-import org.springframework.shell.command.annotation.Option;
+import org.springframework.shell.core.command.annotation.Command;
+import org.springframework.shell.core.command.annotation.CommandGroup;
+import org.springframework.shell.core.command.annotation.Option;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -18,15 +19,15 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-@Command(group = "Code generation")
+@CommandGroup(name = "Code generation")
 public class GenerateCodeCmd {
 
-    @Command(command = "generate", alias = "g", description = "Generates code from OpenAPI specification or json file")
+    @Command(name = "generate", alias = "g", description = "Generates code from OpenAPI specification or json file", exitStatusExceptionMapper = "customExceptionResolver")
     public String generate(
-            @Option(longNames = "file", shortNames = 'f', description = "OpenAPI file path") String file,
-            @Option(longNames = "config", shortNames = 'c', description = "Config json file path") String config,
-            @Option(longNames = "output", shortNames = 'o', defaultValue = "./output", description = "Folder where code is generated") String output,
-            @Option(longNames = "zip", defaultValue = "false", description = "If true, output as zipped content") boolean zip
+            @Option(longName = "file", shortName = 'f', description = "OpenAPI file path") String file,
+            @Option(longName = "config", shortName = 'c', description = "Config json file path") String config,
+            @Option(longName = "output", shortName = 'o', defaultValue = "./output", description = "Folder where code is generated") String output,
+            @Option(longName = "zip", defaultValue = "false", description = "If true, output as zipped content") boolean zip
     ) throws Exception {
         Map<String, Object> globalConfig = new HashMap<>();
         globalConfig.put("parentGroup", "org.apiaddicts.apitools.apigen");
@@ -47,7 +48,7 @@ public class GenerateCodeCmd {
             if (!f.exists()) {
                 throw new IllegalArgumentException("File " + config + " does not exist");
             }
-            ObjectMapper mapper = new ObjectMapper();
+            var mapper = JsonMapper.builder().build();
             var configuration = mapper.readValue(f, Configuration.class);
             project = generator.generate(configuration);
         }

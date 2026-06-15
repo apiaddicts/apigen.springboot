@@ -1,10 +1,11 @@
 package org.apiaddicts.apitools.apigen.generatorcli.cmd;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.ProjectGenerator;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenGenerationStrategy;
-import org.springframework.shell.command.annotation.Command;
-import org.springframework.shell.command.annotation.Option;
+import org.springframework.shell.core.command.annotation.Command;
+import org.springframework.shell.core.command.annotation.CommandGroup;
+import org.springframework.shell.core.command.annotation.Option;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,13 +13,13 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
-@Command(group = "Config generation")
+@CommandGroup(name = "Config generation")
 public class GenerateConfigCmd {
 
-    @Command(command = "generate-config", alias = "gc", description = "Generates config json from OpenAPI specification")
+    @Command(name = "generate-config", alias = "gc", description = "Generates config json from OpenAPI specification", exitStatusExceptionMapper = "customExceptionResolver")
     public String generate(
-            @Option(longNames = "file", shortNames = 'f', required = true, description = "OpenAPI file path") String file,
-            @Option(longNames = "output", shortNames = 'o', defaultValue = "./output", description = "Folder where config is generated") String output
+            @Option(longName = "file", shortName = 'f', required = true, description = "OpenAPI file path") String file,
+            @Option(longName = "output", shortName = 'o', defaultValue = "./output", description = "Folder where config is generated") String output
     ) throws Exception {
         Map<String, Object> globalConfig = new HashMap<>();
         globalConfig.put("parentGroup", "org.apiaddicts.apitools.apigen");
@@ -30,7 +31,7 @@ public class GenerateConfigCmd {
             throw new IllegalArgumentException("File " + file + " does not exist");
         }
         var config = generator.getConfiguration((Files.readAllBytes(f.toPath())));
-        ObjectMapper mapper = new ObjectMapper();
+        var mapper = JsonMapper.builder().build();
         var configJson = mapper.writeValueAsBytes(config);
         File outputDir = new File(output);
         if (!outputDir.exists()) {

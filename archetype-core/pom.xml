@@ -34,11 +34,6 @@
         <url>https://github.com/apiaddicts/apigen/tree/master</url>
     </scm>
 
-    <!-- FIXME: remove explicit jackson version when json nullable suports jackson 3 -->
-    <properties>
-        <jackson.version>2.20.1</jackson.version>
-    </properties>
-
     <dependencies>
 
         <dependency>
@@ -48,22 +43,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <!-- FIXME: remove explicit jackson dependency exclusion when json nullable suports jackson 3 -->
-                <exclusion>
-                    <artifactId>spring-boot-jackson</artifactId>
-                    <groupId>org.springframework.boot</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>spring-boot-starter-jackson</artifactId>
-                    <groupId>org.springframework.boot</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!-- FIXME: remove explicit jackson dependency when json nullable suports jackson 3 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-jackson2</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -76,13 +55,6 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>spring-boot-jackson</artifactId>
-                    <groupId>org.springframework.boot</groupId>
-                </exclusion>
-            </exclusions>
-
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
@@ -91,6 +63,12 @@
         <dependency>
             <groupId>com.flipkart.zjsonpatch</groupId>
             <artifactId>zjsonpatch</artifactId>
+        </dependency>
+        <!-- zjsonpatch 0.4.16 uses com.fasterxml.jackson types in its public API -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.20.1</version>
         </dependency>
 
         <dependency>
@@ -102,16 +80,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc-test</artifactId>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>spring-boot-starter-jackson-test</artifactId>
-                    <groupId>org.springframework.boot</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>spring-boot-starter-jackson</artifactId>
-                    <groupId>org.springframework.boot</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -133,7 +101,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.14.1</version>
                 <configuration>
                     <source>21</source>
                     <target>21</target>

@@ -1,7 +1,7 @@
 package org.apiaddicts.apitools.apigen.archetypecore.core.advice;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import tools.jackson.databind.exc.InvalidFormatException;
 import lombok.extern.slf4j.Slf4j;
 import org.apiaddicts.apitools.apigen.archetypecore.core.errors.ApigenErrorManager;
 import org.apiaddicts.apitools.apigen.archetypecore.core.errors.DefaultApigenError;

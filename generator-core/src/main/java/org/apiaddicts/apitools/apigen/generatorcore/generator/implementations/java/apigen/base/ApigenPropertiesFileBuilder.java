@@ -1,6 +1,6 @@
 package org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.base;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ArrayNode;
 import lombok.extern.slf4j.Slf4j;
 import org.apiaddicts.apitools.apigen.generatorcore.config.Configuration;
 import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.java.apigen.ApigenContext;
@@ -18,8 +18,8 @@ public class ApigenPropertiesFileBuilder<C extends ApigenContext> extends JavaPr
         addProperty("spring.application.name", "@name@");
         addProperty("spring.profiles.active", "dev");
         addProperty("logging.level.root", "info");
-        addProperty("spring.jackson2.serialization.fail_on_empty_beans", "false");
-        addProperty("spring.jackson2.default-property-inclusion", "NON_NULL");
+        addProperty("spring.jackson.serialization.fail-on-empty-beans", "false");
+        addProperty("spring.jackson.default-property-inclusion", "NON_NULL");
         addProperty("spring.main.allow-circular-references", "true");
         addProperty("spring.mvc.throw-exception-if-no-handler-found", "true");
         addProperty("spring.web.resources.add-mappings", "false");

@@ -2,6 +2,26 @@
 
 All changes required to migrate generated Apigen projects to new versions will be documented in this file.
 
+## From [2.0.3] to [2.1.0]
+
+### Spring Boot 4.0.x → 4.1.0
+
+Perform the [Spring Boot 4.1 migration](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.1-Release-Notes). Key points:
+
+- If your project sets `spring.data.jpa.repositories.bootstrap-mode=deferred`, you must now provide an `AsyncTaskExecutor` bean; otherwise startup will fail.
+- The deprecated `layertools` jar mode has been removed. If your `Dockerfile` uses `java -Djarmode=layertools`, replace it with `java -Djarmode=tools`.
+
+### Jackson 3
+
+Spring Boot 4.1 uses Jackson 3 by default. This version completes the Jackson 3 migration in `archetype-core`, `generator-core`, and `generator-cli`.
+
+**Impact on generated projects** (using `archetype-parent-spring-boot`):
+
+- The `spring-boot-jackson2` dependency and all related exclusions have been removed from `archetype-parent-spring-boot`. If your project's `pom.xml` still pins `spring-boot-jackson2` or `jackson.version=2.x`, remove those entries.
+- Jackson 3 keeps the annotation package unchanged: `@JsonProperty`, `@JsonIgnore`, `@JsonCreator`, etc. still come from `com.fasterxml.jackson.annotation.*` — **no changes needed** to classes that use these annotations.
+- Only the processing infrastructure moved: if your project directly uses `com.fasterxml.jackson.databind.*` or `com.fasterxml.jackson.core.*` APIs (e.g. `ObjectMapper`, `JsonNode`, `ArrayNode`), rename those imports to `tools.jackson.databind.*` / `tools.jackson.core.*`.
+- Spring Boot property prefix for Jackson configuration changes from `spring.jackson2.*` to `spring.jackson.*` in `application.properties`.
+
 ## From [2.0.2] to [2.0.3]
 
 No migration required
@@ -146,7 +166,9 @@ In this version Apigen has been updated to be auto documented with `spring-doc` 
 - Perform the Spring Boot migration from `2.4.x` to `2.6.x`
 - Remove the property `apigen.documentation.enabled`, now the documentation is managed by the `spring-doc` official properties
 
-[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/2.0.2...HEAD
+[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/2.1.0...HEAD
+[2.1.0]: https://github.com/apiaddicts/apigen/releases/tag/2.1.0
+[2.0.3]: https://github.com/apiaddicts/apigen/releases/tag/2.0.3
 [2.0.2]: https://github.com/apiaddicts/apigen/releases/tag/2.0.2
 [2.0.1]: https://github.com/apiaddicts/apigen/releases/tag/2.0.1
 [2.0.0]: https://github.com/apiaddicts/apigen/releases/tag/2.0.0

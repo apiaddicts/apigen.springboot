@@ -1,7 +1,7 @@
 package org.apiaddicts.apitools.apigen.generatorcore.config.parameter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.node.ArrayNode;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Parameter;
 import org.apiaddicts.apitools.apigen.generatorcore.config.validation.Validation;
 import org.apiaddicts.apitools.apigen.generatorcore.config.validation.ValidationType;
@@ -130,7 +130,7 @@ public class ParameterObjectMother {
         parameter.setType("string");
         parameter.setCollection(true);
         parameter.setRequired(true);
-        ObjectMapper mapper = new ObjectMapper();
+        var mapper = JsonMapper.builder().build();
         List<String> arrayElements = Arrays.asList("primero", "segundo", "tercero", "cuarto", "quinto");
         ArrayNode arrayNode = mapper.valueToTree(arrayElements);
         parameter.setDefaultValue(arrayNode);

@@ -1,7 +1,7 @@
 package org.apiaddicts.apitools.apigen.generatorcore.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ArrayNode;
 import lombok.Data;
 import org.apiaddicts.apitools.apigen.generatorcore.config.controller.Controller;
 import org.apiaddicts.apitools.apigen.generatorcore.config.entity.Entity;
