@@ -8,6 +8,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.springframework.shell.core.command.annotation.Command;
 import org.springframework.shell.core.command.annotation.CommandGroup;
 import org.springframework.shell.core.command.annotation.Option;
+import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -19,6 +20,7 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+@Component
 @CommandGroup(name = "Code generation")
 public class GenerateCodeCmd {
 
@@ -32,7 +34,7 @@ public class GenerateCodeCmd {
         Map<String, Object> globalConfig = new HashMap<>();
         globalConfig.put("parentGroup", "org.apiaddicts.apitools.apigen");
         globalConfig.put("parentArtifact", "archetype-parent-spring-boot");
-        globalConfig.put("parentVersion", "2.0.1");
+        globalConfig.put("parentVersion", "2.1.1");
         var generator = new ProjectGenerator<>(new ApigenGenerationStrategy(), globalConfig);
         Project project;
         if (file == null && config == null) {

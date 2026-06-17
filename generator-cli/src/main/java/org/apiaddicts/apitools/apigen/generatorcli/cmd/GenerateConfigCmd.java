@@ -6,6 +6,7 @@ import org.apiaddicts.apitools.apigen.generatorcore.generator.implementations.ja
 import org.springframework.shell.core.command.annotation.Command;
 import org.springframework.shell.core.command.annotation.CommandGroup;
 import org.springframework.shell.core.command.annotation.Option;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,6 +14,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 @CommandGroup(name = "Config generation")
 public class GenerateConfigCmd {
 

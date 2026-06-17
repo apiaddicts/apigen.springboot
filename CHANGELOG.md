@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.1
 
 ## [unreleased]
 
+## [2.1.1] - 2026-06-17
+
+### Fixed
+
+- Fixed generator-cli not working
+
 ## [2.1.0] - 2026-06-15
 
 ### Changed
@@ -213,7 +219,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.1
 ### Added
 - Initial functional version of Apigen
 
-[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/2.1.0...HEAD
+[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/2.1.1...HEAD
+[2.1.1]: https://github.com/apiaddicts/apigen/releases/tag/2.1.1
 [2.1.0]: https://github.com/apiaddicts/apigen/releases/tag/2.1.0
 [2.0.3]: https://github.com/apiaddicts/apigen/releases/tag/2.0.3
 [2.0.2]: https://github.com/apiaddicts/apigen/releases/tag/2.0.2
