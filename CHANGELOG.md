@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.1
 
 ## [unreleased]
 
+## [2.2.0] - 2026-09-29
+
+### Changed
+
+- Completed the migration from Jackson 2 to Jackson 3: apigen code no longer uses any `com.fasterxml.jackson.databind.*` / `com.fasterxml.jackson.core.*` API
+  - Replaced `com.flipkart.zjsonpatch:zjsonpatch:0.4.16` with `io.github.vishwakarma:zjsonpatch:0.6.3` (new maintained coordinates with Jackson 3 support) and migrated `ApigenResponseConverterFilter` to `Jackson3JsonPatch`
+  - Removed the explicit `com.fasterxml.jackson.core:jackson-databind:2.20.1` dependency from archetype-core
+  - Replaced deprecated `JsonNode.asText()` calls with `JsonNode.asString()`
+- Updated spring boot version to `4.1.1`
+- Updated `springdoc` version to `3.1.1`
+- Updated `swagger-parser` version to `2.1.48`
+- Updated `jackson-databind-nullable` version to `0.2.11`
+- Updated `maven-model` version to `3.9.16`
+- Updated `archunit` version to `1.5.1`
+- Updated `maven-compiler-plugin` version to `3.16.0`
+- Updated `maven-source-plugin` version to `3.4.0`
+- Updated `flatten-maven-plugin` version to `1.8.0`
+- Updated `central-publishing-maven-plugin` version to `0.11.0`
+- Updated Maven wrapper distribution to `3.9.16`
+
+### Fixed
+
+- Updated generator-cli generated projects parent version (`archetype-parent-spring-boot`) to `2.2.0`
+
 ## [2.1.1] - 2026-06-17
 
 ### Fixed
@@ -219,7 +243,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.1
 ### Added
 - Initial functional version of Apigen
 
-[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/2.1.1...HEAD
+[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/2.2.0...HEAD
+[2.2.0]: https://github.com/apiaddicts/apigen/releases/tag/2.2.0
 [2.1.1]: https://github.com/apiaddicts/apigen/releases/tag/2.1.1
 [2.1.0]: https://github.com/apiaddicts/apigen/releases/tag/2.1.0
 [2.0.3]: https://github.com/apiaddicts/apigen/releases/tag/2.0.3

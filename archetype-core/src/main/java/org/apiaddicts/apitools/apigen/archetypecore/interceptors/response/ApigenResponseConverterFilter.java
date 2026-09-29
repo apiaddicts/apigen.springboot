@@ -1,13 +1,14 @@
 package org.apiaddicts.apitools.apigen.archetypecore.interceptors.response;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.flipkart.zjsonpatch.JsonPatch;
+import com.flipkart.zjsonpatch.Jackson3JsonPatch;
 import com.flipkart.zjsonpatch.JsonPatchApplicationException;
 import lombok.extern.slf4j.Slf4j;
 import org.apiaddicts.apitools.apigen.archetypecore.autoconfigure.ApigenProperties;
 import org.springframework.http.MediaType;
 import org.springframework.web.util.ContentCachingResponseWrapper;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.node.ObjectNode;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,9 +20,7 @@ import java.util.regex.Pattern;
 @Slf4j
 public class ApigenResponseConverterFilter implements Filter {
 
-    // zjsonpatch 0.4.16 uses com.fasterxml.jackson types in its public API
-    private static final com.fasterxml.jackson.databind.ObjectMapper MAPPER =
-            new com.fasterxml.jackson.databind.ObjectMapper();
+    private static final JsonMapper MAPPER = JsonMapper.builder().build();
 
     private final ApigenProperties props;
     private static final String PROP_PATH_ALL = "^[a-zA-z/]+[*]{1}[a-zA-z/]+";
@@ -67,15 +66,15 @@ public class ApigenResponseConverterFilter implements Filter {
         }
     }
 
-    private String convert(byte[] originalData, List<String> operations) throws IOException {
+    private String convert(byte[] originalData, List<String> operations) {
         final ObjectNode root = (ObjectNode) MAPPER.readTree(originalData);
         JsonNode target = root.deepCopy();
 
         for (String operation : operations) {
             JsonNode op = MAPPER.readTree(operation);
             try {
-                String path = op.get("path").asText();
-                String from = op.has("from") ? op.get("from").asText() : null;
+                String path = op.get("path").asString();
+                String from = op.has("from") ? op.get("from").asString() : null;
                 if (path != null && Pattern.matches(PROP_PATH_ALL, path)) {
                     String[] pathParts = path.split("\\*");
                     String parent = pathParts[0].replace("/", "");
@@ -87,11 +86,11 @@ public class ApigenResponseConverterFilter implements Filter {
                             cp2.put("from", from.replace("*", i + ""));
                         }
                         log.debug("Applying response transformation {}", cp2);
-                        target = JsonPatch.apply(MAPPER.readTree("[" + op2 + "]"), target);
+                        target = Jackson3JsonPatch.apply(MAPPER.readTree("[" + op2 + "]"), target);
                     }
                 } else {
                     log.debug("Applying response transformation {}", op);
-                    target = JsonPatch.apply(MAPPER.readTree("[" + op + "]"), target);
+                    target = Jackson3JsonPatch.apply(MAPPER.readTree("[" + op + "]"), target);
                 }
             } catch (JsonPatchApplicationException e) {
                 log.debug("Response transformation error: {} ", e.getMessage());

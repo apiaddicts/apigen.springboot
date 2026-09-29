@@ -34,7 +34,7 @@ public class GenerateCodeCmd {
         Map<String, Object> globalConfig = new HashMap<>();
         globalConfig.put("parentGroup", "org.apiaddicts.apitools.apigen");
         globalConfig.put("parentArtifact", "archetype-parent-spring-boot");
-        globalConfig.put("parentVersion", "2.1.1");
+        globalConfig.put("parentVersion", "2.2.0");
         var generator = new ProjectGenerator<>(new ApigenGenerationStrategy(), globalConfig);
         Project project;
         if (file == null && config == null) {

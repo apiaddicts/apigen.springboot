@@ -44,7 +44,7 @@ public class QueryParameterBuilder<C extends JavaContext> extends ParameterBuild
     private String collectionToString(Object collection) {
         ArrayNode arrayNode = (ArrayNode) collection;
         List<String> itemsArray = new ArrayList<>(arrayNode.size());
-        arrayNode.forEach(jsonNode -> itemsArray.add(jsonNode.asText()));
+        arrayNode.forEach(jsonNode -> itemsArray.add(jsonNode.asString()));
         return String.join(",", itemsArray);
     }
 

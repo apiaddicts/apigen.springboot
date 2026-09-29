@@ -2,6 +2,31 @@
 
 All changes required to migrate generated Apigen projects to new versions will be documented in this file.
 
+## From [2.1.1] to [2.2.0]
+
+### Spring Boot 4.1.0 → 4.1.1
+
+Patch release, no changes required. See the [Spring Boot 4.1.1 release notes](https://github.com/spring-projects/spring-boot/releases/tag/v4.1.1).
+
+### Jackson 3 (complete)
+
+This version removes the last Jackson 2 usage from `archetype-core`. The JSON Patch library used by the standard response transformation (`apigen.standard-response.operations`) has moved to new Maven coordinates with Jackson 3 support:
+
+| Before | After |
+|---|---|
+| `com.flipkart.zjsonpatch:zjsonpatch:0.4.16` | `io.github.vishwakarma:zjsonpatch:0.6.3` |
+
+**Impact on generated projects**:
+
+- If your project's `pom.xml` declares `com.flipkart.zjsonpatch:zjsonpatch` directly, change it to `io.github.vishwakarma:zjsonpatch`. The Java package (`com.flipkart.zjsonpatch`) is unchanged, but with Jackson 3 nodes (`tools.jackson.databind.JsonNode`) use `Jackson3JsonPatch` / `Jackson3JsonDiff` instead of `JsonPatch` / `JsonDiff`.
+- Since `0.6.0`, zjsonpatch declares its Jackson dependencies as `optional`. Jackson 3 is provided by `spring-boot-starter-web`; if your project relied on archetype-core bringing `com.fasterxml.jackson.core:jackson-databind` 2.x transitively for its own code, migrate that code to `tools.jackson.*` (see [2.1.0](#from-203-to-210)) or declare the Jackson 2 dependency explicitly.
+- `JsonNode.asText()` is deprecated in Jackson 3; use `JsonNode.asString()` instead.
+- Jackson 2 still appears transitively through `springdoc` (`swagger-core`), which has not released a Jackson 3 version yet. No action is needed.
+
+### springdoc 3.0.x → 3.1.1
+
+- The springdoc MCP integration is now opt-in (`springdoc.ai.mcp.enabled=true`). Only relevant if you were using it.
+
 ## From [2.1.0] to [2.1.1]
 
 No migration required for generated projects.
@@ -170,7 +195,8 @@ In this version Apigen has been updated to be auto documented with `spring-doc` 
 - Perform the Spring Boot migration from `2.4.x` to `2.6.x`
 - Remove the property `apigen.documentation.enabled`, now the documentation is managed by the `spring-doc` official properties
 
-[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/2.1.1...HEAD
+[unreleased]: https://github.com/apiaddicts/apigen/releases/tag/2.2.0...HEAD
+[2.2.0]: https://github.com/apiaddicts/apigen/releases/tag/2.2.0
 [2.1.1]: https://github.com/apiaddicts/apigen/releases/tag/2.1.1
 [2.1.0]: https://github.com/apiaddicts/apigen/releases/tag/2.1.0
 [2.0.3]: https://github.com/apiaddicts/apigen/releases/tag/2.0.3
